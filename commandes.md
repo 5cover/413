@@ -33,3 +33,10 @@ docker exec -it postgresdb bash
 ```bash
 psql -U sae -d postgres -f /creaBDD.sql
 ```
+
+## Restart server (when commits to pull)
+  
+```bash
+cd /docker/sae
+cd data && git pull && cd .. && docker compose down && docker compose up -d
+```
