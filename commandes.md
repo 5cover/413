@@ -19,7 +19,8 @@ git clone --separate-git-dir ./.git -b main --depth 1 https://github.com/5cover/
 
 ```bash
 cd /docker/sae/data/sql
-docker cp creaBDD.sql postgresdb:/docker-entrypoint-initdb.d/creaBDD.sql
+docker cp creaBDD.sql postgresdb:/creaBDD.sql
+docker cp vuesBDD.sql postgresdb:/vuesBDD.sql
 ```
 
 ## Atteindre le shell du conteneur postgres
@@ -32,6 +33,7 @@ docker exec -it postgresdb bash
 
 ```bash
 psql -U sae -d postgres -f /creaBDD.sql
+psql -U sae -d postgres -f /vuesBDD.sql
 ```
 
 ## Restart server (when commits to pull)
