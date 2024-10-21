@@ -15,25 +15,19 @@ cd /docker/sae/
 git clone --separate-git-dir ./.git -b main --depth 1 https://github.com/5cover/413.git data
 ```
 
-## Copier le script de création dans le conteneur
+## Impémentation BDD
 
 ```bash
 cd /docker/sae/data/sql
-docker cp creaBDD.sql postgresdb:/creaBDD.sql
-docker cp vuesBDD.sql postgresdb:/vuesBDD.sql
-```
+for f in *.sql; do
+    sudo docker cp "$f" postgresdb:/"$f"
+done
+# Atteindre le shell du conteneur postgres
+sudo docker exec -w / postgresdb bash -c 'for f in /creaBDD.sql /vuesBDD.sql /fonctions_triggers.sql
+  do echo run "$f"
+  psql -U sae -d postgres -f "$f"
+done'
 
-## Atteindre le shell du conteneur postgres
-
-```bash
-docker exec -it postgresdb bash
-```
-
-## Implémentation BdD
-
-```bash
-psql -U sae -d postgres -f /creaBDD.sql
-psql -U sae -d postgres -f /vuesBDD.sql
 ```
 
 ## Restart server (when commits to pull)
