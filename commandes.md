@@ -96,3 +96,9 @@ networks:
    webproxy_back:
       external: true
 ```
+
+## PHPinfo
+
+```bash
+echo '<?php phpinfo();' > info.php
+```
