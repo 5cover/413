@@ -103,3 +103,8 @@ networks:
 echo '<?php phpinfo();' > info.php
 ```
 
+## See apache2 logs
+
+```bash
+docker log web
+```
