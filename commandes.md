@@ -64,7 +64,7 @@ services:
       volumes:
          - ./data/html:/var/www/html
          - ./data/include:/var/www/include
-         - ./data/cfg:/usr/local/etc/php
+         - ./data/cfg/php.ini:/usr/local/etc/php/php.ini
       environment:
          VIRTUAL_HOST: ${EQUIPE}.ventsdouest.dev
          LETSENCRYPT_HOST: ${EQUIPE}.ventsdouest.dev
@@ -102,3 +102,4 @@ networks:
 ```bash
 echo '<?php phpinfo();' > info.php
 ```
+
