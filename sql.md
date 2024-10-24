@@ -7,7 +7,7 @@
 ### 1. Créer la table
 
 ```sql
-create table _departements {
+create table _departement (
   code_departement text,
   nom_departement text,
   code_region text,
@@ -18,7 +18,7 @@ create table _departements {
 ### 2. WbImport
 
 ```sql
-WbImport -type=text -file='dataset/departements-france.csv' -table=_departements -emptyStringIsNull -header -delimiter=','
+WbImport -type=text -file='dataset/departements-france.csv' -table=_departement -emptyStringIsNull -header -delimiter=','
 ```
 
 ### 3. Sélection
@@ -38,7 +38,7 @@ from
 ### 1. Créer la table
 
 ```sql
-create table _communes (
+create table _commune (
     code_commune_insee text,
     nom_commune_postal text,
     code_postal text,
@@ -59,7 +59,7 @@ create table _communes (
 ### 2. WbImport
 
 ```sql
-WbImport -type=text -file='dataset/communes-departement-region.csv' -table=_communes -emptyStringIsNull -header -delimiter=','
+WbImport -type=text -file='dataset/communes-departement-region.csv' -table=_commune -emptyStringIsNull -header -delimiter=','
 ```
 
 ### 3. Sélection
@@ -71,7 +71,7 @@ select
     code_departement,
     code_postal
 from
-    _communes
+    _commune
 where
     code_commune_insee is not null
     and nom_commune_complet is not null
