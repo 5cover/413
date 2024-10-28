@@ -12,10 +12,10 @@ Use **snake_case**.
 
 `{nom table}` ignores 1 leading underscore `_` in the table name.
 
-type de contrainte|nom|explication
+type de contrainte|nom attribut|nom contrainte|explication
 -|-|-
-clé primaire|`{nom table}_pk`|
-clé étrangère|`{nom table}_fk_{nom table référencée}[__{rôle}]`|La partie `__{rôle}` est optionelle. Le double undescore `__` permet de séparer `{rôle}` d'un `{nom table référencée}` en plusieurs mots
+clé primaire|`id`|`{nom table}_pk`|
+clé étrangère|`{attribut référencé}[_{nom table référencée}][_{rôle}]`|`{nom table}_fk_{nom table référencée}[_{rôle}]`|La partie `_{rôle}` est optionelle.
 clé étrangère représentant un héritage|`{nom table}_inherits_{nom table référencée}`
 
 ### Ordre des attributs
@@ -47,7 +47,7 @@ commune_code_insee char(5) not null,
 Lorsqu'un attribut est associée à une ou plusieurs contraintes nommées (commençant avec le mot-clé `constraint`), elles sont identées sur les lignes suivantes
 
 ```sql
-id_professionnel serial
+id int
     constraint professionnel_pk primary key
     constraint professionnel_inherits_compte foreign key (email) references _compte(email),
 ```

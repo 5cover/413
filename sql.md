@@ -25,8 +25,8 @@ WbImport -type=text -file='dataset/departements-france.csv' -table=_departement 
 
 ```sql
 select
-    code_departement,
-    nom_departement
+    code_departement numero,
+    nom_departement nom
 from
     _departement;
 ```
@@ -39,20 +39,21 @@ from
 
 ```sql
 create table _commune (
-    code_commune_insee text,
-    nom_commune_postal text,
-    code_postal text,
-    libelle_acheminement text,
-    ligne_5 text,
-    latitude text,
-    longitude text,
-    code_commune text,
-    article text,
-    nom_commune text,
-    nom_commune_complet text,
-    code_departement text,
-    nom_departement text,
-    code_region text
+  code_commune_INSEE text,
+  nom_commune_postal text,
+  code_postal text,
+  libelle_acheminement text,
+  ligne_5 text,
+  latitude text,
+  longitude text,
+  code_commune text,
+  article text,
+  nom_commune text,
+  nom_commune_complet text,
+  code_departement text,
+  nom_departement text,
+  code_region text,
+  nom_region text
 );
 ```
 
@@ -64,19 +65,29 @@ WbImport -type=text -file='dataset/communes-departement-region.csv' -table=_comm
 
 ### 3. Sélection
 
+Communes
+
 ```sql
-select
-    code_commune_insee,
-    nom_commune_complet,
-    code_departement,
+select distinct on (code_commune_insee)
+    code_commune_insee code_insee,
+    code_departement numero_departement,
+    nom_commune_complet nom
+from
+    _commune
+where
+    code_departement in (select code_departement from _departement)
+```
+
+Codes postaux
+
+```sql
+select distinct
+    code_commune_insee code_insee,
     code_postal
 from
     _commune
 where
-    code_commune_insee is not null
-    and nom_commune_complet is not null
-    and code_departement is not null
-    and code_postal is not null;
+    code_departement in (select code_departement from _departement);
 ```
 
 ### 4. Copie des résultats en SQL INSERT
