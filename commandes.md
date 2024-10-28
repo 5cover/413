@@ -12,7 +12,7 @@ ssh -i .ssh/sae_rsa.pub debian@413.ventsdouest.dev
 
 ```bash
 cd /docker/sae/
-git clone --separate-git-dir ./.git -b main --depth 1 https://github.com/5cover/413.git data
+sudo git clone -b main --depth 1 https://github.com/5cover/413.git data
 ```
 
 ## Impémentation BDD
