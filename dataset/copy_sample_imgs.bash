@@ -14,7 +14,7 @@ readonly outdir="../../main/html/images_utilisateur"
 mkdir -p $outdir
 
 echo 'insert into'
-echo '    _image(taille, mime_type, legende)'
+echo '    _image(taille, mime_subtype, legende)'
 echo 'values'
 
 cd sample_imgs
