@@ -57,3 +57,7 @@ id int
 Réutiliser la clé primaire de la table de base pour la clé primaire de la table enfant quand cela est possible. Cela évite d'avoir 2 clés `serial` sans valeur sémantique.
 
 Les contraintes d'héritage doivent être spécifiées le plus tôt possible après la clé primaire.
+
+## Valeur par défaut
+
+Une table pour laquelle une vue existe ne doit pas avoir de contraintes `default`, à la place, on utilise des `coalesce` dans son trigger `insert`.
