@@ -5,14 +5,15 @@
 - Escape game À l'Arche du Temps
 - Laser Game Evolution Saint-Brieuc
 - Lantic Parc Aventure
-- Acrobranch au parc aventure Indiant Forest
+- Acrobranch au parc aventure Indian Forest
 - Initiation au char à voile sur la plage
 - Chasse aux grenouilles dans le Lac du Gourgal
+- Bowling l'éclipse
 
 À ajouter:
 
-- Bowling l'éclipse
 - Karting guimgamp dont j'ai oublié le nom
+- Randonnée au Menez-Bré
 
 ## Spectacles
 
