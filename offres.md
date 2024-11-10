@@ -9,9 +9,6 @@
 - Initiation au char à voile sur la plage
 - Chasse aux grenouilles dans le Lac du Gourgal
 - Bowling l'éclipse
-
-À ajouter:
-
 - Karting guimgamp dont j'ai oublié le nom
 - Randonnée au Menez-Bré
 

@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# Run: support/dataset/copy_sample_imgs.py | xsel -ib
+
 from pathlib import Path
 import argparse as ap
 from dataclasses import dataclass
@@ -15,7 +17,10 @@ class Args:
 
 
 def mime_type(path: Path) -> tuple[str, str]:
-    return run(('file', '-b', '--mime-type', '--', path), check=True, text=True, capture_output=True).stdout.rstrip().split('/', 2)
+    return run(
+        ('file', '-b', '--mime-type', '--', path),
+        check=True, text=True, capture_output=True).stdout.rstrip().split(
+        '/', 2)
 
 
 if __name__ == '__main__':
@@ -23,15 +28,22 @@ if __name__ == '__main__':
 
     parser = ap.ArgumentParser(formatter_class=ap.ArgumentDefaultsHelpFormatter)
     parser.add_argument('-n', '--dry-run', action='store_true', help='do not copy images')
-    parser.add_argument('-o', '--output', default=Path(DIR, '../../main/html/images_utilisateur').resolve(), type=Path, help='output dir')
+    parser.add_argument(
+        '-o', '--output', default=Path(DIR, '../../main/html/images_utilisateur').resolve(),
+        type=Path, help='output dir')
     parser.add_argument('-i', '--indent', default=4, help='indent width')
     a = Args(**vars(parser.parse_args()))
+    indent = ' ' * a.indent
 
     if not a.dry_run:
         a.output.mkdir(parents=True, exist_ok=True)
 
+    print('begin;')
+    print()
+    print("set schema 'pact';")
+    print()
     print('insert into')
-    print('    _image(taille, mime_subtype, legende)')
+    print(f'{indent}_image (taille, mime_subtype, legende)')
     print('values')
 
     i = 0
@@ -48,9 +60,12 @@ if __name__ == '__main__':
         size = f.stat().st_size
         legend = f.stem.replace("'", "''")
 
-        print(f"{' ' * a.indent}({size}, '{mime_subtype}', '{legend}')", end='')
+        print(f"{indent}({size}, '{mime_subtype}', '{legend}')", end='')
 
         if not a.dry_run:
             copy(f, Path(a.output, f'{i}.{mime_subtype}'))
 
-    print(f"; -- {i}")
+    print(f" -- {i}")
+    print(';')
+    print()
+    print('commit;')
