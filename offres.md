@@ -16,36 +16,31 @@
 
 - Celtic Legends journée 2026
 
-À ajouter:
-
-- TEDx Carré magique?
-- Aller voir à l'IUT pour plus
-
 ## Visites
 
 - Découverte interactive de la cité des Télécoms
-- Visite du Fort La Latte &mdash; la Roche Goyon
-- Randonnée dans la vallée des Saints
-- Balade poétique à Camet
-- Découverte de la Côte de Granit Rose
-- Trail dans la réserve naturelle des Sept Îles
-- Visite du musée d'Art et d'Histoire de Saint-Brieuc
-- Visite du phare du Cap Fréhel
-- Visite de la galerie d'Art du Dragon Noir
+- Visite du Fort La Latte &mdash; la Roche Goyon - Plévenon
+- Randonnée dans la vallée des Saints - Boudes
+- Balade poétique à Camet - Ploeuc-L'hermitage
+- Découverte de la Côte de Granit Rose - Lannion
+- Trail dans la réserve naturelle des Sept Îles - Perros-Guirec
+- Visite du musée d'Art et d'Histoire de Saint-Brieuc - Saint-Brieuc
+- Visite du phare du Cap Fréhel - Plévenon
+- Visite de la galerie d'Art du Dragon Noir - Lamballe
 
 ## Restaurants
 
-- Crêperie de l'Abbaye de Beauport
-- Crêperie Les Alize
+- Crêperie de l'Abbaye de Beauport - Paimpol
+- Crêperie Les Alize - Paimpol
 
 À ajouter:
 
 - Restaurant La Plage - Trestraou
-- Crêperie l'Oranger
+- Crêperie l'Oranger - Perros-guirec
 
 ## Parc d'attractions
 
-- Parc Aquarev
+- Parc Aquarev - Loudéac
 
 À ajouter:
 
