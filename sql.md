@@ -18,7 +18,7 @@ create table _departement (
 ### 2. WbImport
 
 ```sql
-WbImport -type=text -file='dataset/departements-france.csv' -table=_departement -emptyStringIsNull -header -delimiter=','
+ -table=_departement -emptyStringIsNull -header -delimiter=',' -type=text -file='dataset/departements-france.csv'
 ```
 
 ### 3. Sélection
@@ -60,7 +60,7 @@ create table _commune (
 ### 2. WbImport
 
 ```sql
-WbImport -type=text -file='dataset/communes-departement-region.csv' -table=_commune -emptyStringIsNull -header -delimiter=','
+WbImport -type=text -table=_commune -emptyStringIsNull -header -delimiter=',' -file='dataset/communes-departement-region.csv'
 ```
 
 ### 3. Sélection
@@ -69,20 +69,21 @@ Communes
 
 ```sql
 select distinct on (code_commune_insee)
-    code_commune_insee code_insee,
+    code_commune code,
     code_departement numero_departement,
     nom_commune_complet nom
 from
     _commune
 where
-    code_departement in (select code_departement from _departement)
+    code_departement in (select code_departement from _departement);
 ```
 
 Codes postaux
 
 ```sql
 select distinct
-    code_commune_insee code_insee,
+    code_commune code,
+    code_departement numero_departement,
     code_postal
 from
     _commune
