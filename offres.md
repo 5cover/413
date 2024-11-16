@@ -11,7 +11,7 @@
 - Bowling l'éclipse
 - Karting guimgamp dont j'ai oublié le nom
 - Randonnée au Menez-Bré
-
+  
 ## Spectacles
 
 - Celtic Legends journée 2026
@@ -28,14 +28,18 @@
 - Visite du phare du Cap Fréhel - Plévenon
 - Visite de la galerie d'Art du Dragon Noir - Lamballe
 
+À ajouter:
+
+- Visite de la maison d'Ernest Renan
+
 ## Restaurants
 
 - Crêperie de l'Abbaye de Beauport - Paimpol
 - Crêperie Les Alize - Paimpol
+- Restaurant La Plage - Trestraou
 
 À ajouter:
 
-- Restaurant La Plage - Trestraou
 - Crêperie l'Oranger - Perros-guirec
 
 ## Parc d'attractions

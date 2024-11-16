@@ -17,10 +17,12 @@ class Args:
 
 
 def mime_type(path: Path) -> tuple[str, str]:
-    return run(
+    result = tuple(run(
         ('file', '-b', '--mime-type', '--', path),
         check=True, text=True, capture_output=True).stdout.rstrip().split(
-        '/', 2)
+        '/', 2))
+    assert len(result) == 2
+    return result
 
 
 if __name__ == '__main__':
@@ -37,6 +39,8 @@ if __name__ == '__main__':
 
     if not a.dry_run:
         a.output.mkdir(parents=True, exist_ok=True)
+        for o in a.output.iterdir():
+            o.unlink()
 
     print('begin;')
     print()
@@ -47,7 +51,7 @@ if __name__ == '__main__':
     print('values')
 
     i = 0
-    for f in sorted(Path(DIR, 'sample_imgs').iterdir(), key=lambda f: f.stat().st_mtime):
+    for f in sorted(Path(DIR, 'sample_imgs').iterdir(), key=lambda f: f.stat().st_ctime):
         if i > 0:
             print(f', -- {i}')
         i += 1
