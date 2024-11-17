@@ -96,3 +96,37 @@ where
 1. <kbd>Ctrl+A</kbd> dans le panneau des résultats dans SQL workbench
 2. Clic droit > Copy Selected > As SQL Insert
 3. Coller
+
+## Tags
+
+N'importe quel `mot_cle` (voir domaine) peut être utilisé pour tagger une offre. Cependant, il existe des tags prédéfinis:
+
+- culturel
+- patrimoine
+- histoire
+- urbain
+- nature
+- plein air
+- sport
+- nautique
+- gastronomie
+- musée
+- atelier
+- musique
+- famille
+- cinéma
+- cirque
+- son et lumière
+- humour
+
+Pour les restaurants:
+
+- française
+- fruits de mer
+- asiatique
+- indienne
+- italienne
+- gastronomique
+- restauration rapide
+- crêperie
+  
