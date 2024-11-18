@@ -30,7 +30,6 @@ mkdir .vscode
 > .vscode/launch.json cat <<'EOF'
 {
   "version": "0.2.0",
-  "version": "0.2.0",
   "configurations": [
     {
       "name": "Launch Built-in web server",
@@ -43,11 +42,13 @@ mkdir .vscode
         "${workspaceFolder}/main/cfg/php.ini",
         "-S",
         "localhost:8888",
+        "-t",
+        "${workspaceFolder}/main/html",
         "-d include_path=${workspaceFolder}/main/include",
         "-d zend.assertions=1"
       ],
       "program": "",
-      "cwd": "${workspaceFolder}/main/html",
+      "cwd": "${workspaceFolder}/main/",
       "port": 9003,
       "serverReadyAction": {
         "pattern": "Development Server \\(http://localhost:([0-9]+)\\) started",
@@ -71,6 +72,8 @@ PGADMIN_PASSWORD=parfois-appel0ns-streSSer
 EOF
 
 code --install-extension DEVSENSE.profiler-php-vscode
+
+sudo apt install php-pgsql php-pdo-pgsql
 
 read -p "C'est bon. Ouvrir VSCode dans le dossier? (o/n) " -rn 1
 echo
