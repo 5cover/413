@@ -1,5 +1,23 @@
 #!/usr/bin/env bash
 
+is_root() {
+    return "$(id -u)"
+}
+
+has_sudo() {
+    local prompt
+
+    prompt=$(sudo -nv 2>&1)
+    # shellcheck disable=SC2181
+    if [ $? -eq 0 ]; then
+        echo has_sudo__pass_set
+    elif echo "$prompt" | grep -q '^sudo:'; then
+        echo has_sudo__needs_pass
+    else
+        echo no_sudo
+    fi
+}
+
 set -eu
 
 readonly TEAM='413/'
@@ -11,6 +29,14 @@ if [[ -e $TEAM ]]; then
     >&2 echo "indice: pour le supprimer: rm -rf '$TEAM'"
     exit 1
 fi
+
+if is_root || [[ $(has_sudo) != no_sudo ]]; then
+    >&2 echo 'Installation des packages PDO pgsql'
+    apt install php-pgsql php-pdo-pgsql
+else 
+    >&2 echo "Packages PDO pgsql non insallés (pas d'accès sudo)"
+fi
+
 
 read -p "Continuer? (o/n) " -rn 1
 echo
@@ -27,7 +53,7 @@ git clone https://github.com/5cover/413.git --depth 1 -b support support
 
 mkdir .vscode
 
-> .vscode/launch.json cat <<'EOF'
+cat >.vscode/launch.json <<'EOF'
 {
   "version": "0.2.0",
   "configurations": [
@@ -60,7 +86,7 @@ mkdir .vscode
 }
 EOF
 
-> main/include/.env cat <<'EOF'
+cat >main/include/.env <<'EOF'
 EQUIPE=413
 PGDB_PORT=5432
 MARIADB_PORT=3306
@@ -73,7 +99,13 @@ EOF
 
 code --install-extension DEVSENSE.profiler-php-vscode
 
-sudo apt install php-pgsql php-pdo-pgsql
+read -p "Installer les paquets PHP PostgresQL? (requiert l'accès ) (o/n) " -rn 1
+echo
+set -x
+if [[ $REPLY =~ ^[Oo]$ ]]; then
+    code .
+fi
+
 
 read -p "C'est bon. Ouvrir VSCode dans le dossier? (o/n) " -rn 1
 echo
