@@ -99,14 +99,6 @@ EOF
 
 code --install-extension DEVSENSE.profiler-php-vscode
 
-read -p "Installer les paquets PHP PostgresQL? (requiert l'accès ) (o/n) " -rn 1
-echo
-set -x
-if [[ $REPLY =~ ^[Oo]$ ]]; then
-    code .
-fi
-
-
 read -p "C'est bon. Ouvrir VSCode dans le dossier? (o/n) " -rn 1
 echo
 set -x
