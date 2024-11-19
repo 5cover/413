@@ -1,10 +1,5 @@
 # Offres
 
-Todo:
-
-- ajouter tags
-- ajouter tags restauration
-
 ## Activités
 
 - Escape game À l'Arche du Temps

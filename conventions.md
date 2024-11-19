@@ -1,8 +1,73 @@
 # Conventions
 
+## Général
+
+### Nommage
+
+Réutiliser les mêmes noms autant que possible (SQL, PHP, JS, CSS, HTML id, HTML input name...), même si cela signifie enfreindre les conventions de nommage du language actuel.
+
+Cela réduit la quantité de mappage mental à faire et facilite la recherche inter-fichiers.
+
+L'infraction des conventions de nommage aura au moins un côté positif&nbsp;: celui d'indiquer que ce nom à un caractère spécial, et référence un concept inter-languages.
+
+## PHP
+
+### Gestions des errreurs
+
+**Ne jamais utiliser `exit()` ou `die()` pour quitter en cas d'erreur**. Cela empêche le rollback dans `transaction()`, on court donc le risque d'avoir des données incohérentes. À a place, jeter une exception&nbsp;:
+
+```php
+throw new Exception("Message de l'erreur");
+```
+
+## Arguments&nbsp;: `$_GET`, `$_POST` et `$_FILES`
+
+Tout script PHP recevant des arguments doit avant toute autre opération les aggréger dans un tableau associatif en utilisant la fonction `getarg()`. Exemple&nbsp;:
+
+```php
+$args = [
+    'adresse_commune' => getarg($_POST, 'adresse_commune'),
+    'description' => getarg($_POST, 'description'),
+    'resume' => getarg($_POST, 'resume'),
+    'age_requis' => getarg($_POST, 'age_requis', arg_filter(FILTER_VALIDATE_INT, ['min_range' => 1]), required: false),
+    'adresse_complement_numero' => getarg($_POST, 'adresse_complement_numero', required: false),
+    // ...
+]
+```
+
+Les clés du tableau `$args` représentent le nom de l'argument côté PHP, tandis que le le nom passé à `getarg()` représente le nom de l'argument côté front-end (probablement une valeur d'attribut `name` de `input`).
+
+Pourquoi faire ça&nbsp;?
+
+- Identifier facilement tous les arguments attendus par un script
+- Regrouper la logique de récupération et validation des arguments à un seul endroit
+- Afficher des erreurs compréhensibles en HTML (à la fois pour l'utilisateur et le débogage) quand un argument est manquant ou invalide.
+
+Dans l'absolu, il ne doit y avoir acune accès à `$_GET`, `$_POST` ou `$_FILES` après le remplissage de `$args`
+
+## HTML
+
+### Ordre des attributs
+
+#### `<input>`
+
+1. `form`
+2. `id`
+3. `name`
+4. `type`
+5. autre
+6. `required`
+
+#### `<textarea>`
+
+1. `id`
+2. `name`
+3. autre
+4. `required`
+
 ## SQL
 
-### Naming
+### Nommage
 
 **Lowercase** everything that is case-insensitive: keywords, table, attributes&hellip;
 
