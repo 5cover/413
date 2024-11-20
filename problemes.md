@@ -17,6 +17,12 @@ Marius|détail offre|La page détail offre est dégueulasse et il manque des inf
 - interruption optien sans effet sur la facturation (bool actif dans souscription option)
 - attr manquant dans avis : contexte de la visite (affaires, couple, famille, amis, solo, autre...)
 - renommer option.prix en prix_hebdomadaire, abonnement.prix en prix_mensuel
+
+## Dataset
+
+- avis
+- \+ de membres
+- grilles tarifaires
   
 ## Todo
 
