@@ -8,40 +8,49 @@ Marius|détail offre|La page détail offre est dégueulasse et il manque des inf
 |||Quand l'utilisateur est connexté, il faudrait affiché "déconnexion" au lieu de "connexion"
 ||detail-offre|white-space: pre-wrap pour la description détailéle
 ||connexion|return url quand on exige de l'utilisateur qu'il se connecte
+||carte offre|afficher le pris le plus bas de la grille tarifaire (utiliser attr calculé vue offres)
 
 ## BDD
 
 - preciser prestations pour options et abonnement
 - enlever attr remise
 - interruption optien sans effet sur la facturation (bool actif dans souscription option)
-- attr manquant dans avis
+- attr manquant dans avis : contexte de la visite (affaires, couple, famille, amis, solo, autre...)
 - renommer option.prix en prix_hebdomadaire, abonnement.prix en prix_mensuel
   
 ## Todo
 
-- Creation offre punctual horaires
-- Creation offre custom tags (no need for + button, a non-empty tag input implies adding a new one)
-- Creation offre handle horaires, tags and other missing data in PHP
-- Craetion offre parse indication_duree_{jours,heures,minutes} accordingly
 - Use args array technique everywhere `$_GET`, `$_POST` or `$_FILES` are used.
 - fix php performance problems
-  
-## Components dynamic array
 
-Export a JS class from a module
+### Creation offre
 
-Constructor arguments:
+- custom tags (no need for + button, a non-empty tag input implies adding a new one)
+- options
+- grille tarifaire: mise en exergue du plus bas tarif
+- abonnement demander un choix avec une carte affichant une description, une liste des avantages, et un prix
 
-- table
-- template_tr
-- validate
+#### Abonnements
 
-Expects:
+##### Gratuit
 
-- `<table>`
-  - `<tbody>`
-  - `<tfoot>`
-    - `<input>`s for each column.
-    - a `button`
+Uniquement pour pro public
 
-Methods
+##### Payant
+
+Uniquement pour pro privé
+
+Facturation
+
+###### Standard
+
+- Grille tarifaire
+- Options
+
+###### Premium
+
+Uniquement pour pro privé
+
+- Grille tarifaire
+- Options
+- Blacklist
