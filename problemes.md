@@ -2,28 +2,41 @@
 
 Assigné|Page|Problème
 -|-|-
-Marius|détail offre|La page détail offre est dégueulasse et il manque des informations
 ||connexion|C'est dégueulasse et le bouton connexion est mal placé quand il y a une erreur
 |||Le header est mal fait (le logo devrait être à gauche, bouton connexion à droite)
 |||Quand l'utilisateur est connexté, il faudrait affiché "déconnexion" au lieu de "connexion"
 ||detail-offre|white-space: pre-wrap pour la description détailéle
 ||connexion|return url quand on exige de l'utilisateur qu'il se connecte
 ||carte offre|afficher le pris le plus bas de la grille tarifaire (utiliser attr calculé vue offres)
+||detail offre > creation avis|ajouter "autre" en contexte
 
 ## BDD
 
 - preciser prestations pour options et abonnement
-- enlever attr remise
-- interruption optien sans effet sur la facturation (bool actif dans souscription option)
-- attr manquant dans avis : contexte de la visite (affaires, couple, famille, amis, solo, autre...)
+- interruption option sans effet sur la facturation (bool actif dans souscription option)
 - renommer option.prix en prix_hebdomadaire, abonnement.prix en prix_mensuel
+- contrainte exclude
+- fonction pour obtenir le nombre de jours pendnant laquelle une offre a été en ligne pendant un mois
+- avis_resto with computed attr id_restaurant (based on )
+- insert into tarif: assert that `'gratuit' = (select libelle_abonnement from _offre o where o.id_offre = id_offre)`
+- trigger timestamp offre modifiee_le
+- non-instanciation classes abstraite
+- contrainte exclude periodes overtures et horaires_ouverture, non-overlapping
+- normalization periodes ouvertures (contrainte pour ne pas avoir de range overlapping -- agrandir les ranges existants dans un trigger) ce sera intéréssant à coder
+
+- anonymisation des avis ok avec la clé primaire de _avis actuelle?
 
 ## Dataset
 
 - avis
 - \+ de membres
 - grilles tarifaires
-  
+- date de modification d'offres explicites (pour le sorting)
+
+## web design
+
+- Mode daltonien pour benoit
+
 ## Todo
 
 - Use args array technique everywhere `$_GET`, `$_POST` or `$_FILES` are used.

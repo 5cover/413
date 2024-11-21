@@ -73,7 +73,16 @@ Dans l'absolu, il ne doit y avoir acune accès à `$_GET`, `$_POST` ou `$_FILES`
 
 Use **snake_case**.
 
-### Nommage des contraintes
+#### Attributs temporels
+
+type|nom|exemple
+-|-|-
+`timestamp`| `{participe passé}_le`|`cree_le`, `ouvert_le`
+`time`|`heure_{nom}`|`heure_creation`, `heure_ouverture`
+`date`|`date_{nom}`|`date_creation`, `date_ouverture`
+`interval`|`duree_{nom}`|`duree_creation`, `duree_ouverture`
+
+#### Contraintes
 
 `{nom table}` ignores 1 leading underscore `_` in the table name.
 
