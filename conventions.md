@@ -73,14 +73,18 @@ Dans l'absolu, il ne doit y avoir acune accès à `$_GET`, `$_POST` ou `$_FILES`
 
 Use **snake_case**.
 
-#### Attributs temporels
+#### Paramètres
+
+Utiliser le préfixe `p_` pour distinguer les paramètres lors de la substitution dans les requêtes. Exemple&nbsp;: `p_id_offre`.
+
+#### Attributs et variables temporels
 
 type|nom|exemple
 -|-|-
 `timestamp`| `{participe passé}_le`|`cree_le`, `ouvert_le`
 `time`|`heure_{nom}`|`heure_creation`, `heure_ouverture`
 `date`|`date_{nom}`|`date_creation`, `date_ouverture`
-`interval`|`duree_{nom}`|`duree_creation`, `duree_ouverture`
+`interval`|`duree_{nom}`, `{participe passé}_pendant`|`duree_creation`, `duree_ouverture`, `cree_pendant`, `ouvert_pendant`
 
 #### Contraintes
 
@@ -132,6 +136,21 @@ Réutiliser la clé primaire de la table de base pour la clé primaire de la tab
 
 Les contraintes d'héritage doivent être spécifiées le plus tôt possible après la clé primaire.
 
-## Valeur par défaut
+### Valeurs par défaut
 
 Une table pour laquelle une vue existe ne doit pas avoir de contraintes `default`, à la place, on utilise des `coalesce` dans son trigger `insert`.
+
+### [Common Table Expressions](https://www.postgresql.org/docs/current/queries-with.html) ne retournant pas de valeur
+
+Les CTE ne retournant pas de valeur ou dont la valeur est inutilisée doivent quand même avoir un nom unique, bien que celui si ne serve à rien. Utiliser un nommage incrémental tel `s1`, `s2`, `s3`... pour *statement 1*, *statement 2*, *statement 3*.
+
+```sql
+-- ...
+with id_offre as (
+        -- ...
+    ), s1 as (
+        -- ...
+    ), s2 as (
+        -- ...
+    )
+-- ...

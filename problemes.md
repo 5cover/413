@@ -24,7 +24,6 @@ Assigné|Page|Problème
 
 - anonymisation des avis ok avec la clé primaire de _avis actuelle?
 
-- prefixer tous les parameters par `p_` (ajouter convention)
 - ajouter convention s1, s1, s3
 - la date d'experience de l'avis doit être postérieure ou égale à la date de création de l'offre
 
@@ -56,6 +55,7 @@ Assigné|Page|Problème
 
 - global replace: `<?=`
 - global replace: no semicolons before `?>` on same line
+- encapsulate functions in namespaces, use `use`? to avoid naming conflicts and make it clearer where a function is from.
 
 ### Creation offre
 
