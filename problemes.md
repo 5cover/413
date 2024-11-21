@@ -44,6 +44,8 @@ Assigné|Page|Problème
 - utiliser un fichier offers.json pour recherche.php qui sera fetch en JS
 - encapsuler les multiples insertions dans une transaction en php
 
+- traduire les commentaires et le code en français
+
 ### Creation offre
 
 - custom tags (no need for + button, a non-empty tag input implies adding a new one)
