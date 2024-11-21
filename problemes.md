@@ -41,6 +41,9 @@ Assigné|Page|Problème
 - Use args array technique everywhere `$_GET`, `$_POST` or `$_FILES` are used.
 - fix php performance problems
 
+- utiliser un fichier offers.json pour recherche.php qui sera fetch en JS
+- encapsuler les multiples insertions dans une transaction en php
+
 ### Creation offre
 
 - custom tags (no need for + button, a non-empty tag input implies adding a new one)
