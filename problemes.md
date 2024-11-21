@@ -24,13 +24,17 @@ Assigné|Page|Problème
 
 - anonymisation des avis ok avec la clé primaire de _avis actuelle?
 
+- prefixer tous les parameters par `p_` (ajouter convention)
+- ajouter convention s1, s1, s3
+- la date d'experience de l'avis doit être postérieure ou égale à la date de création de l'offre
+
 ## Dataset
 
 - avis
 - \+ de membres
 - grilles tarifaires
 - changements d'état
-- offres.modifiee_le explicite (pour le sorting et tester offre_duree_en_ligne), reutilise dans l'insertion dans changement_etat
+- offres.modifiee_le explicite (pour le sorting et tester offre_en_ligne_pendant), reutilise dans l'insertion dans changement_etat
 
 ## web design
 
@@ -41,10 +45,12 @@ Assigné|Page|Problème
 - Use args array technique everywhere `$_GET`, `$_POST` or `$_FILES` are used.
 - fix php performance problems
 
-- utiliser un fichier offers.json pour recherche.php qui sera fetch en JS
+- utiliser un fichier offers.json pour recherche.php qui sera fetch en JS et les images
 - encapsuler les multiples insertions dans une transaction en php
 
 - traduire les commentaires et le code en français
+
+- passer adresse dans un seul sous-tableau au lieu d'utiliser un préfixe
 
 ### Creation offre
 
