@@ -15,10 +15,8 @@ Assigné|Page|Problème
 - preciser prestations pour options et abonnement
 - interruption option sans effet sur la facturation (bool actif dans souscription option)
 - renommer option.prix en prix_hebdomadaire, abonnement.prix en prix_mensuel
-- contrainte exclude
-- fonction pour obtenir le nombre de jours pendnant laquelle une offre a été en ligne pendant un mois
 - avis_resto with computed attr id_restaurant (based on )
-- insert into tarif: assert that `'gratuit' = (select libelle_abonnement from _offre o where o.id_offre = id_offre)`
+- insert into tarif: assert that `'gratuit' <> (select libelle_abonnement from _offre o where o.id = id_offre)`
 - trigger timestamp offre modifiee_le
 - non-instanciation classes abstraite
 - contrainte exclude periodes overtures et horaires_ouverture, non-overlapping
@@ -31,7 +29,8 @@ Assigné|Page|Problème
 - avis
 - \+ de membres
 - grilles tarifaires
-- date de modification d'offres explicites (pour le sorting)
+- changements d'état
+- offres.modifiee_le explicite (pour le sorting et tester offre_duree_en_ligne), reutilise dans l'insertion dans changement_etat
 
 ## web design
 
