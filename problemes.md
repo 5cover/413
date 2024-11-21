@@ -52,6 +52,11 @@ Assigné|Page|Problème
 
 - passer adresse dans un seul sous-tableau au lieu d'utiliser un préfixe
 
+## PHP
+
+- global replace: `<?=`
+- global replace: no semicolons before `?>` on same line
+
 ### Creation offre
 
 - custom tags (no need for + button, a non-empty tag input implies adding a new one)
