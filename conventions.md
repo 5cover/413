@@ -77,6 +77,8 @@ Use **snake_case**.
 
 Utiliser le préfixe `p_` pour distinguer les paramètres lors de la substitution dans les requêtes. Exemple&nbsp;: `p_id_offre`.
 
+Cette règles ne s'applique pas au paramètre `new` dans les fonctions d'aide au triggers. On le garde tel quel pour la similitude avec le mot-clé `new` dans les fonctions triggers.
+
 #### Attributs et variables temporels
 
 type|nom|exemple
