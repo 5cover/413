@@ -92,7 +92,7 @@ Uniquement pour pro privé
 
 ### when reset_db workflow fails after succeeding
 
-> @everyone la bdd est kaputt :skull:
+> @everyone [login](url) a cassé la bdd :skull:
 
 Choose randomly:
 
@@ -117,4 +117,4 @@ Choose randomly:
 
 ### when reset_db workflow after failing
 
-> @everyone Bravo à {REPAIRER} pour avoir réparé la BDD en {REPAIR_SECONDS}s :+1:.
+> @everyone Bravo à [login](url) pour avoir réparé la BDD en {REPAIR_SECONDS}s :+1:.
