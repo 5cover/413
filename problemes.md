@@ -21,6 +21,7 @@ Assigné|Page|Problème
 - non-instanciation classes abstraite
 - contrainte exclude periodes overtures et horaires_ouverture, non-overlapping
 - normalization periodes ouvertures (contrainte pour ne pas avoir de range overlapping -- agrandir les ranges existants dans un trigger) ce sera intéréssant à coder
+- accueil cartes cliquables
 
 - anonymisation des avis ok avec la clé primaire de _avis actuelle?
 
