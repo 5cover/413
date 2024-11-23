@@ -16,7 +16,6 @@ Assigné|Page|Problème
 - interruption option sans effet sur la facturation (bool actif dans souscription option)
 - renommer option.prix en prix_hebdomadaire, abonnement.prix en prix_mensuel
 - avis_resto with computed attr id_restaurant (based on )
-- insert into tarif: assert that `'gratuit' <> (select libelle_abonnement from _offre o where o.id = id_offre)`
 - trigger timestamp offre modifiee_le
 - non-instanciation classes abstraite
 - contrainte exclude periodes overtures et horaires_ouverture, non-overlapping
@@ -38,6 +37,8 @@ Assigné|Page|Problème
 ## web design
 
 - Mode daltonien pour benoit
+
+- rediriger vers accpro si on est sur acceuil et connecte pro
 
 ## Todo
 
@@ -88,3 +89,10 @@ Uniquement pour pro privé
 - Grille tarifaire
 - Options
 - Blacklist
+
+## Octocat
+
+ON fix : mit scheme exit phrase, ave caesar moritarus te saliti
+
+on break : je suis pas venu ici pour souffrir ok, voir voc
+  
