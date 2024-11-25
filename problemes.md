@@ -1,6 +1,8 @@
 # Problèmes
 
-## Project
+la todolist de rache
+
+## Project Trenzalore
 
 - Use null for empty strings
 - Entities
@@ -18,6 +20,10 @@ Assigné|Page|Problème
 ||connexion|return url quand on exige de l'utilisateur qu'il se connecte
 ||carte offre|afficher le pris le plus bas de la grille tarifaire (utiliser attr calculé vue offres)
 ||detail offre > creation avis|ajouter "autre" en contexte
+
+## Page modifer
+
+modifier offre 
 
 ## BDD
 
@@ -41,6 +47,10 @@ Assigné|Page|Problème
 - [ ] Mode daltonien pour benoit
 - [x] rediriger vers accpro si on est sur acceuil et connecte pro
 - [x] accueil cartes cliquables
+
+## js
+
+- [ ] proper put image tri_recherche.js
 
 ## Todo
 
