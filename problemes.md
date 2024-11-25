@@ -40,22 +40,22 @@ Assigné|Page|Problème
 
 - [ ] Mode daltonien pour benoit
 - [x] rediriger vers accpro si on est sur acceuil et connecte pro
-- [ ] accueil cartes cliquables
+- [x] accueil cartes cliquables
 
 ## Todo
 
-- [ ] Use args array technique everywhere `$_GET`, `$_POST` or `$_FILES` are used.
+- [x] Use args array technique everywhere `$_GET`, `$_POST` or `$_FILES` are used.
 - [ ] fix php performance problems
-- [ ] utiliser un fichier offers.json pour recherche.php qui sera fetch en JS et les images
+- [x] utiliser un fichier offers.json pour recherche.php qui sera fetch en JS et les images
 - [ ] encapsuler les multiples insertions dans une transaction en php
 - [x] traduire les commentaires et le code en français
 - [ ] passer adresse dans un seul sous-tableau au lieu d'utiliser un préfixe
 
 ## PHP
 
-- [ ] global replace: `<?=`
-- [ ] global replace: no semicolons before `?>` on same line
-- [ ] encapsulate functions in namespaces, use `use`? to avoid naming conflicts and make it clearer where a function is from.
+- [x] global replace: `<?=`
+- [x] global replace: no semicolons before `?>` on same line
+- [x] encapsulate functions in namespaces, use `use`? to avoid naming conflicts and make it clearer where a function is from.
 
 ### Creation offre
 
