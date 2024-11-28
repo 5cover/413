@@ -3,6 +3,7 @@ require_once 'util.php';
 require_once 'component/InputAdresse.php';
 require_once 'component/InputDuree.php';
 require_once 'component/InputImage.php';
+require_once 'component/ImageView.php';
 require_once 'component/Page.php';
 
 $page = new Page('Storybook');
