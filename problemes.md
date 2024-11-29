@@ -23,7 +23,7 @@ Assigné|Page|Problème
 
 ## Page modifer
 
-modifier offre 
+modifier offre
 
 ## BDD
 
@@ -60,6 +60,12 @@ modifier offre
 - [ ] encapsuler les multiples insertions dans une transaction en php
 - [x] traduire les commentaires et le code en français
 - [ ] passer adresse dans un seul sous-tableau au lieu d'utiliser un préfixe
+
+- [ ] verif gratuit bdd
+- [ ] maelan liste bugs dans des issues
+- [ ] update serrer workflow display committer name and message
+- [ ] propagate null in sql parse methods. Clearly document that the output is destined to be SQL.
+- [ ] Do not use getarg to get from non-argument arrarys. we don't need it anymore sicne we propagate null  
 
 ## PHP
 

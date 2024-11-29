@@ -82,7 +82,7 @@ Visite o--"*" Langue
 
 ## Valeurs
 
-- Timestamp
+- FiniteTimestamp
 - Time
 - NonEmptyRange
 - Multirange

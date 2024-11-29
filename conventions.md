@@ -29,7 +29,7 @@ $args = [
     'adresse_commune' => getarg($_POST, 'adresse_commune'),
     'description' => getarg($_POST, 'description'),
     'resume' => getarg($_POST, 'resume'),
-    'age_requis' => getarg($_POST, 'age_requis', arg_filter(FILTER_VALIDATE_INT, ['min_range' => 1]), required: false),
+    'age_requis' => getarg($_POST, 'age_requis', arg_int(1), required: false),
     'adresse_complement_numero' => getarg($_POST, 'adresse_complement_numero', required: false),
     // ...
 ]
