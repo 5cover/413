@@ -50,7 +50,7 @@ modifier offre
 
 ## js
 
-- [ ] proper put image tri_recherche.js
+- [x] proper put image tri_recherche.js
 
 ## Todo
 
@@ -61,11 +61,11 @@ modifier offre
 - [x] traduire les commentaires et le code en français
 - [ ] passer adresse dans un seul sous-tableau au lieu d'utiliser un préfixe
 
-- [ ] verif gratuit bdd
+- [x] verif gratuit bdd
 - [ ] maelan liste bugs dans des issues
-- [ ] update serrer workflow display committer name and message
-- [ ] propagate null in sql parse methods. Clearly document that the output is destined to be SQL.
-- [ ] Do not use getarg to get from non-argument arrarys. we don't need it anymore sicne we propagate null  
+- [x] update serrer workflow display committer name and message
+- [x] propagate null in sql parse methods. Clearly document that the output is destined to be SQL.
+- [x] Do not use getarg to get from non-argument arrarys. we don't need it anymore sicne we propagate null  
 
 ## PHP
 
