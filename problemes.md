@@ -1,5 +1,9 @@
 # Problèmes
 
+USE CONSTRUCTOR PROPERTY PROMOTION FOR MODELS!!!
+
+use FIELD CLASS INSTEAD OF ARRAYS AND NULL
+
 la todolist de rache
 
 ## Project Trenzalore
@@ -27,11 +31,13 @@ modifier offre
 
 ## BDD
 
-- [ ] FACTURATION preciser prestations pour options et abonnement
+- [ ] ~~FACTURATION preciser prestations pour options et abonnement~~
 - [x] interruption option sans effet sur la facturation (bool actif dans souscription option)
 - [x] contrainte exclude periodes overtures et horaires_ouverture, non-overlapping
 - [x] anonymisation des avis ok avec la clé primaire de _avis actuelle?
 - [x] la date d'experience de l'avis doit être postérieure ou égale à la date de création de l'offre
+
+class diagram: parc d'attractions a disparu
 
 ## Dataset
 
@@ -72,6 +78,17 @@ modifier offre
 - [x] global replace: `<?=`
 - [x] global replace: no semicolons before `?>` on same line
 - [x] encapsulate functions in namespaces, use `use`? to avoid naming conflicts and make it clearer where a function is from.
+  
+- this idea of creating a new object and pushing it to db could result in a lot of useless updates, refactor everything to update single fields on set. our current approach (if it even can be called that) make it hard to know if when something was created, modified, removed. it work for simple, flat models, but for offers (which are the ,pinnacle of model complexity), it's just too much. i'm scared i want my mommy.
+- also a cleaner way of dealing with inheritance would be nice
+
+the whole question is really about how to we handle updating composite data? how do we update an offer's gallery?
+
+we should compose a model instance as readonly. but we can mutate it and it will update itself.
+
+So Galerie in in Offre.
+
+move thing that are not model outside the model dir
 
 ### Creation offre
 

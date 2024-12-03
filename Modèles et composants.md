@@ -66,7 +66,7 @@ Commune o-- Departement
 Compte <|-- Membre
 Compte <|-- Professionnel 
 Offre *--"*" Avis
-Offre *--"*" Image : Gallerie
+Offre *--"*" Image : Galerie
 Offre *--"1" Adresse
 Offre *--"1" Image : Image principale
 Offre <|-- Activite
