@@ -1,12 +1,16 @@
 # Problèmes
 
-- rajouter des détails pour le choix d'abonnement
+- [ ] rajouter des détails pour le choix d'abonnement
 
-- model professionnel check instanceof instead of exists
-- model avis
-- depreacte queries
+- [ ] model professionnel check instanceof instead of exists
+- [x] model avis
+- [ ] depreacte queries
 
-for modification offre -> if input image null, do not change
+- [x] for modification offre -> if input image null, do not change
+
+- [ ] nombre d'avis lu
+- [x] rendre modification offre plus robuste
+- [ ] avis restauration
 
 ## Project Trenzalore
 
