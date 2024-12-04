@@ -4,7 +4,18 @@ USE CONSTRUCTOR PROPERTY PROMOTION FOR MODELS!!!
 
 use FIELD CLASS INSTEAD OF ARRAYS AND NULL
 
-la todolist de rache
+test offre create
+
+go back to push_to_db approach since we don't need incremental updates:
+
+- remove __set
+- perform wide update in insert if exists in db
+- rename insert to push_to_db
+- model professionnel check instanceof instead of exists
+- model avis
+- depreacte queries
+
+for modification offre -> if input image null, do not change
 
 ## Project Trenzalore
 
