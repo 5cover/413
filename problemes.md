@@ -12,6 +12,8 @@
 - [x] rendre modification offre plus robuste
 - [ ] avis restauration
 
+- detail offre ouverture hebdo, tags, tarifs
+
 ## Project Trenzalore
 
 - Use null for empty strings
