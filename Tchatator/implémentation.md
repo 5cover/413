@@ -57,3 +57,11 @@ Représentation du temps : UNIX timestamps (secondes).
 ## Documentation
 
 Markdowns convertis en PDF.
+
+## Base de données
+
+### Contraintes trigger
+
+Émetteur est client XOR Récépteur est client.
+
+L'émetteur et le client ne peuvent pas être de la même classe
