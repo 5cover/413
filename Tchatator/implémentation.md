@@ -19,16 +19,6 @@ Message:
 - contenu
 - envoyé le
 
-## Paramètres
-
-Nom|Description|Valeur par défaut
--|-|-
-messages_par_page|Nombre maximal de messages par page dans l'historique|20
-longeur_max_message|Longueur max. d'un message (caractères)|1000
-minute_rate_limit|Nombre max. de requêtes par minute|12
-hour_rate_limit|Nombre max. de requêtes par heure|90
-...
-
 ## Erreurs
 
 ?: à rechercher
@@ -74,6 +64,10 @@ Quand une requête est faite :
 - Vérifier qu'on est pas au max et l'incrémenter
 - Si la dernière requête était il y a plus d'1 heure, réinitializer le nombre de requêtes depuis 1 heure
 - Vérifier qu'on est pas au max et l'incrémenter
+
+### C
+
+- Utiliser des arena allocators
 
 ## Documentation
 
