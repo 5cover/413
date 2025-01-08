@@ -56,6 +56,25 @@ Représentation du temps : UNIX timestamps (secondes).
 
 Parsing de la requête : lex et yacc
 
+Session token : un nombre basé sur le timestamp et la clé d'api. Stocké dans la BDD de manière à éviter les collisions. Supprimé à la déconnexion.
+
+Table Sessions:
+
+- Clé API
+- Token
+- Dernière requête
+- Nombre de requêtes depuis 1 minute (default 0)
+- Nombre de requêtes depuis 1 heure (default 0)
+
+Pour la rate limit: une qté max de requêtes par minute et par heure.
+
+Quand une requête est faite :
+
+- Si la dernière requête était il y a plus d'1 minute, réinitializer le nombre de requêtes depuis 1 minute
+- Vérifier qu'on est pas au max et l'incrémenter
+- Si la dernière requête était il y a plus d'1 heure, réinitializer le nombre de requêtes depuis 1 heure
+- Vérifier qu'on est pas au max et l'incrémenter
+
 ## Documentation
 
 Markdowns convertis en PDF.

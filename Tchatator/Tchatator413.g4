@@ -4,12 +4,14 @@ request: req_login | req_whois;
 
 req_login: 'login' API_KEY;
 
-req_whois: 'whois' USER_ID;
+req_whois: 'whois' USER_KEY;
 
 API_KEY: UUID_V4;
 
-USER_ID: DD+;
+/** User key. Either an user id (natural integer) or a string which is either a pseudo or email. */
+USER_KEY: DD+ | '"' ([^"] | '""')+ '"';
 
+/** Version 4 UUID */
 UUID_V4: HD4 HD4 '-' HD4 '-' HD4 '-' HD4 '-' HD4 HD4 HD4;
 
 /** 4 hexadecimal digits */
