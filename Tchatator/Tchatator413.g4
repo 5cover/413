@@ -8,7 +8,7 @@ req_whois: 'whois' USER_KEY;
 
 API_KEY: UUID_V4;
 
-/** User key. Either an user id (natural integer) or a string which is either a pseudo or email. */
+/** User key. Either an user id (natural integer) or a non-empty quoted string (with double-quote escapes) which is either a pseudo or email. */
 USER_KEY: DD+ | '"' ([^"] | '""')+ '"';
 
 /** Version 4 UUID */
