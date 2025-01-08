@@ -54,6 +54,8 @@ Toutes les réponses se font en JSON.
 
 Représentation du temps : UNIX timestamps (secondes).
 
+Parsing de la requête : lex et yacc
+
 ## Documentation
 
 Markdowns convertis en PDF.

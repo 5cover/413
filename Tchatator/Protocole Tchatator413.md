@@ -8,11 +8,9 @@ Un protocole d'échange de tchatator, JSON-based.
   - [Administrateur](#administrateur)
 - [Actions](#actions)
   - [S'identifier](#sidentifier)
-    - [Forme](#forme)
-    - [Retours](#retours)
-      - [200 ok](#200-ok)
-      - [403 access denied](#403-access-denied)
+  - [Rechercher un compte](#rechercher-un-compte)
   - [Envoyer un message](#envoyer-un-message)
+    - [Restrictions](#restrictions)
   - [Obtenir les messages non lus](#obtenir-les-messages-non-lus)
   - [Obtenir l'historique de messages (lus et émis)](#obtenir-lhistorique-de-messages-lus-et-émis)
   - [Modifier un message](#modifier-un-message)
@@ -37,25 +35,43 @@ Il en existe qu'un seul. Clé d'API : `ed33c143-5752-4543-a821-00a187955a28`
 
 **Rôles permis** : *tous*
 
-#### Forme
+**Syntaxe** : `login CLÉ_API`
 
-`login CLÉ_API`
+Code retour|Corps
+-|-
+200 ok|application/json: `{ "token": SESSION_TOKEN }`
+403 forbidden|
 
-#### Retours
+### Rechercher un compte
 
-##### 200 ok
+**Rôles permis** : *tous*
 
-```json
-{ "token": "SESSION_TOKEN" }
-```
+**Syntaxe** : `whois ID_OR_EMAIL_OR_PSEUDO`
 
-##### 403 access denied
+Code retour|Corps
+200 ok|application/json: `{ "id": number, "email": string, "pseudo": string, "nom": string, "prenom": string, "kind": "membre" | "pro" }`
+404|
 
 ### Envoyer un message
 
-**Rôles permis** : client, professionnel
+**Rôles permis** : *tous*
+
+**Syntaxe** : `send SESSION_TOKEN DEST CONTENT`
+
+Argument|Description
+-|-
+SESSION_TOKEN|Token de session
+DEST|ID de compte destinataire ou email ou pseudo
+CONTENT|Contenu du message
+
+#### Restrictions
+
+- Si le SESSION_TOKEN appartient à un client, le destinataire doit être un professionnel
+- Si le SESSION_TOKEN appartient à un professionnel, le destinataire doit être un client lui ayant déja envoyé un message
 
 ### Obtenir les messages non lus
+
+`inbox`
 
 ### Obtenir l'historique de messages (lus et émis)
 
