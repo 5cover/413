@@ -87,7 +87,7 @@ Il renvoie une liste JSON comme tel, transformant effectivement chaque action da
 ]
 ```
 
-La propriété "has_next_page" indique que le résultat est paginé et que le prochain numéro de page est valide (et donc que la page actuelle n'est pas la dernière et elle contient le maximum d'entrée).
+La propriété "has_next_page" indique que le résultat est paginé et que le prochain numéro de page est valide (et donc que la page actuelle n'est pas la dernière et elle contient le nombre maximum d'éléments).
 
 ## Rôles
 
