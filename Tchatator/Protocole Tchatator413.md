@@ -106,7 +106,7 @@ Il en existe qu'un seul. Clé d'API : `ed33c143-5752-4543-a821-00a187955a28` (se
 Code|Raison
 -|-
 403 (forbidden)|L'utilisateur actuel n'est pas autorisé à faire cette action
-413 (request too large)|Un des arguments est trop long
+413 (payload too large)|Un des arguments est trop long
 422 (unprocessable content)|Invariant enfreint
 429 (too many requests)|Rate limit atteinte
 
