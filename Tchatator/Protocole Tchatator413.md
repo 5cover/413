@@ -150,13 +150,13 @@ Code retour|Corps|Raison
 
 **Rôles** : *tous*
 
-Obtient les informations d'un compte à partir d'unee de ses clés candidates (ID, pseudo, e-mail).
-
-Permet également de savoir si un compte est en ligne sur le service.
-
 Argument|Type|Description
 -|-|-
 user|Clé de compte (ID, pseudo, e-mail)|Identifie l'utilisateur à rechercher
+
+Obtient les informations d'un compte à partir d'unee de ses clés candidates (ID, pseudo, e-mail).
+
+Permet également de savoir si un compte est en ligne sur le service.
 
 Code retour|Corps|Raison
 -|-|-
