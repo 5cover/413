@@ -152,6 +152,7 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
+api_key|UUID V4|Clé d'API
 user|Clé de compte (ID, pseudo, e-mail)|Identifie l'utilisateur à rechercher
 
 Obtient les informations d'un compte à partir d'unee de ses clés candidates (ID, pseudo, e-mail).

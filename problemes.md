@@ -17,6 +17,8 @@
   
 - [ ] signalement
 
+- [ ] détail compte : créer ou supprimer la clé d'api
+
 - detail offre ouverture hebdo, tags, tarifs
 
 ## Project Trenzalore

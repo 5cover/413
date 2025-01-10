@@ -56,6 +56,8 @@ Table Sessions:
 - Nombre de requêtes depuis 1 minute (default 0)
 - Nombre de requêtes depuis 1 heure (default 0)
 
+Tokens et rate limits stockés dans la mémoire du serveur dans des hashtable (voir stb_ds)
+
 Pour la rate limit: une qté max de requêtes par minute et par heure.
 
 Quand une requête est faite :

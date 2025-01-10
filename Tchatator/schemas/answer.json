@@ -3,6 +3,13 @@
   "properties": {
     "status": {
       "type": "integer"
+    },
+    "has_next_page": {
+      "type": "boolean"
+    },
+    "body": {
+      "type": "object"
     }
-  }
+  },
+  "required": ["status", "has_next_page", "body"]
 }
