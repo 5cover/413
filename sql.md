@@ -99,7 +99,7 @@ where
 
 ## Tags
 
-N'importe quel `mot_cle` (voir domaine) peut être utilisé pour tagger une offre. Cependant, il existe des tags prédéfinis:
+N'importe quel `mot_minuscule` (voir domaine) peut être utilisé pour tagger une offre. Cependant, il existe des tags prédéfinis:
 
 - culturel
 - patrimoine
