@@ -21,13 +21,6 @@
 
 - detail offre ouverture hebdo, tags, tarifs
 
-## Project Trenzalore
-
-- Use null for empty strings
-- Entities
-- Storybook
-- for head, header, footer: make single script and use functions for all
-
 ## Fait
 
 Assigné|Page|Problème
