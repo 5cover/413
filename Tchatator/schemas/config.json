@@ -32,6 +32,25 @@
       "type": "integer",
       "description": "Durée d'un blocage en secondes",
       "minimum": 0
+    },
+    "admin_api_key": {
+      "type": "string",
+      "description": "Clé d'API administrateur",
+      "pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$"
+    },
+    "port": {
+      "type": "integer",
+      "description": "Port",
+      "minimum": 0
+    },
+    "log_file": {
+      "type": "string",
+      "description": "Nom du fichier de log relatif au dossier courant du serveur"
+    },
+    "queue": {
+      "type": "integer",
+      "description": "Longueur de la file d'attente de connexion",
+      "minimum": 0
     }
   }
 }

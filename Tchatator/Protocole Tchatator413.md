@@ -99,7 +99,7 @@ Aussi appelé membre.
 
 ### Administrateur
 
-Il en existe qu'un seul. Clé d'API : `ed33c143-5752-4543-a821-00a187955a28` (secret)
+Il en existe qu'un seul.
 
 ## Erreurs communes
 
