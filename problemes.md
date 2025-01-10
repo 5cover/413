@@ -12,6 +12,11 @@
 - [x] rendre modification offre plus robuste
 - [ ] avis restauration
 
+- [ ] cookie likes
+- [ ] cookie offres consultées récemment
+  
+- [ ] signalement
+
 - detail offre ouverture hebdo, tags, tarifs
 
 ## Project Trenzalore
