@@ -1,3 +1,180 @@
 {
-  
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "oneOf": [
+    { "$ref": "#/definitions/action"                                                             },
+    {                                 "type": "array", "items": {"$ref": "#/definitions/action"} }
+  ],
+  "definitions": {
+    "action": {
+      "oneOf": [
+        {
+          "description": "s'authentifier",
+          "properties": {
+            "do": { "enum": ["login"] },
+            "with": {
+              "properties": {
+                "api_key" : {"$schema": "file://api_key.json", "description": "Clé d'API de l'utilisateur"},
+                "mdp_hash": {"type": "string", "description": "Mot de passe haché"}
+              },
+              "required": ["api_key", "mdp_hash"]
+            }
+          },
+          "required": ["do", "with"]
+        },
+        {
+          "description": "se déconnecter",
+          "properties": {
+            "do": { "enum": ["logout"] },
+            "with": {
+              "properties": { "token": {"$ref": "#/definitions/token"} },
+              "required": ["token"]
+            }
+          },
+          "required": ["do", "with"]
+        },
+        {
+          "description": "rechercher un compte",
+          "properties": {
+            "do": { "enum": ["whois"] },
+            "with": {
+              "properties": { "user": {"$ref": "#/definitions/user_key", "description": "Utilisateur à rechercher"} },
+              "required": ["user"]
+            }
+          },
+          "required": ["do", "with"]
+        },
+        {
+          "description": "envoyer un message",
+          "properties": {
+            "do": { "enum": ["send"] },
+            "with": {
+              "properties": {
+                "token"  : {"$ref": "#/definitions/token"                     },
+                "dest"   : {"$ref": "#/definitions/user_key"                  },
+                "content": {                                  "type": "string"}
+              },
+              "required": ["token", "dest", "content"]
+            }
+          },
+          "required": ["do", "with"]
+        },
+        {
+          "description": "obtenir les messages reçus non lus",
+          "properties": {
+            "do": { "enum": ["motd"] },
+            "with": {
+              "properties": { "token": {"$ref": "#/definitions/token"} },
+              "required": ["token"]
+            }
+          },
+          "required": ["do", "with"]
+        },
+        {
+          "description": "obtenir les messages reçus",
+          "properties": {
+            "do": { "enum": ["inbox"] },
+            "with": {
+              "properties": {
+                "token": {"$ref": "#/definitions/token"      },
+                "page" : {"$ref": "#/definitions/page_number"}
+              },
+              "required": ["token", "page"]
+            }
+          }
+        },
+        {
+          "description": "obtenir les messages envoyés",
+          "properties": {
+            "do": { "enum": ["outbox"] },
+            "with": {
+              "properties": {
+                "token": {"$ref": "#/definitions/token"      },
+                "page" : {"$ref": "#/definitions/page_number"}
+              },
+              "required": ["token", "page"]
+            }
+          },
+          "required": ["do", "with"]
+        },
+        {
+          "description": "modifier un message",
+          "properties": {
+            "do": { "enum": ["edit"] },
+            "with": {
+              "properties": {
+                "token"  : {"$ref": "#/definitions/token"                   },
+                "msg_id" : {"$ref": "#/definitions/msg_id"                  },
+                "content": {                                "type": "string"}
+              },
+              "required": ["token", "msg_id", "content"]
+            }
+          }
+        },
+        {
+          "description": "supprimer un message",
+          "properties": {
+            "do": { "enum": ["rm"] },
+            "with": {
+              "properties": { "token": {"$ref": "#/definitions/token"}, "msg_id": {"$ref": "#/definitions/msg_id"} },
+              "required": ["token", "msg_id"]
+            }
+          },
+          "required": ["do", "with"]
+        },
+        {
+          "description": "bloquer un client",
+          "properties": {
+            "do": { "enum": ["block"] },
+            "with": {
+              "properties": { "token": {"$ref": "#/definitions/token"}, "user": {"$ref": "#/definitions/user_key"} },
+              "required": ["token", "user"]
+            }
+          }
+        },
+        {
+          "description": "débloquer un client",
+          "properties": {
+            "do": { "enum": ["unblock"] },
+            "with": {
+              "properties": { "token": {"$ref": "#/definitions/token"}, "user": {"$ref": "#/definitions/user_key"} },
+              "required": ["token", "user"]
+            }
+          },
+          "required": ["do", "with"]
+        },
+        {
+          "description": "bannir un client",
+          "properties": {
+            "do": { "enum": ["ban"] },
+            "with": {
+              "properties": { "token": {"$ref": "#/definitions/token"}, "user": {"$ref": "#/definitions/user_key"} },
+              "required": ["token", "user"]
+            }
+          },
+          "required": ["do", "with"]
+        },
+        {
+          "description": "débannir un client",
+          "properties": {
+            "do": { "enum": ["unban"] },
+            "with": {
+              "properties": { "token": {"$ref": "#/definitions/token"}, "user": {"$ref": "#/definitions/user_key"} },
+              "required": ["token", "user"]
+            }
+          },
+          "required": ["do", "with"]
+        }
+      ]
+    },
+    "token": {"type": "string", "title": "Token de session"},
+    "user_key": {
+      "title": "Clé de compte (ID, pseudo, e-mail)",
+      "oneOf": [
+        {"type": "integer", "title": "ID de compte"    , "minimum": 0},
+        {"type": "string" , "title": "Pseudo ou e-mail"              }
+      ]
+    },
+    "page_number": {"type": "integer", "minimum": 1, "title": "Numéro de page"},
+    "msg_id": {"type": "integer", "minimum": 0, "title": "ID de message"}
+  }
 }
