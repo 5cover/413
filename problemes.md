@@ -1,5 +1,7 @@
 # Problèmes
 
+- [ ] signalement d'un avis
+
 - [ ] rajouter des détails pour le choix d'abonnement
 
 - [ ] model professionnel check instanceof instead of exists
@@ -14,8 +16,6 @@
 
 - [ ] cookie likes
 - [ ] cookie offres consultées récemment
-  
-- [ ] signalement
 
 - [ ] détail compte : créer ou supprimer la clé d'api
 
