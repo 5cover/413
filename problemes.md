@@ -6,7 +6,7 @@
 
 - [ ] model professionnel check instanceof instead of exists
 - [x] model avis
-- [ ] depreacte queries
+- [x] deprecate queries
 
 - [x] for modification offre -> if input image null, do not change
 
