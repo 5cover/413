@@ -1,10 +1,13 @@
 # Problèmes
 
-- [ ] signalement d'un avis
+- [ ] installer composeur dans le conteneur
+- [ ] installer parsedown
+- [ ] utiliser pour transformer les mentions legales en html
+
+- [x] signalement d'un avis
 
 - [ ] rajouter des détails pour le choix d'abonnement
 
-- [ ] model professionnel check instanceof instead of exists
 - [x] model avis
 - [x] deprecate queries
 
@@ -12,7 +15,7 @@
 
 - [ ] nombre d'avis lu
 - [x] rendre modification offre plus robuste
-- [ ] avis restauration
+- [x] avis restauration
 
 - [ ] cookie likes
 - [ ] cookie offres consultées récemment
@@ -71,7 +74,6 @@ class diagram: parc d'attractions a disparu
 - [x] Use args array technique everywhere `$_GET`, `$_POST` or `$_FILES` are used.
 - [ ] fix php performance problems
 - [x] utiliser un fichier offers.json pour recherche.php qui sera fetch en JS et les images
-- [ ] encapsuler les multiples insertions dans une transaction en php
 - [x] traduire les commentaires et le code en français
 - [ ] passer adresse dans un seul sous-tableau au lieu d'utiliser un préfixe
 
