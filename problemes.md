@@ -1,8 +1,7 @@
 # Problèmes
 
-- [ ] installer composeur dans le conteneur
-- [ ] installer parsedown
-- [ ] utiliser pour transformer les mentions legales en html
+- [x] installer parsedown
+- [x] utiliser pour transformer les mentions legales en html
 
 - [x] signalement d'un avis
 
