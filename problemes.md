@@ -7,7 +7,7 @@
 
 - [x] signalement d'un avis
 
-- [ ] rajouter des détails pour le choix d'abonnement
+- [x] rajouter des détails pour le choix d'abonnement
 
 - [x] model avis
 - [x] deprecate queries
@@ -21,7 +21,7 @@
 - [ ] cookie likes
 - [ ] cookie offres consultées récemment
 
-- [ ] détail compte : créer ou supprimer la clé d'api
+- [x] détail compte : créer ou supprimer la clé d'api
 
 - detail offre ouverture hebdo, tags, tarifs
 
