@@ -1,5 +1,7 @@
 # Problèmes
 
+- [ ] <\?= (?!h14s)
+
 - [x] installer parsedown
 - [x] utiliser pour transformer les mentions legales en html
 
@@ -86,7 +88,7 @@ class diagram: parc d'attractions a disparu
 
 - [x] global replace: `<?=`
 - [x] global replace: no semicolons before `?>` on same line
-- [x] encapsulate functions in namespaces, use `use`? to avoid naming conflicts and make it clearer where a function is from.
+- [x] encapsulate functions in namespaces
   
 - this idea of creating a new object and pushing it to db could result in a lot of useless updates, refactor everything to update single fields on set. our current approach (if it even can be called that) make it hard to know if when something was created, modified, removed. it work for simple, flat models, but for offers (which are the ,pinnacle of model complexity), it's just too much. i'm scared i want my mommy.
 - also a cleaner way of dealing with inheritance would be nice
@@ -104,7 +106,7 @@ move thing that are not model outside the model dir
 - [ ] custom tags (no need for + button, a non-empty tag input implies adding a new one)
 - [ ] options
 - [ ] grille tarifaire: mise en exergue du plus bas tarif
-- [ ] abonnement demander un choix avec une carte affichant une description, une liste des avantages, et un prix
+- [x] abonnement demander un choix avec une carte affichant une description, une liste des avantages, et un prix
 
 #### Abonnements
 
