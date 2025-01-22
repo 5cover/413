@@ -157,11 +157,9 @@ user|Clé de compte (ID, pseudo, e-mail)|Identifie l'utilisateur à rechercher
 
 Obtient les informations d'un compte à partir d'unee de ses clés candidates (ID, pseudo, e-mail).
 
-Permet également de savoir si un compte est en ligne sur le service.
-
 Code retour|Corps|Raison
 -|-|-
-200|`{ "id": integer, "email": string, "pseudo": string, "nom": string, "prenom": string, "kind": "membre" | "pro", "online": bool }`
+200|`{ "id": integer, "email": string, "pseudo": string, "nom": string, "prenom": string, "kind": "membre" | "pro" }`
 404||Compte introuvable
 
 ### `send` : envoyer un message

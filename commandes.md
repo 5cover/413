@@ -1,5 +1,11 @@
 # Commandes
 
+## Installer json-c
+
+```sh
+sudo apt install libjson-c-dev
+```
+
 ## Connexion au serveur (PC perso)
 
 ```bash
