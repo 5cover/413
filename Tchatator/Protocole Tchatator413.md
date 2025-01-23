@@ -49,7 +49,7 @@ Le serveur reçoit une requête sous la forme d'une liste JSON:
     "do": "login",
     "with": {
       "api_key": "...",
-      "mdp_hash": "..."
+      "password_hash": "..."
     }
   }
 ]
@@ -64,7 +64,7 @@ Une forme raccourcie est possible pour les requêtes d'1 action :
   "do": "login",
   "with": {
     "api_key": "...",
-    "mdp_hash": "..."
+    "password_hash": "..."
   }
 }
 ```
@@ -121,7 +121,7 @@ Si la requête n'est pas reconnue, 400 (bad request) est renvoyé.
 Argument|Type|Description
 -|-|-
 api_key|UUID V4|Clé d'API
-mdp_hash|string|Mot de passe haché
+password_hash|string|Mot de passe haché
 
 Crée une session.
 
@@ -137,7 +137,7 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
-token|string|Token de session
+token|integer|Token de session
 
 Supprime une session.
 
@@ -168,7 +168,7 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
-token|string|Token de session
+token|integer|Token de session
 dest|Clé de compte (ID, pseudo, e-mail)|Identifie le compte destinataire
 content|string|contenu du message
 
@@ -194,7 +194,7 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
-token|string|Token de session
+token|integer|Token de session
 
 Obtient la liste des messages non lus, ordonnées par date d'envoi (plus ancien au plus récent).
 
@@ -243,7 +243,7 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
-token|string|Token de session
+token|integer|Token de session
 page|integer|Numéro de page (1-based)
 
 Obtient l'historique des messages reçus, avec pagination.
@@ -295,7 +295,7 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
-token|string|Token de session
+token|integer|Token de session
 page|integer|Numéro de page (1-based)
 
 Obtient l'historique des messages envoyés, avec pagination.
@@ -347,7 +347,7 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
-token|string|Token de session
+token|integer|Token de session
 msg_id|integer|ID du message à modifier
 new_content|string|Nouveau contenu du message
 
@@ -370,7 +370,7 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
-token|string|Token de session
+token|integer|Token de session
 msg_id|integer|ID du message à modifier
 
 Supprime un message.
@@ -390,7 +390,7 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
-token|string|Token de session
+token|integer|Token de session
 user|Clé de compte utilisateur (ID, pseudo, e-mail)|Identifie le client à bloquer (la cible)
 
 Bloque un client pendant une durée limitée.
@@ -415,7 +415,7 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
-token|string|Token de session
+token|integer|Token de session
 user|Clé de compte utilisateur (ID, pseudo, e-mail)|Identifie le client à débloquer (la cible)
 
 Débloque un client avant l'expiration de son blocage.
@@ -435,7 +435,7 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
-token|string|Token de session
+token|integer|Token de session
 user|Clé de compte utilisateur (ID, pseudo, e-mail)|Identifie le client à bannir (la cible)
 
 Bannit un client.
@@ -460,7 +460,7 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
-token|string|Token de session
+token|integer|Token de session
 user|Clé de compte utilisateur (ID, pseudo, e-mail)|Identifie le client à débannir (la cible)
 
 Débannit un client.

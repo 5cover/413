@@ -13,10 +13,10 @@
             "do": { "enum": ["login"] },
             "with": {
               "properties": {
-                "api_key" : {"$schema": "file://api_key.json", "description": "Clé d'API de l'utilisateur"},
-                "mdp_hash": {"type": "string", "description": "Mot de passe haché"}
+                "api_key"      : {"$schema": "file://api_key.json", "description": "Clé d'API de l'utilisateur"},
+                "password_hash": {"type": "string", "description": "Mot de passe haché"}
               },
-              "required": ["api_key", "mdp_hash"]
+              "required": ["api_key", "password_hash"]
             }
           },
           "required": ["do", "with"]
@@ -102,8 +102,8 @@
             "do": { "enum": ["edit"] },
             "with": {
               "properties": {
-                "token"  : {"$ref": "#/definitions/token"                   },
-                "msg_id" : {"$ref": "#/definitions/msg_id"                  },
+                "token"      : {"$ref": "#/definitions/token"                   },
+                "msg_id"     : {"$ref": "#/definitions/msg_id"                  },
                 "new_content": {                                "type": "string"}
               },
               "required": ["token", "msg_id", "new_content"]
@@ -166,15 +166,15 @@
         }
       ]
     },
-    "token": {"type": "string", "title": "Token de session"},
+    "token": {"type": "integer", "minimum": 1, "maximum": 18446744073709551615, "title": "Token de session"},
     "user_key": {
       "title": "Clé de compte (ID, pseudo, e-mail)",
       "oneOf": [
-        {"type": "integer", "title": "ID de compte"    , "minimum": 0},
-        {"type": "string" , "title": "Pseudo ou e-mail"              }
+        {"type": "integer", "title": "ID de compte"    , "minimum": 1, "maximum": 2147483647},
+        {"type": "string" , "title": "Pseudo ou e-mail"                                     }
       ]
     },
-    "page_number": {"type": "integer", "minimum": 1, "title": "Numéro de page"},
-    "msg_id": {"type": "integer", "minimum": 0, "title": "ID de message"}
+    "page_number": {"type": "integer", "minimum": 1, "maximum": 4294967295, "title": "Numéro de page"},
+    "msg_id": {"type": "integer", "minimum": 1, "maximum": 2147483647, "title": "ID de message"}
   }
 }
