@@ -104,9 +104,9 @@
               "properties": {
                 "token"  : {"$ref": "#/definitions/token"                   },
                 "msg_id" : {"$ref": "#/definitions/msg_id"                  },
-                "content": {                                "type": "string"}
+                "new_content": {                                "type": "string"}
               },
-              "required": ["token", "msg_id", "content"]
+              "required": ["token", "msg_id", "new_content"]
             }
           }
         },

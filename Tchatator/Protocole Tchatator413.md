@@ -349,7 +349,7 @@ Argument|Type|Description
 -|-|-
 token|string|Token de session
 msg_id|integer|ID du message à modifier
-content|string|Nouveau contenu du message
+new_content|string|Nouveau contenu du message
 
 Modifie un message.
 
