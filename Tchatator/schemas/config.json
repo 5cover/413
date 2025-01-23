@@ -40,13 +40,14 @@
     "port": {
       "type": "integer",
       "description": "Port",
-      "minimum": 0
+      "minimum": 1,
+      "maximum": 65535
     },
     "log_file": {
       "type": "string",
       "description": "Nom du fichier de log relatif au dossier courant du serveur"
     },
-    "queue": {
+    "backlog": {
       "type": "integer",
       "description": "Longueur de la file d'attente de connexion",
       "minimum": 0
