@@ -86,17 +86,6 @@ cat >.vscode/launch.json <<'EOF'
 }
 EOF
 
-cat >main/include/.env <<'EOF'
-EQUIPE=413
-PGDB_PORT=5432
-MARIADB_PORT=3306
-DB_USER=sae
-DB_NAME=sae
-DB_ROOT_PASSWORD=bib3loTs-CRues-rdv
-MARIADB_PASSWORD=enterrer-couLo1rs-sound
-PGADMIN_PASSWORD=parfois-appel0ns-streSSer
-EOF
-
 code --install-extension DEVSENSE.profiler-php-vscode
 
 read -p "C'est bon. Ouvrir VSCode dans le dossier? (o/n) " -rn 1
