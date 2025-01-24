@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "required": [
+    "status",
+    "has_next_page",
+    "body"
+  ],
+  "properties": {
+    "status": {
+      "type": "integer"
+    },
+    "has_next_page": {
+      "type": "boolean"
+    },
+    "body": {
+      "oneOf": [
+        {
+          "required": [
+            "user_id",
+            "email",
+            "last_name",
+            "first_name",
+            "display_name",
+            "kind"
+          ],
+          "properties": {
+            "user_id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "email": {
+              "type": "string",
+              "maxLength": 319
+            },
+            "last_name": {
+              "type": "string",
+              "maxLength": 255
+            },
+            "first_name": {
+              "type": "string",
+              "maxLength": 255
+            },
+            "display_name": {
+              "type": "string",
+              "maxLength": 255
+            },
+            "kind": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        }
+      ]
+    }
+  }
+}

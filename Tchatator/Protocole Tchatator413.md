@@ -109,6 +109,7 @@ Code|Raison
 413 (payload too large)|Un des arguments est trop long
 422 (unprocessable content)|Invariant enfreint
 429 (too many requests)|Rate limit atteinte
+500 (internal server error)|Erreur non spécifiée
 
 ## Actions
 
@@ -127,7 +128,7 @@ Crée une session.
 
 Code retour|Corps|Raison
 -|-|-
-200|`{ "token": string }`
+200|`{ "token": integer }`
 403||Mot de passe incorrect
 404||Clé d'API invalide
 
@@ -159,8 +160,16 @@ Obtient les informations d'un compte à partir d'unee de ses clés candidates (I
 
 Code retour|Corps|Raison
 -|-|-
-200|`{ "id": integer, "email": string, "pseudo": string, "nom": string, "prenom": string, "kind": "membre" | "pro" }`
+200|`{ "user_id": integer, "email": string, "last_name": string, "first_name": string, "display_name": string, "kind": integer[0..2] }`
 404||Compte introuvable
+
+Valeurs de *kind*
+
+Valeur|Signification
+-|-
+0|Membre
+1|Professionnel privé
+2|Professionnel public
 
 ### `send` : envoyer un message
 
@@ -176,7 +185,7 @@ Envoie un message.
 
 Code retour|Corps|Raison
 -|-|-
-200|
+201|id du message créé|ok, créé
 401||le *token* est invalide
 403||utilisateur actuel bloqué ou banni
 404||Compte *dest* introuvable
@@ -355,7 +364,7 @@ Modifie un message.
 
 Code retour|Corps|Raison
 -|-|-
-200|
+204||ok, modifié
 403||utilisateur actuel bloqué ou banni
 404||Message introuvable
 
@@ -377,7 +386,7 @@ Supprime un message.
 
 Code retour|Corps|Raison
 -|-|-
-200|
+204||ok, no content
 404||Message introuvable
 
 #### Invariants
@@ -401,7 +410,7 @@ Si l'utilisateur actuel est l'administrateur, empêche la cible d'envoyer ou de 
 
 Code retour|Corps|Raison
 -|-|-
-200|
+204||ok, no content
 404||Utilisateur introuvable
 
 #### Invariants
@@ -422,7 +431,7 @@ Débloque un client avant l'expiration de son blocage.
 
 Code retour|Corps|Raison
 -|-|-
-200|
+204||ok, no content
 404||Utilisateur introuvable
 
 #### Invariants
@@ -446,7 +455,7 @@ Si l'utilisateur actuel est l'administrateur, empêche la cible d'envoyer ou de 
 
 Code retour|Corps|Raison
 -|-|-
-200|
+204||ok, no content
 404||Utilisateur introuvable
 
 #### Invariants
@@ -467,7 +476,7 @@ Débannit un client.
 
 Code retour|Corps|Raison
 -|-|-
-200|
+204||ok, no content
 404||Utilisateur introuvable
 
 #### Invariants
