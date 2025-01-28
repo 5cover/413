@@ -37,8 +37,11 @@
           "properties": {
             "do": { "enum": ["whois"] },
             "with": {
-              "properties": { "user": {"$ref": "#/definitions/user_key", "description": "Utilisateur à rechercher"} },
-              "required": ["user"]
+              "properties": {
+                "api_key": {"$schema": "file://api_key.json", "description": "Clé d'API de l'utilisateur"},
+                "user"   : {"$ref": "#/definitions/user_key", "description": "Utilisateur à rechercher"}
+              },
+              "required": ["api_key", "user"]
             }
           },
           "required": ["do", "with"]
