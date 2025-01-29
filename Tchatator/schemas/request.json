@@ -14,9 +14,9 @@
             "with": {
               "properties": {
                 "api_key"      : {"$schema": "file://api_key.json", "description": "Clé d'API de l'utilisateur"},
-                "password_hash": {"type": "string", "description": "Mot de passe haché"}
+                "password": {"type": "string", "description": "Mot de passe"}
               },
-              "required": ["api_key", "password_hash"]
+              "required": ["api_key", "password"]
             }
           },
           "required": ["do", "with"]

@@ -49,7 +49,7 @@ Le serveur reçoit une requête sous la forme d'une liste JSON:
     "do": "login",
     "with": {
       "api_key": "...",
-      "password_hash": "..."
+      "password": "..."
     }
   }
 ]
@@ -64,7 +64,7 @@ Une forme raccourcie est possible pour les requêtes d'1 action :
   "do": "login",
   "with": {
     "api_key": "...",
-    "password_hash": "..."
+    "password": "..."
   }
 }
 ```
@@ -122,15 +122,17 @@ Si la requête n'est pas reconnue, 400 (bad request) est renvoyé.
 Argument|Type|Description
 -|-|-
 api_key|UUID V4|Clé d'API
-password_hash|string|Mot de passe haché
+password|string|Mot de passe
 
 Crée une session.
+
+Un même utilisateur peut avoir plusieurs sessions. La rate limit s'applique à l'utilisateur lui-même, et non pas indépendamment par session.
 
 Code retour|Corps|Raison
 -|-|-
 200|`{ "token": integer }`
+401||Clé d'API invalide
 403||Mot de passe incorrect
-404||Clé d'API invalide
 
 ### `logout` : se déconnecter
 
@@ -161,6 +163,7 @@ Obtient les informations d'un compte à partir d'unee de ses clés candidates (I
 Code retour|Corps|Raison
 -|-|-
 200|`{ "user_id": integer, "email": string, "last_name": string, "first_name": string, "display_name": string, "kind": integer[0..2] }`
+401||Clé d'API invalide
 404||Compte introuvable
 
 Valeurs de *kind*
@@ -210,6 +213,7 @@ Obtient la liste des messages non lus, ordonnées par date d'envoi (plus ancien 
 Code retour|Corps|Raison
 -|-|-
 200|Liste de messages
+401||le *token* est invalide
 
 #### Exemple de réponse
 
@@ -260,6 +264,7 @@ Obtient l'historique des messages reçus, avec pagination.
 Code retour|Corps|Raison
 -|-|-
 200|Liste de messages
+401||le *token* est invalide
 404||Numéro de page invalide
 
 #### Exemple de réponse
@@ -312,6 +317,7 @@ Obtient l'historique des messages envoyés, avec pagination.
 Code retour|Corps|Raison
 -|-|-
 200|Liste de messages
+401||le *token* est invalide
 404||Numéro de page invalide
 
 #### Exemple de réponse
@@ -365,6 +371,7 @@ Modifie un message.
 Code retour|Corps|Raison
 -|-|-
 204||ok, modifié
+401||le *token* est invalide
 403||utilisateur actuel bloqué ou banni
 404||Message introuvable
 
@@ -387,6 +394,7 @@ Supprime un message.
 Code retour|Corps|Raison
 -|-|-
 204||ok, no content
+401||le *token* est invalide
 404||Message introuvable
 
 #### Invariants
@@ -395,7 +403,7 @@ Code retour|Corps|Raison
 
 ### `block` : bloquer un client
 
-**Rôles** : professionnel, administrateur
+**Rôles** : administrateur, professionnel
 
 Argument|Type|Description
 -|-|-
@@ -411,6 +419,7 @@ Si l'utilisateur actuel est l'administrateur, empêche la cible d'envoyer ou de 
 Code retour|Corps|Raison
 -|-|-
 204||ok, no content
+401||le *token* est invalide
 404||Utilisateur introuvable
 
 #### Invariants
@@ -420,7 +429,7 @@ Code retour|Corps|Raison
 
 ### `unblock`: débloquer un client
 
-**Rôles** : professionnel, administrateur
+**Rôles** : administrateur, professionnel
 
 Argument|Type|Description
 -|-|-
@@ -432,6 +441,7 @@ Débloque un client avant l'expiration de son blocage.
 Code retour|Corps|Raison
 -|-|-
 204||ok, no content
+401||le *token* est invalide
 404||Utilisateur introuvable
 
 #### Invariants
@@ -440,7 +450,7 @@ Code retour|Corps|Raison
 
 ### `ban` : bannir un client
 
-**Rôles** : professionnel, administrateur
+**Rôles** : administrateur, professionnel
 
 Argument|Type|Description
 -|-|-
@@ -456,6 +466,7 @@ Si l'utilisateur actuel est l'administrateur, empêche la cible d'envoyer ou de 
 Code retour|Corps|Raison
 -|-|-
 204||ok, no content
+401||le *token* est invalide
 404||Utilisateur introuvable
 
 #### Invariants
@@ -465,7 +476,7 @@ Code retour|Corps|Raison
 
 ### `unban` : débannir un client
 
-**Rôles** : profesionnel, administrateur
+**Rôles** : administrateur, professionnel
 
 Argument|Type|Description
 -|-|-
@@ -477,6 +488,7 @@ Débannit un client.
 Code retour|Corps|Raison
 -|-|-
 204||ok, no content
+401||le *token* est invalide
 404||Utilisateur introuvable
 
 #### Invariants
