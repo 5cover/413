@@ -103,12 +103,12 @@ Il en existe qu'un seul.
 
 ## Erreurs communes
 
-Code|Raison
+Code|Raison|Corps
 -|-
 403 (forbidden)|L'utilisateur actuel n'est pas autorisé à faire cette action
-413 (payload too large)|Un des arguments est trop long
-422 (unprocessable content)|Invariant enfreint
-429 (too many requests)|Rate limit atteinte
+413 (payload too large)|Un des arguments est trop long|`{ "arg_name": string, "max_length": integer }`
+422 (unprocessable content)|Invariant enfreint|`{ "reason": string }`
+429 (too many requests)|Rate limit atteinte|`{ "seconds_before_next_request": integer }`
 500 (internal server error)|Erreur non spécifiée
 
 ## Actions
@@ -188,7 +188,7 @@ Envoie un message.
 
 Code retour|Corps|Raison
 -|-|-
-201|id du message créé|ok, créé
+200|`{ msg_id: integer }`|ok
 401||le *token* est invalide
 403||utilisateur actuel bloqué ou banni
 404||Compte *dest* introuvable
@@ -198,7 +198,6 @@ Code retour|Corps|Raison
 - Le destinataire est différent de l'émetteur
 - Si le token appartient à un client, le destinataire est un professionnel
 - Si le token appartient à un professionnel, le destinataire est un client lui ayant déja envoyé un message
-- Le contenu du message ne doit pas être plus long que la limite.
 
 ### `motd` : obtenir les messages reçus non lus
 
@@ -222,21 +221,15 @@ Code retour|Corps|Raison
   "status": 200,
   "body": [
     {
-      "id": 55,
-      "sent_at": "1736355387",
-      "edited_at": "1736355387",
-      "read": false,
-      "deleted": false,
+      "msg_id": 55,
+      "sent_at": 1736355387,
       "content": "Bonjour. j'ai une question.",
       "sender": 17,
       "recipient": 3
     },
     {
-      "id": 56,
-      "sent_at": "1736355397",
-      "edited_at": "1736355397",
-      "read": false,
-      "deleted": false,
+      "msg_id": 56,
+      "sent_at": 1736355397,
       "content": "Bonjour. j'ai une question aussi (je suis pas la même personne).",
       "sender": 16,
       "recipient": 3
@@ -275,9 +268,9 @@ Code retour|Corps|Raison
   "has_next_page": true,
   "body": [
     {
-      "id": 55,
-      "sent_at": "1736355387",
-      "edited_at": "1736355387",
+      "msg_id": 55,
+      "sent_at": 1736355387,
+      "read_at": 1736355987,
       "read": true,
       "deleted": false,
       "content": "Bonjour. j'ai une question.",
@@ -285,11 +278,8 @@ Code retour|Corps|Raison
       "recipient": 3
     },
     {
-      "id": 56,
-      "sent_at": "1736355397",
-      "edited_at": "1736355397",
-      "read": false,
-      "deleted": false,
+      "msg_id": 56,
+      "sent_at": 1736355397,
       "content": "Bonjour. j'ai une question aussi (je suis pas la même personne).",
       "sender": 16,
       "recipient": 3
@@ -328,21 +318,17 @@ Code retour|Corps|Raison
   "has_next_page": true,
   "body": [
     {
-      "id": 57,
-      "sent_at": "1736355487",
-      "edited_at": "1736355487",
-      "read": false,
-      "deleted": false,
+      "msg_id": 57,
+      "sent_at": 1736355487,
+      "modified_at": 1736355487,
       "content": "Bonjour, quelle est votre question?",
       "sender": 3,
       "recipient": 17
     },
     {
-      "id": 58,
-      "sent_at": "1736355497",
-      "edited_at": "1736355497",
-      "read": true,
-      "deleted": false,
+      "msg_id": 58,
+      "sent_at": 1736355497,
+      "read_at": 1736356097,
       "content": "Bonjour, quelle est votre question? (je vous crois)",
       "sender": 3,
       "recipient": 16
@@ -370,7 +356,7 @@ Modifie un message.
 
 Code retour|Corps|Raison
 -|-|-
-204||ok, modifié
+200||ok, modifié
 401||le *token* est invalide
 403||utilisateur actuel bloqué ou banni
 404||Message introuvable
@@ -393,7 +379,7 @@ Supprime un message.
 
 Code retour|Corps|Raison
 -|-|-
-204||ok, no content
+200||ok
 401||le *token* est invalide
 404||Message introuvable
 
@@ -418,7 +404,7 @@ Si l'utilisateur actuel est l'administrateur, empêche la cible d'envoyer ou de 
 
 Code retour|Corps|Raison
 -|-|-
-204||ok, no content
+200||ok
 401||le *token* est invalide
 404||Utilisateur introuvable
 
@@ -440,7 +426,7 @@ Débloque un client avant l'expiration de son blocage.
 
 Code retour|Corps|Raison
 -|-|-
-204||ok, no content
+200||ok
 401||le *token* est invalide
 404||Utilisateur introuvable
 
@@ -465,7 +451,7 @@ Si l'utilisateur actuel est l'administrateur, empêche la cible d'envoyer ou de 
 
 Code retour|Corps|Raison
 -|-|-
-204||ok, no content
+200||ok
 401||le *token* est invalide
 404||Utilisateur introuvable
 
@@ -487,7 +473,7 @@ Débannit un client.
 
 Code retour|Corps|Raison
 -|-|-
-204||ok, no content
+200||ok
 401||le *token* est invalide
 404||Utilisateur introuvable
 

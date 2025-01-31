@@ -6,31 +6,11 @@ Mini shell
 
 1 seule connexion possible
 
-## BDD
+## Tests
 
-Schéma séparé (orgnanisation)
+Fundanmally : formulate request -> call server -> retrieve output -> assert based on protocol specificiation
 
-Table message, table discussion?
-
-Blocage, banissement
-
-Protocole d'échange : JSON
-
-Message:
-
-- émetteur
-- destinataire
-- existe?
-- lu?
-- contenu
-- envoyé le
-
-## Erreurs
-
-?: à rechercher
-
-Message|Status
-Rate limit dépassée. Prochaine requête dans {temps_restant}|?
+should we test steps (parsing actions, running actions, formulating response) separately or together?
 
 ## Clés d'API
 
@@ -42,7 +22,7 @@ Chaque utilisateur à 0 ou 1 clé d'API qu'il peut supprimer ou regénerer.
 
 UUID spécial : administrateur : `ed33c143-5752-4543-a821-00a187955a28`
 
-Pour l'administrateur, le mot de passe est `314317`. Il n'est pas modifiable. Si la clé d'API admin est leak on change la clé d'API. C'est une protection temporaire si la clé d'API est leak. Le mot de passe est stocké dans le programme C statiquement sous une forme hachée.
+Pour l'administrateur, le mot de passe est `314317` (bcrypt `$2y$10$YiDc/A/8DR9YSVohn7Dh9u5rb7DaiKvG/2iMRF3Xo8byNkOPEY0Sq`). Il n'est pas modifiable. Si la clé d'API admin est leak on change la clé d'API. C'est une protection temporaire si la clé d'API est leak. Le mot de passe est stocké dans le programme C statiquement sous une forme hachée.
 
 ## Fonctionnement
 
@@ -90,3 +70,9 @@ Markdowns convertis en PDF.
 Émetteur est client XOR Récépteur est client.
 
 L'émetteur et le client ne peuvent pas être de la même classe
+
+## Conventions
+
+### Doxygen multiple returns
+
+Start with successful returns.

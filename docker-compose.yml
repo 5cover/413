@@ -31,7 +31,7 @@ services:
          - webproxy_back
       ports:
          - '8080:80'
-      depends_on:
+      depends_at:
          - postgresdb
       user: root
 
@@ -48,7 +48,7 @@ services:
       networks:
          - sae
          - webproxy_back
-      depends_on:
+      depends_at:
          - postgresdb
 
 networks:
