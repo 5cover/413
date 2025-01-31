@@ -114,9 +114,9 @@ Pour les contraintes concernant plusieurs attribut, placer la contrainte just so
 -- ...
 precision_ext varchar(255),
 
-latitude decimal,
-longitude decimal,
-check ((latitude is null) = (longitude is null)),
+lat decimal,
+long decimal,
+check ((lat is null) = (long is null)),
 
 commune_code_insee char(5) not null,
 -- ...
