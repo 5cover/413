@@ -2,15 +2,17 @@
   "$schema": "https://json-schema.org/draft-07/schema",
   "required": [
     "status",
-    "has_next_page",
     "body"
   ],
+  "minProperties": 2,
+  "maxProperties": 2,
+  "additionalProperties": false,
   "properties": {
-    "status": {
-      "type": "integer"
-    },
     "has_next_page": {
-      "type": "boolean"
+      "type": "boolean",
+      "enum": [
+        true
+      ]
     },
     "body": {
       "oneOf": [
@@ -53,6 +55,17 @@
           }
         }
       ]
+    },
+    "error": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "integer"
+        }
+      }
     }
   }
 }

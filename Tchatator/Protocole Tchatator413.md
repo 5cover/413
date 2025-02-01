@@ -6,6 +6,8 @@ Un protocole d'échange de tchatator, JSON-based.
 ## Sommaire
 
 - [Fondamentaux](#fondamentaux)
+  - [Requêtes](#requêtes)
+  - [Réponses](#réponses)
 - [Rôles](#rôles)
   - [Client](#client)
   - [Professionnel](#professionnel)
@@ -13,33 +15,58 @@ Un protocole d'échange de tchatator, JSON-based.
 - [Erreurs communes](#erreurs-communes)
 - [Actions](#actions)
   - [`login` : s'authentifier](#login--sauthentifier)
+    - [Réponse nominale](#réponse-nominale)
+    - [Erreurs](#erreurs)
   - [`logout` : se déconnecter](#logout--se-déconnecter)
+    - [Réponse nominale](#réponse-nominale-1)
+    - [Erreurs](#erreurs-1)
   - [`whois` : rechercher un compte](#whois--rechercher-un-compte)
+    - [Réponse nominale](#réponse-nominale-2)
+    - [Erreurs](#erreurs-2)
   - [`send` : envoyer un message](#send--envoyer-un-message)
+    - [Réponse nominale](#réponse-nominale-3)
+    - [Erreurs](#erreurs-3)
     - [Invariants](#invariants)
   - [`motd` : obtenir les messages reçus non lus](#motd--obtenir-les-messages-reçus-non-lus)
-    - [Exemple de réponse](#exemple-de-réponse)
+    - [Réponse nominale](#réponse-nominale-4)
+    - [Erreurs](#erreurs-4)
     - [Problèmes possibles](#problèmes-possibles)
   - [`inbox` : obtenir les messages reçus](#inbox--obtenir-les-messages-reçus)
-    - [Exemple de réponse](#exemple-de-réponse-1)
+    - [Réponse nominale](#réponse-nominale-5)
+    - [Erreurs](#erreurs-5)
     - [Problèmes possibles](#problèmes-possibles-1)
   - [`outbox` : obtenir les messages envoyés](#outbox--obtenir-les-messages-envoyés)
-    - [Exemple de réponse](#exemple-de-réponse-2)
+    - [Réponse nominale](#réponse-nominale-6)
+    - [Erreurs](#erreurs-6)
     - [Problèmes possibles](#problèmes-possibles-2)
   - [`edit` : modifier un message](#edit--modifier-un-message)
+    - [Réponse nominale](#réponse-nominale-7)
+    - [Erreurs](#erreurs-7)
     - [Invariants](#invariants-1)
   - [`rm` : supprimer un message](#rm--supprimer-un-message)
+    - [Réponse nominale](#réponse-nominale-8)
+    - [Erreurs](#erreurs-8)
     - [Invariants](#invariants-2)
   - [`block` : bloquer un client](#block--bloquer-un-client)
+    - [Réponse nominale](#réponse-nominale-9)
+    - [Erreurs](#erreurs-9)
     - [Invariants](#invariants-3)
   - [`unblock`: débloquer un client](#unblock-débloquer-un-client)
+    - [Réponse nominale](#réponse-nominale-10)
+    - [Erreurs](#erreurs-10)
     - [Invariants](#invariants-4)
   - [`ban` : bannir un client](#ban--bannir-un-client)
+    - [Réponse nominale](#réponse-nominale-11)
+    - [Erreurs](#erreurs-11)
     - [Invariants](#invariants-5)
   - [`unban` : débannir un client](#unban--débannir-un-client)
+    - [Réponse nominale](#réponse-nominale-12)
+    - [Erreurs](#erreurs-12)
     - [Invariants](#invariants-6)
 
 ## Fondamentaux
+
+### Requêtes
 
 Le serveur reçoit une requête sous la forme d'une liste JSON:
 
@@ -57,7 +84,7 @@ Le serveur reçoit une requête sous la forme d'une liste JSON:
 
 La liste peut contenir plusieurs actions.
 
-Une forme raccourcie est possible pour les requêtes d'1 action :
+Une forme raccourcie est possible pour les requêtes comprenant une seule action&nbsp;:
 
 ```json
 {
@@ -69,51 +96,61 @@ Une forme raccourcie est possible pour les requêtes d'1 action :
 }
 ```
 
-(l'objet est implicitement englobé dans une liste d'1 élément)
+Si la requête est vide `[]`, la réponse est également une liste vide `[]`.
 
-À la récéption de la liste vide `[]`, rien ne se passe et `[]` est renvoyé.
+### Réponses
 
-Il renvoie une liste JSON comme tel, transformant effectivement chaque action dans la liste en entrée par son résultat.
+Une réponse *réussie* contient uniquement le corps de la réponse sans statut :
 
 ```json
-[
-  {
-    "status": 200,
-    "has_next_page": false,
-    "body": {
-      "token": "token"
-    }
+{
+  "has_next_page": false,
+  "body": {
+    "token": "token"
   }
-]
+}
 ```
 
-La propriété "has_next_page" indique que le résultat est paginé et que le prochain numéro de page est valide (et donc que la page actuelle n'est pas la dernière et elle contient le nombre maximum d'éléments).
+Une réponse d'*erreur* contient un objet error avec un status et éventuellement un détail
+
+```json
+{
+  "error": {
+    "status": 403
+  }
+}
+```
+
+La propriété `has_next_page` indique que le résultat est paginé et que le prochain numéro de page est valide (et donc que la page actuelle n'est pas la dernière et elle contient le nombre maximum d'éléments).
 
 ## Rôles
 
 ### Client
 
-Aussi appelé membre.
+Aussi appelé membre. Échange avec des professionnels.
 
 ### Professionnel
 
+Peut échanger avec des clients.
+
 ### Administrateur
 
-Il en existe qu'un seul.
+Le seul administrateur du système.
 
 ## Erreurs communes
 
-Code|Raison|Corps
--|-
-403 (forbidden)|L'utilisateur actuel n'est pas autorisé à faire cette action
-413 (payload too large)|Un des arguments est trop long|`{ "arg_name": string, "max_length": integer }`
-422 (unprocessable content)|Invariant enfreint|`{ "reason": string }`
-429 (too many requests)|Rate limit atteinte|`{ "seconds_before_next_request": integer }`
-500 (internal server error)|Erreur non spécifiée
+Les erreurs sont retournées dans une clé `error` sous la forme suivante&nbsp;:
+
+Nom|Description|Contenu
+-|-|-
+Bad request|Action inconnue|`{ "status": 400, "message": "description de l'erreur" }`
+Forbidden|Action non autorisée|`{ "status": 403 }`
+Payload too large|Un des arguments est trop long|`{ "status": 413, "key": "clé de l'argument trop long", "max_length": integer }`
+Unprocessable content|Invariant enfreint|`{ "status": 422, "reason": "nom de l'invariant enfreint" }`
+Too many requests|Rate limit atteinte|`{ "status": 429, "next_request_at": integer }`
+Internal server error|Erreur non spécifiée|`{ status: 500 }`
 
 ## Actions
-
-Si la requête n'est pas reconnue, 400 (bad request) est renvoyé.
 
 ### `login` : s'authentifier
 
@@ -121,18 +158,25 @@ Si la requête n'est pas reconnue, 400 (bad request) est renvoyé.
 
 Argument|Type|Description
 -|-|-
-api_key|UUID V4|Clé d'API
-password|string|Mot de passe
+`api_key`|UUID V4|Clé d'API
+`password`|string|Mot de passe
 
 Crée une session.
 
 Un même utilisateur peut avoir plusieurs sessions. La rate limit s'applique à l'utilisateur lui-même, et non pas indépendamment par session.
 
-Code retour|Corps|Raison
--|-|-
-200|`{ "token": integer }`
-401||Clé d'API invalide
-403||Mot de passe incorrect
+#### Réponse nominale
+
+```json
+{ "token": integer }
+```
+
+#### Erreurs
+
+Statut|Raison
+-|-
+401|Clé d'API invalide
+403|Mot de passe incorrect
 
 ### `logout` : se déconnecter
 
@@ -140,14 +184,21 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
-token|integer|Token de session
+`token`|integer|Token de session
 
 Supprime une session.
 
-Code retour|Corps|Raison
--|-|-
-200|
-401||le *token* est invalide
+#### Réponse nominale
+
+```json
+{}
+```
+
+#### Erreurs
+
+Statut|Raison
+-|-
+401|c
 
 ### `whois` : rechercher un compte
 
@@ -155,18 +206,18 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
-api_key|UUID V4|Clé d'API
-user|Clé de compte (ID, pseudo, e-mail)|Identifie l'utilisateur à rechercher
+`api_key`|UUID V4|Clé d'API
+`user`|Clé de compte (ID, pseudo, e-mail)|Identifie l'utilisateur à rechercher
 
 Obtient les informations d'un compte à partir d'unee de ses clés candidates (ID, pseudo, e-mail).
 
-Code retour|Corps|Raison
--|-|-
-200|`{ "user_id": integer, "email": string, "last_name": string, "first_name": string, "display_name": string, "kind": integer[0..2] }`
-401||Clé d'API invalide
-404||Compte introuvable
+#### Réponse nominale
 
-Valeurs de *kind*
+```json
+{ "user_id": 564, "email": "user@email.org", "last_name": "last name", "first_name": "first name", "display_name": "display name", "kind": 0 }
+```
+
+Valeurs de *kind*&nbsp;:
 
 Valeur|Signification
 -|-
@@ -174,30 +225,46 @@ Valeur|Signification
 1|Professionnel privé
 2|Professionnel public
 
+#### Erreurs
+
+Statut|Raison
+-|-
+401|Clé d'API invalide
+404|Compte introuvable
+
 ### `send` : envoyer un message
 
 **Rôles** : *tous*
 
 Argument|Type|Description
 -|-|-
-token|integer|Token de session
-dest|Clé de compte (ID, pseudo, e-mail)|Identifie le compte destinataire
+`token`|integer|Token de session
+`dest`|Clé de compte (ID, pseudo, e-mail)|Identifie le compte destinataire
 content|string|contenu du message
 
 Envoie un message.
 
-Code retour|Corps|Raison
--|-|-
-200|`{ msg_id: integer }`|ok
-401||le *token* est invalide
-403||utilisateur actuel bloqué ou banni
-404||Compte *dest* introuvable
+#### Réponse nominale
+
+```json
+{ "msg_id": 465 }
+```
+
+#### Erreurs
+
+Statut|Raison
+-|-
+401|l'argument `token` est invalide
+403|utilisateur actuel bloqué ou banni
+404|Compte *dest* introuvable
 
 #### Invariants
 
-- Le destinataire est différent de l'émetteur
-- Si le token appartient à un client, le destinataire est un professionnel
-- Si le token appartient à un professionnel, le destinataire est un client lui ayant déja envoyé un message
+Nom|Description
+-|-
+`no_send_self`|Le destinataire est différent de l'émetteur
+`client_send_pro`|Si le token appartient à un client, le destinataire est un professionnel
+`pro_reponds_client`|Si le token appartient à un professionnel, le destinataire est un client lui ayant déja envoyé un message
 
 ### `motd` : obtenir les messages reçus non lus
 
@@ -205,20 +272,16 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
-token|integer|Token de session
+`token`|integer|Token de session
 
 Obtient la liste des messages non lus, ordonnées par date d'envoi (plus ancien au plus récent).
 
-Code retour|Corps|Raison
--|-|-
-200|Liste de messages
-401||le *token* est invalide
+#### Réponse nominale
 
-#### Exemple de réponse
+Liste de messages
 
 ```json
 {
-  "status": 200,
   "body": [
     {
       "msg_id": 55,
@@ -238,6 +301,12 @@ Code retour|Corps|Raison
 }
 ```
 
+#### Erreurs
+
+Statut|Raison
+-|-
+401|l'argument `token` est invalide
+
 #### Problèmes possibles
 
 - Si il y a des milliers de messsages non lus, la réponse pourrait être énorme. Implémenter une pagination.
@@ -249,22 +318,17 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
-token|integer|Token de session
-page|integer|Numéro de page (1-based)
+`token`|integer|Token de session
+`page`|integer|Numéro de page (1-based)
 
 Obtient l'historique des messages reçus, avec pagination.
 
-Code retour|Corps|Raison
--|-|-
-200|Liste de messages
-401||le *token* est invalide
-404||Numéro de page invalide
+#### Réponse nominale
 
-#### Exemple de réponse
+Liste de messages
 
 ```json
 {
-  "status": 200,
   "has_next_page": true,
   "body": [
     {
@@ -289,9 +353,16 @@ Code retour|Corps|Raison
 }
 ```
 
+#### Erreurs
+
+Statut|Raison
+-|-
+401|l'argument `token` est invalide
+404|Numéro de page invalide
+
 #### Problèmes possibles
 
-- Information redondante : recipient
+- Information redondante : recipient (elle est donnée par l'expéditeur de la requête)
 
 ### `outbox` : obtenir les messages envoyés
 
@@ -299,22 +370,17 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
-token|integer|Token de session
-page|integer|Numéro de page (1-based)
+`token`|integer|Token de session
+`page`|integer|Numéro de page (1-based)
 
 Obtient l'historique des messages envoyés, avec pagination.
 
-Code retour|Corps|Raison
--|-|-
-200|Liste de messages
-401||le *token* est invalide
-404||Numéro de page invalide
+#### Réponse nominale
 
-#### Exemple de réponse
+Liste de messages
 
 ```json
 {
-  "status": 200,
   "has_next_page": true,
   "body": [
     {
@@ -338,9 +404,16 @@ Code retour|Corps|Raison
 }
 ```
 
+#### Erreurs
+
+Statut|Raison
+-|-
+401|l'argument `token` est invalide
+404|Numéro de page invalide
+
 #### Problèmes possibles
 
-- Information redondante : sender
+- Information redondante : sender (elle est donnée par l'expéditeur de la requête)
 
 ### `edit` : modifier un message
 
@@ -348,23 +421,31 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
-token|integer|Token de session
-msg_id|integer|ID du message à modifier
-new_content|string|Nouveau contenu du message
+`token`|integer|Token de session
+`msg_id`|integer|ID du message à modifier
+`new_content`|string|Nouveau contenu du message
 
 Modifie un message.
 
-Code retour|Corps|Raison
--|-|-
-200||ok, modifié
-401||le *token* est invalide
-403||utilisateur actuel bloqué ou banni
-404||Message introuvable
+#### Réponse nominale
+
+```json
+{}
+```
+
+#### Erreurs
+
+Statut|Raison
+-|-
+401|l'argument `token` est invalide
+403|utilisateur actuel bloqué ou banni
+404|Message introuvable
 
 #### Invariants
 
-- L'utilisateur actuel est soit l'administrateur, soit l'émetteur du message.
-- Le nouveau contenu du message ne doit pas être plus long que la limite.
+Nom|Description
+-|-
+`owns_msg`|L'utilisateur actuel est soit l'administrateur, soit l'émetteur du message.
 
 ### `rm` : supprimer un message
 
@@ -372,20 +453,29 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
-token|integer|Token de session
-msg_id|integer|ID du message à modifier
+`token`|integer|Token de session
+`msg_id`|integer|ID du message à modifier
 
 Supprime un message.
 
-Code retour|Corps|Raison
--|-|-
-200||ok
-401||le *token* est invalide
-404||Message introuvable
+#### Réponse nominale
+
+```json
+{}
+```
+
+#### Erreurs
+
+Statut|Raison
+-|-
+401|l'argument `token` est invalide
+404|Message introuvable
 
 #### Invariants
 
-- L'utilisateur actuel est soit l'administrateur, soit l'émetteur du message.
+Nom|Description
+-|-
+`owns_msg`|L'utilisateur actuel est soit l'administrateur, soit l'émetteur du message.
 
 ### `block` : bloquer un client
 
@@ -393,8 +483,8 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
-token|integer|Token de session
-user|Clé de compte utilisateur (ID, pseudo, e-mail)|Identifie le client à bloquer (la cible)
+`token`|integer|Token de session
+`user`|Clé de compte utilisateur (ID, pseudo, e-mail)|Identifie le client à bloquer (la cible)
 
 Bloque un client pendant une durée limitée.
 
@@ -402,16 +492,25 @@ Si l'utilisateur actuel est un professionnel, empêche la cible d'envoyer ou de 
 
 Si l'utilisateur actuel est l'administrateur, empêche la cible d'envoyer ou de modifier tout message.
 
-Code retour|Corps|Raison
--|-|-
-200||ok
-401||le *token* est invalide
-404||Utilisateur introuvable
+#### Réponse nominale
+
+```json
+{}
+```
+
+#### Erreurs
+
+Statut|Raison
+-|-
+401|l'argument `token` est invalide
+404|Utilisateur introuvable
 
 #### Invariants
 
-- La cible est un client
-- La cible n'est pas déjà bloquée par cet utilisateur
+Nom|Description
+-|-
+`target_is_client`|La cible est un client
+`target_not_blocked`|La cible n'est pas déjà bloquée par cet utilisateur
 
 ### `unblock`: débloquer un client
 
@@ -419,20 +518,29 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
-token|integer|Token de session
-user|Clé de compte utilisateur (ID, pseudo, e-mail)|Identifie le client à débloquer (la cible)
+`token`|integer|Token de session
+`user`|Clé de compte utilisateur (ID, pseudo, e-mail)|Identifie le client à débloquer (la cible)
 
 Débloque un client avant l'expiration de son blocage.
 
-Code retour|Corps|Raison
--|-|-
-200||ok
-401||le *token* est invalide
-404||Utilisateur introuvable
+#### Réponse nominale
+
+```json
+{}
+```
+
+#### Erreurs
+
+Statut|Raison
+-|-
+401|l'argument `token` est invalide
+404|Utilisateur introuvable
 
 #### Invariants
 
-- Si l'utilisateur actuel est un professionnel, la cible a été bloquée par celui-ci. Cela signifie que l'administrateur peut intervenir sur les blocages d'un professionnel, mais pas les autres professionnels.
+Nom|Description
+-|-
+`target_blocked`|Si l'utilisateur actuel est un professionnel, la cible a été bloquée par celui-ci. Cela signifie que l'administrateur peut intervenir sur les blocages d'un professionnel, mais pas les autres professionnels.
 
 ### `ban` : bannir un client
 
@@ -440,8 +548,8 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
-token|integer|Token de session
-user|Clé de compte utilisateur (ID, pseudo, e-mail)|Identifie le client à bannir (la cible)
+`token`|integer|Token de session
+`user`|Clé de compte utilisateur (ID, pseudo, e-mail)|Identifie le client à bannir (la cible)
 
 Bannit un client.
 
@@ -449,16 +557,25 @@ Si l'utilisateur actuel est un professionnel, empêche la cible d'envoyer ou de 
 
 Si l'utilisateur actuel est l'administrateur, empêche la cible d'envoyer ou de modifier tout message.
 
-Code retour|Corps|Raison
--|-|-
-200||ok
-401||le *token* est invalide
-404||Utilisateur introuvable
+#### Réponse nominale
+
+```json
+{}
+```
+
+#### Erreurs
+
+Statut|Raison
+-|-
+401|l'argument `token` est invalide
+404|Utilisateur introuvable
 
 #### Invariants
 
-- La cible est un client
-- La cible n'a pas déjà été bannie par cet utilisateur
+Nom|Description
+-|-
+`target_is_client`|La cible est un client
+`target_not_banned`|La cible n'a pas déjà été bannie par cet utilisateur
 
 ### `unban` : débannir un client
 
@@ -466,17 +583,26 @@ Code retour|Corps|Raison
 
 Argument|Type|Description
 -|-|-
-token|integer|Token de session
-user|Clé de compte utilisateur (ID, pseudo, e-mail)|Identifie le client à débannir (la cible)
+`token`|integer|Token de session
+`user`|Clé de compte utilisateur (ID, pseudo, e-mail)|Identifie le client à débannir (la cible)
 
 Débannit un client.
 
-Code retour|Corps|Raison
--|-|-
-200||ok
-401||le *token* est invalide
-404||Utilisateur introuvable
+#### Réponse nominale
+
+```json
+{}
+```
+
+#### Erreurs
+
+Statut|Raison
+-|-
+401|l'argument `token` est invalide
+404|Utilisateur introuvable
 
 #### Invariants
 
-- Si l'utilisateur actuel est un professionnel, la cible a été bannie par celui-ci. Cela signifie que l'administrateur peut intervenir sur les blocages d'un professionnel, mais pas les autres professionnels.
+Nom|Description
+-|-
+`target_banned`|Si l'utilisateur actuel est un professionnel, la cible a été bannie par celui-ci. Cela signifie que l'administrateur peut intervenir sur les blocages d'un professionnel, mais pas les autres professionnels.
