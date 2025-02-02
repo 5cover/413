@@ -13,7 +13,7 @@
             "do": { "enum": ["login"] },
             "with": {
               "properties": {
-                "api_key"      : {"$schema": "file://api_key.json", "description": "Clé d'API de l'utilisateur"},
+                "api_key"      : {"$ref": "api_key.json", "description": "Clé d'API de l'utilisateur"},
                 "password": {"type": "string", "description": "Mot de passe"}
               },
               "required": ["api_key", "password"]
@@ -38,7 +38,7 @@
             "do": { "enum": ["whois"] },
             "with": {
               "properties": {
-                "api_key": {"$schema": "file://api_key.json", "description": "Clé d'API de l'utilisateur"},
+                "api_key": {"$ref": "api_key.json", "description": "Clé d'API de l'utilisateur"},
                 "user"   : {"$ref": "#/definitions/user_key", "description": "Utilisateur à rechercher"}
               },
               "required": ["api_key", "user"]

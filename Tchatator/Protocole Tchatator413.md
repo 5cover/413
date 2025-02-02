@@ -168,7 +168,7 @@ Un même utilisateur peut avoir plusieurs sessions. La rate limit s'applique à 
 #### Réponse nominale
 
 ```json
-{ "token": integer }
+{ "token": 6554564 }
 ```
 
 #### Erreurs

@@ -34,7 +34,7 @@
       "minimum": 0
     },
     "admin_api_key": {
-      "$schema": "file://api_key.json",
+      "$ref": "api_key.json",
       "description": "Clé d'API administrateur"
     },
     "port": {
