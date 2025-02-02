@@ -6,7 +6,12 @@
     "oneOf": [
       {
         "description": "Réponse réussie contenant des données.",
-        "properties": { "has_next_page": {"type": "boolean"}, "body": {"type": "object"} },
+        "properties": {
+          "has_next_page": {"type": "boolean"},
+          "body": {
+            "oneOf": [ {"type": "object"}, {"type": "array"} ]
+          }
+        },
         "required": ["body"],
         "additionalProperties": false
       },

@@ -104,7 +104,6 @@ Une réponse *réussie* contient uniquement le corps de la réponse sans statut 
 
 ```json
 {
-  "has_next_page": false,
   "body": {
     "token": "token"
   }
@@ -264,7 +263,7 @@ Nom|Description
 -|-
 `no_send_self`|Le destinataire est différent de l'émetteur
 `client_send_pro`|Si le token appartient à un client, le destinataire est un professionnel
-`pro_reponds_client`|Si le token appartient à un professionnel, le destinataire est un client lui ayant déja envoyé un message
+`pro_responds_client`|Si le token appartient à un professionnel, le destinataire est un client lui ayant déja envoyé un message
 
 ### `motd` : obtenir les messages reçus non lus
 
@@ -319,7 +318,7 @@ Statut|Raison
 Argument|Type|Description
 -|-|-
 `token`|integer|Token de session
-`page`|integer|Numéro de page (1-based)
+`page`|integer|Numéro de page (1-based). Optionnel (1 par défaut)
 
 Obtient l'historique des messages reçus, avec pagination.
 
@@ -336,7 +335,6 @@ Liste de messages
       "sent_at": 1736355387,
       "read_at": 1736355987,
       "read": true,
-      "deleted": false,
       "content": "Bonjour. j'ai une question.",
       "sender": 17,
       "recipient": 3
@@ -371,7 +369,7 @@ Statut|Raison
 Argument|Type|Description
 -|-|-
 `token`|integer|Token de session
-`page`|integer|Numéro de page (1-based)
+`page`|integer|Numéro de page (1-based). Optionnel (1 par défaut)
 
 Obtient l'historique des messages envoyés, avec pagination.
 

@@ -1,5 +1,7 @@
 # Implémentation Tchatator
 
+> Le C, c'est comme marcher les yeux fermés sur un champ de mines.
+
 ## Interface
 
 Mini shell

@@ -81,7 +81,7 @@
                 "token": {"$ref": "#/definitions/token"      },
                 "page" : {"$ref": "#/definitions/page_number"}
               },
-              "required": ["token", "page"]
+              "required": ["token"]
             }
           }
         },
@@ -94,7 +94,7 @@
                 "token": {"$ref": "#/definitions/token"      },
                 "page" : {"$ref": "#/definitions/page_number"}
               },
-              "required": ["token", "page"]
+              "required": ["token"]
             }
           },
           "required": ["do", "with"]
