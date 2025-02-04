@@ -3,74 +3,57 @@
   "type": "array",
   "items": {
     "type": "object",
-    "oneOf": [
-      {
-        "description": "Réponse réussie contenant des données.",
-        "properties": {
-          "has_next_page": {"type": "boolean"},
-          "body": {
-            "oneOf": [ {"type": "object"}, {"type": "array"} ]
-          }
-        },
-        "required": ["body"],
-        "additionalProperties": false
+    "description": "Réponse réussie contenant des données.",
+    "properties": {
+      "has_next_page": {"type": "boolean"},
+      "body": {
+        "oneOf": [ {"type": "object"}, {"type": "array"} ]
       },
-      {
-        "description": "Réponse d'erreur contenant un statut et éventuellement un détail.",
-        "required": ["error"],
-        "additionalProperties": false,
-        "properties": {
-          "error": {
-            "type": "object",
-            "required": ["status"],
-            "oneOf": [
-              {
-                "description": "Bad request (400)",
-                "properties": { "status": {"const": 400}, "message": {"type": "string"} },
-                "required": ["message"],
-                "additionalProperties": false
-              },
-              {
-                "description": "Unauthorized (401)",
-                "properties": { "status": {"const": 401} },
-                "additionalProperties": false
-              },
-              {
-                "description": "Forbidden (403)",
-                "properties": { "status": {"const": 403} },
-                "additionalProperties": false
-              },
-              {
-                "description": "Payload too large (413)",
-                "properties": {
-                  "status"    : {"const": 413                   },
-                  "key"       : {              "type": "string" },
-                  "max_length": {              "type": "integer"}
-                },
-                "required": ["key", "max_length"],
-                "additionalProperties": false
-              },
-              {
-                "description": "Unprocessable content (422)",
-                "properties": { "status": {"const": 422}, "reason": {"type": "string"} },
-                "required": ["reason"],
-                "additionalProperties": false
-              },
-              {
-                "description": "Too many requests (429)",
-                "properties": { "status": {"const": 429}, "next_request_at": {"type": "integer"} },
-                "required": ["next_request_at"],
-                "additionalProperties": false
-              },
-              {
-                "description": "Internal server error (500)",
-                "properties": { "status": {"const": 500} },
-                "additionalProperties": false
-              }
-            ]
+      "error": {
+        "type": "object",
+        "required": ["status"],
+        "oneOf": [
+          {
+            "description": "Bad request (400)",
+            "properties": { "status": {"const": 400}, "message": {"type": "string"} },
+            "required": ["message"],
+            "additionalProperties": false
+          },
+          {
+            "description": "Unauthorized (401)",
+            "properties": { "status": {"const": 401} },
+            "additionalProperties": false
+          },
+          {
+            "description": "Forbidden (403)",
+            "properties": { "status": {"const": 403} },
+            "additionalProperties": false
+          },
+          {
+            "description": "Payload too large (413)",
+            "properties": { "status": {"const": 413}, "key": {"type": "string"}, "max_length": {"type": "integer"} },
+            "required": ["key", "max_length"],
+            "additionalProperties": false
+          },
+          {
+            "description": "Unprocessable content (422)",
+            "properties": { "status": {"const": 422}, "reason": {"type": "string"} },
+            "required": ["reason"],
+            "additionalProperties": false
+          },
+          {
+            "description": "Too many requests (429)",
+            "properties": { "status": {"const": 429}, "next_request_at": {"type": "integer"} },
+            "required": ["next_request_at"],
+            "additionalProperties": false
+          },
+          {
+            "description": "Internal server error (500)",
+            "properties": { "status": {"const": 500} },
+            "additionalProperties": false
           }
-        }
+        ]
       }
-    ]
+    }
   }
 }

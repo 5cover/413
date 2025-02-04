@@ -17,7 +17,7 @@ Code source : <https://github.com/5cover/413> (brache main, dossier "chattator")
 
 ### 1. Clonage du dépôt GitHub
 
-Note: une copie du code du Tchattator est disponible dans l'archive `chattator.tar.gz` ci-jointe.
+Note: une copie du code du Tchatator est disponible dans l'archive `chattator.tar.gz` ci-jointe.
 
 ```sh
 git clone https://github.com/5cover/413.git
@@ -76,7 +76,7 @@ bin/tct
 
 | Tâche                                                   | Raphaël BARDINI | Romain GRANDCHAMP |
 | ------------------------------------------------------- | --------------- | ----------------- |
-| Écriture de la spécification du protocole Tchattator413 | 100&nbsp;%      | 0&nbsp;%          |
+| Écriture de la spécification du protocole Tchatator413 | 100&nbsp;%      | 0&nbsp;%          |
 | Mise en place sockets serveur                           | 50&nbsp;%       | 50&nbsp;%         |
 | Mise en place sockets client                            | 50&nbsp;%       | 50&nbsp;%         |
 | Suite de tests automatisée                              | 100&nbsp;%      | 0&nbsp;%          |
