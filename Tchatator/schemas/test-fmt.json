@@ -5,7 +5,7 @@
   "minProperties": 1,
   "maxProperties": 1,
   "properties": {
-    "$fmt": {},
-    "$fmt_number": {}
+    "$fmt_quoted": {},
+    "$fmt": {}
   }
 }
