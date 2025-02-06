@@ -45,7 +45,7 @@
     },
     "log_file": {
       "type": "string",
-      "description": "Nom du fichier de log relatif au dossier courant du serveur"
+      "description": "Nom du fichier de log relatif au dossier courant du serveur. \"-\" indique que les logs seront affiché sur la sortie d'erreur."
     },
     "backlog": {
       "type": "integer",
