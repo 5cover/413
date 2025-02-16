@@ -33,10 +33,6 @@
       "description": "Durée d'un blocage en secondes",
       "minimum": 0
     },
-    "admin_api_key": {
-      "$ref": "api_key.json",
-      "description": "Clé d'API administrateur"
-    },
     "port": {
       "type": "integer",
       "description": "Port",

@@ -6,7 +6,6 @@
   "rate_limit_h": 90,
   "rate_limit_m": 12,
   "block_for": 86400,
-  "admin_api_key": "ed33c143-5752-4543-a821-00a187955a28",
   "port": 4113,
   "log_file": "-",
   "backlog": 1

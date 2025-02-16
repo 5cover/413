@@ -22,10 +22,6 @@ Forme: UUID V4.
 
 Chaque utilisateur à 0 ou 1 clé d'API qu'il peut supprimer ou regénerer.
 
-UUID spécial : administrateur : `ed33c143-5752-4543-a821-00a187955a28`
-
-Pour l'administrateur, le mot de passe est `admin314317admin` (bcrypt `$2y$10$uggPw5mEgOJyxNVqkXF4uuGzFtT2xmgHKMstdMxsYObPjOlR1143O`). Il n'est pas modifiable. Si la clé d'API admin est leak on change la clé d'API. C'est une protection temporaire si la clé d'API est leak. Le mot de passe est stocké dans le programme C statiquement sous une forme hachée.
-
 ## Fonctionnement
 
 Séparer l'interprétation de la requête de la présentation.
