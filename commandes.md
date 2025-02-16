@@ -22,12 +22,6 @@ sudo git clone -b main --depth 1 https://github.com/5cover/413.git data
 cd data
 ```
 
-## Copier docker compose
-
-```bash
-scp -i ~/.ssh/sae_rsa.pub docker-compose.yml debian@413.ventsdouest.dev:/docker/sae/docker-compose.yml
-```
-
 ## Restart server
   
 ```bash
