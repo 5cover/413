@@ -53,7 +53,7 @@ $page->put(function () use ($compte) {
 
         <div id="adresse">
             <p>Adresse&nbsp;:</p>
-            <span><?= h14s($compte->adresse->format()) ?></span>
+            <span><?= h14s($compte->adresse) ?></span>
         </div>
 
         <div id="api_key">

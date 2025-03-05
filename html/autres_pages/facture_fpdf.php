@@ -169,7 +169,7 @@ $pdf->Cell(0, 10, 'Site : https://413.ventsdouest.dev', 0, 1, 'R');
 // Informations sur le client
 $pdf->SetFont('Arial', '', 12);
 $pdf->Cell(100, 10, convertToIso88591("Client : $compte->denomination"), 0, 1);
-$pdf->Cell(100, 10, convertToIso88591('Adresse : ' . $compte->adresse->format()), 0, 1);
+$pdf->Cell(100, 10, convertToIso88591('Adresse : ' . $compte->adresse), 0, 1);
 $pdf->Cell(100, 10, convertToIso88591('Email : ' . $compte->email), 0, 1);
 $pdf->Cell(100, 10, "Tel. : $compte->telephone", 0, 1);
 
