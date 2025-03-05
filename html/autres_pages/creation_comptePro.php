@@ -37,13 +37,6 @@ if ($_POST) {
 
     $mdp_hash = password_hash($args['mdp'], PASSWORD_ALGO);
 
-    $commune = Commune::from_db_by_nom($_POST['adresse']);
-    if (false === $commune)
-        fail("La commune '{$_POST['adresse']}' n'existe pas.");
-
-    $adresse = new Adresse(null, $commune);
-    $adresse->push_to_db();
-
     $args_compte = [
         null,
         $args['email'],
@@ -96,7 +89,7 @@ $page->put(function () {
                 </p>
                 <p class="champ">
 
-                    <label>Adresse * <input type="text" id="adresse" placeholder="22300 1 rue Edouard Branly" name="adresse"></labe>
+                    <label>Adresse<input type="text" id="adresse" placeholder="22300 1 rue Edouard Branly" name="adresse"></label>
                 </p>
                 <p class="radio_entr">
                     <label>Privé <input type="radio" id="prive" name="type" value="prive" onclick="gererAffichage()" checked></label>
