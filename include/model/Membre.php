@@ -46,9 +46,7 @@ final class Membre extends Compte
         ' . static::TABLE . '.telephone,
         ' . static::TABLE . '.adresse,
         ' . static::TABLE . '.pseudo,
-
-        from membre
-            join _commune c on c.code = a.code_commune and c.numero_departement = a.numero_departement';
+        from membre';
     }
 
     protected static function from_db_row(array $row): self

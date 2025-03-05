@@ -76,8 +76,7 @@ abstract class Compte extends Signalable
         from ' . self::TABLE . '
             left join professionnel using (id)
             left join _prive using (id)
-            left join _membre using (id)
-            join _commune o on o.code = a.code_commune and o.numero_departement = a.numero_departement';
+            left join _membre using (id)';
     }
 
     protected static function from_db_row(array $row): self
