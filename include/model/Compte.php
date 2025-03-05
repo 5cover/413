@@ -71,7 +71,7 @@ abstract class Compte extends Signalable
         
         _prive.siren prive_siren,
 
-        _membre.pseudo membre_pseudo,
+        _membre.pseudo membre_pseudo
 
         from ' . self::TABLE . '
             left join professionnel using (id)
