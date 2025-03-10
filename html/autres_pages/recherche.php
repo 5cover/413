@@ -89,17 +89,17 @@ $page->put(function () {
     <!-- <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script> -->
     
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Création de la carte centrée sur la France
-            let map = L.map('map').setView([46.603354, 1.888334], 6);
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     // Création de la carte centrée sur la France
+        //     let map = L.map('map').setView([46.603354, 1.888334], 6);
 
-            // Ajouter la couche de tuiles OpenStreetMap
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap contributors'
-            }).addTo(map);
+        //     // Ajouter la couche de tuiles OpenStreetMap
+        //     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        //         attribution: '&copy; OpenStreetMap contributors'
+        //     }).addTo(map);
 
            
-        });
+        // });
     </script>
     <?php
 });
