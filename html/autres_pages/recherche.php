@@ -66,10 +66,6 @@ $page->put(function () {
         <div id="map"></div>
     </section>
     <?php 
-    $page = new Page('Recherche', scripts: [
-        'https://unpkg.com/leaflet/dist/leaflet.js' => 'defer',
-        'tri_recherche.js' => 'defer',
-    ]);
     
     ?>
 
