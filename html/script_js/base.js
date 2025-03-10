@@ -136,7 +136,7 @@ function preview_image(e_input_image, e_preview) {
  */
 function setup_button_signaler(element) {
     const img = element.children[0];
-    const is_signaled = img.src.endsWith('flag-filled.svg');
+    let is_signaled = img.src.endsWith('flag-filled.svg');
     element.addEventListener('click', async () => {
         let raison;
         if (is_signaled || (raison = prompt('Raison de votre signalement'))) {
@@ -144,7 +144,8 @@ function setup_button_signaler(element) {
             const ok = (await fetch(location_signaler(element.dataset.idcco, element.dataset.avisId, raison))).status == 200;
             element.disabled = false;
             if (ok) {
-                img.src = '/images/' + (is_signaled ? 'flag.svg' : 'flag-filled.svg');
+                is_signaled ^= true;
+                img.src = '/images/' + (is_signaled ? 'flag-filled.svg' : 'flag.svg');
             } else {
                 console.error('failed signaler avis');
             }

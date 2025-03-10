@@ -1,5 +1,4 @@
 <?php
-require_once 'model/Offre.php';
 
 /**
  * Redirige l'utilisateur vers une URL, mettant fin au script actuel.
