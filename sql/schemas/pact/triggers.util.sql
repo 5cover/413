@@ -36,12 +36,10 @@ begin
         new.note
     ) returning
         publie_le,
-        lu,
-        blackliste
+        lu
     into
         new.publie_le,
-        new.lu,
-        new.blackliste;
+        new.lu;
 end
 $$ language plpgsql strict;
 
@@ -220,7 +218,6 @@ begin
         date_experience = new.date_experience,
         contexte = new.contexte,
         lu = new.lu,
-        blackliste = new.blackliste,
         likes = new.likes,
         dislikes = new.dislikes
     where

@@ -90,65 +90,26 @@ function sortOffers(criteria, ascending = true) {
 }
 
 function filterOffers() {
-    // Récupération des filtres
-    const mainCategory = document.getElementById('main-category').value.trim().toLowerCase();
+    const mainCategory = document.getElementById('main-category').value;
     const subcategoryCheckboxes = document.querySelectorAll('input[name="subcategory"]:checked');
-    const selectedSubcategories = Array.from(subcategoryCheckboxes).map(cb => cb.id.toLowerCase());
-    const keywordInput = document.getElementById('keyword-search').value.trim().toLowerCase();
-    const keywordParts = keywordInput ? keywordInput.split(/\s+/) : []; // Divise par les espaces
-    // Filtrage des offres
+    const selectedSubcategories = Array.from(subcategoryCheckboxes).map(cb => cb.id);
     const filteredOffers = offers.filter(offer => {
-        // Filtrage par catégorie principale
-        if (mainCategory && offer.categorie.toLowerCase() !== mainCategory) {
+        if (mainCategory && offer.categorie.toLowerCase() !== mainCategory.toLowerCase()) {
             return false;
         }
-
-        // Filtrage par sous-catégories
         if (selectedSubcategories.length > 0) {
-            if (!offer.tags || !Array.isArray(offer.tags) || offer.tags.length === 0) {
+            if (!offer.tags || offer.tags.length === 0) {
                 return false;
             }
-            console.log('Offer tags:', offer.tags);
-            const hasMatchingTag = selectedSubcategories.some(selected => offer.tags.includes(selected));
-            if (!hasMatchingTag) {
-                return false;
-            }
+            const lowerCaseTags = offer.tags.map(tag => tag.toLowerCase());
+            return selectedSubcategories.some(selected => lowerCaseTags.includes(selected));
         }
-        // Filtrage par mot-clé (souple)
-
-        // if (keywordParts.length > 0) {
-        //     const lowerCaseTitle = (offer.title || '').toLowerCase(); // Assure que le titre est en minuscule
-        //     const lowerCaseCategory = (offer.categorie || '').toLowerCase();
-        //     const lowerCaseTags = (offer.tags || []).map(tag => tag.toLowerCase());
-
-        //     // Vérifier si un mot-clé est présent dans le titre, la catégorie ou les tags
-        //     const matchesKeyword = keywordParts.some(part =>
-        //         lowerCaseTitle.includes(part) //||
-        //         // lowerCaseCategory.includes(part) ||
-        //         // lowerCaseTags.some(tag => tag.includes(part))
-        //     );
-
-        //     if (!matchesKeyword) {
-        //         return false;
-        //     }
-        // }
-        // Filtrage par mot-clé
-        if (keywordParts.length > 0) {
-            const matchesCategory = offer.categorie && offer.categorie.toLowerCase().includes(keywordInput);
-            const matchesTitre = offer.titre && offer.titre.toLowerCase().includes(keywordInput);
-            if (!matchesCategory && !matchesTitre) {
-                return false;
-            }
-        }
-
-        // Si tout est valide, inclure cette offre
         return true;
     });
-
-    // Affichage des offres filtrées
     displayOffers(filteredOffers);
-    updateMap(filteredOffers);
+    // updateMap(filteredOffers);
 }
+
 
 function createOfferCardElement(offer) {
     const element = document.getElementById('template-offer-card').content.cloneNode(true).firstElementChild;
@@ -227,7 +188,17 @@ function updateMap(offersToDisplay) {
     });
 }
 
+// document.addEventListener('DOMContentLoaded', function () {
+//     // Création de la carte centrée sur la France
+//     let map = L.map('map').setView([46.603354, 1.888334], 6);
 
+//     // Ajouter la couche de tuiles OpenStreetMap
+//     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//         attribution: '&copy; OpenStreetMap contributors'
+//     }).addTo(map);
+
+   
+// });
 
 
 // fin carte

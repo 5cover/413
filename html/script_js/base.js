@@ -139,8 +139,9 @@ function setup_button_signaler(element) {
     element.addEventListener('click', async () => {
         let raison;
         if (is_signaled || (raison = prompt('Raison de votre signalement'))) {
+            element.disabled = true;
             await fetch(location_signaler(element.dataset.idcco, element.dataset.avisId, raison));
-            location.reload();
+            element.disabled = false;
         }
     });
 }

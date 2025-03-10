@@ -9,7 +9,6 @@ require_once 'model/Membre.php';
  * @property-read ?int $id L'ID. `null` si cet avis n'existe pas dans la BDD.
  * @property-read ?FiniteTimestamp $publie_le Calculé. `null` si cet avis n'existe pas dans la BDD.
  * @property-read ?bool $lu Calculé. `null` si cet avis n'existe pas dans la BDD.
- * @property-read ?bool $blackliste Calculé. `null` si cet avis n'existe pas dans la BDD.
  */
 class Avis extends Model
 {
@@ -25,7 +24,6 @@ class Avis extends Model
         return [
             'publie_le'     => [FiniteTimestamp::parse(...), 'publie_le', PDO::PARAM_STR],
             'lu'            => [null, 'lu', PDO::PARAM_BOOL],
-            'blackliste'    => [null, 'blackliste', PDO::PARAM_BOOL],
         ];
     }
 
@@ -50,7 +48,6 @@ class Avis extends Model
         public ?Membre $membre_auteur,
         public Offre $offre,
         //
-        protected ?bool $blackliste           = null,
         protected ?bool $lu                   = null,
         protected ?FiniteTimestamp $publie_le = null,
     ) {}
@@ -108,7 +105,6 @@ class Avis extends Model
             mapnull($row['id_membre_auteur'], Membre::from_db(...)),
             Offre::from_db($row['id_offre']),
             $row['lu'],
-            $row['blackliste'],
             FiniteTimestamp::parse($row['publie_le']),
         ];
 
@@ -136,7 +132,6 @@ class Avis extends Model
             ' . static::TABLE . '.id_membre_auteur,
             ' . static::TABLE . '.id_offre,
             ' . static::TABLE . '.lu,
-            ' . static::TABLE . '.blackliste,
             ' . static::TABLE . '.publie_le,
 
             v.id_restaurant,

@@ -218,7 +218,6 @@ create table _avis (
     date_experience date not null,
     contexte mot_minuscule not null,
     lu bool not null default false,
-    blackliste bool not null default false,
     likes int not null default 0,
     dislikes int not null default 0,
 
@@ -239,6 +238,12 @@ create table _avis_restaurant (
     note_service int not null check (note_service between 1 and 5),
     note_ambiance int not null check (note_ambiance between 1 and 5),
     note_qualite_prix int not null check (note_qualite_prix between 1 and 5)
+);
+
+create table _blacklist (
+    id int
+        constraint blacklist_pk primary key
+        constraint blacklist_inherits_avis references _avis on delete cascade
 );
 
 create table _reponse (
