@@ -147,7 +147,7 @@ function filterOffers() {
 
     // Affichage des offres filtrées
     displayOffers(filteredOffers);
-    updateMap(filteredOffers);
+    // updateMap(filteredOffers);
 }
 
 function createOfferCardElement(offer) {
@@ -208,24 +208,24 @@ function getImageFilename(id_image) {
 
 //debut carte
 
-var map = L.map('map').setView([48.8566, 2.3522], 12); // Centré sur Paris
+// var map = L.map('map').setView([48.8566, 2.3522], 12); // Centré sur Paris
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
+// L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+// }).addTo(map);
 
-let markersLayer = L.layerGroup().addTo(map);
+// let markersLayer = L.layerGroup().addTo(map);
 
-function updateMap(offersToDisplay) {
-    markersLayer.clearLayers(); // Efface les anciens marqueurs
-    offersToDisplay.forEach(offer => {
-        if (offer.lat && offer.lng) {
-            let marker = L.marker([offer.lat, offer.lng])
-                .bindPopup(`<b>${offer.titre}</b><br>${offer.formatted_address}`)
-                .addTo(markersLayer);
-        }
-    });
-}
+// function updateMap(offersToDisplay) {
+//     markersLayer.clearLayers(); // Efface les anciens marqueurs
+//     offersToDisplay.forEach(offer => {
+//         if (offer.lat && offer.lng) {
+//             let marker = L.marker([offer.lat, offer.lng])
+//                 .bindPopup(`<b>${offer.titre}</b><br>${offer.formatted_address}`)
+//                 .addTo(markersLayer);
+//         }
+//     });
+// }
 
 
 
