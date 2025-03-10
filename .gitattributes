@@ -1,3 +1,6 @@
 # Hide large SQL data (otherwise we get 95% SQL)
 bigdata.sql linguist-vendored
-* text=auto
+# LF normalization
+* text=auto                  
+# linguist has a tendency to flag .h as C++
+*.h linguist-language=C      

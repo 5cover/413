@@ -24,8 +24,10 @@ function location_home(): string
 function se_deconnecter(): never
 {
     assert(est_connecte());
+    notfalse(session_unset());
     $_SESSION = [];
     notfalse(session_destroy());
+    session_regenerate_id(true);
     redirect_to(location_home());
 }
 

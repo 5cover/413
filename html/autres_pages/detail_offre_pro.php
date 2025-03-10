@@ -24,17 +24,18 @@ $review_list = new ReviewList($offre);
 
 $page->put(function () use ($offre, $review_list) {
     ?>
-    <section class="modif">
-        <div class="bandeau-etat <?= $offre->en_ligne ? 'vert' : 'rouge' ?>">
-            <p class="etat"><?= $offre->en_ligne ? 'Offre en ligne' : 'Offre hors ligne' ?></p>
-            <button type="button" class="bouton" id="alternateButton">
-                <?= $offre->en_ligne ? 'Mettre hors ligne' : 'Mettre en ligne' ?>
-            </button>
-            <form id="toggleForm" method="post" style="display: inline;">
-                <button type="submit" name="valider" class="bouton" id="validateButton" disabled>Valider</button>
-            </form>
-            <a class="bouton modifier" href="modif_offre.php?id=<?= $offre->id ?>&categorie=<?= $offre->categorie ?>">Modifier</a>
-        </div>
+    <section class="bandeau-etat <?= $offre->en_ligne ? 'vert' : 'rouge' ?>">
+        <p class="etat"><?= $offre->en_ligne ? 'Offre en ligne' : 'Offre hors ligne' ?></p>
+        <button type="button" class="bouton" id="alternateButton">
+            <?= $offre->en_ligne ? 'Mettre hors ligne' : 'Mettre en ligne' ?>
+        </button>
+        <form id="toggleForm" method="post" style="display: inline;">
+            <button type="submit" name="valider" class="bouton" id="validateButton" disabled>Valider</button>
+        </form>
+        <a class="bouton modifier" href="<?= h14s(location_modifier_offre($offre)) ?>">Modifier</a>
+        <?php if ($offre->abonnement->libelle !== 'gratuit') { ?>
+            <a id="a-facturation"- class="btn-more-info bouton_principale_pro" href="<?= h14s(location_facturation($offre->id)) ?>">Facturation</a>
+        <?php } ?>
     </section>
 
     <section class="offer-details">
@@ -74,9 +75,9 @@ $page->put(function () use ($offre, $review_list) {
         <h3>Emplacement et coordonnées</h3>
         <!-- <div id="map" class="map"></div> -->
         <div class="contact-info">
-            <p><strong>Adresse&nbsp;:</strong> <?= $offre->adresse->format() ?></p>
+            <p><strong>Adresse&nbsp;:</strong> <?= h14s($offre->adresse->format()) ?></p>
             <?php if ($offre->url_site_web) { ?>
-                <p><strong>Site web&nbsp;:</strong> <a href="<?= $offre->url_site_web ?>"><?= $offre->url_site_web ?></a></p>
+                <p><strong>Site web&nbsp;:</strong> <a href="<?= h14s($offre->url_site_web) ?>"><?= h14s($offre->url_site_web) ?></a></p>
             <?php } ?>
         </div>
     </section>

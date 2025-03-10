@@ -105,7 +105,7 @@ function setup_input_image(element) {
     // - Dynamic preview
     const e_input_image = element.querySelector('input[type=file]');
     const e_preview = document.getElementById(element.id + '-preview');
-    addEventListener('change', () => preview_image(e_input_image, e_preview));
+    element.addEventListener('change', () => preview_image(e_input_image, e_preview));
 }
 
 /**
@@ -136,11 +136,11 @@ function preview_image(e_input_image, e_preview) {
  */
 function setup_button_signaler(element) {
     let is_signaled = element.children[0].src.endsWith('flag-filled.svg');
-    element.addEventListener('click', () => {
+    element.addEventListener('click', async () => {
         let raison;
         if (is_signaled || (raison = prompt('Raison de votre signalement'))) {
-            window.location.replace(location_signaler(element.dataset.idcco, element.dataset.avisId, raison));
-            is_signaled = !is_signaled;
+            await fetch(location_signaler(element.dataset.idcco, element.dataset.avisId, raison));
+            location.reload();
         }
     });
 }

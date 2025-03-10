@@ -19,16 +19,16 @@ final class Adresse extends Model
     protected static function fields()
     {
         return [
-            'code_commune'       => [fn($x) => $x->code,               'commune', PDO::PARAM_INT],
+            'code_commune'       => [fn($x) => $x->code, 'commune', PDO::PARAM_INT],
             'numero_departement' => [fn($x) => $x->numero_departement, 'commune', PDO::PARAM_STR],
-            'numero_voie'        => [null, 'numero_voie',       PDO::PARAM_STR],
+            'numero_voie'        => [null, 'numero_voie', PDO::PARAM_STR],
             'complement_numero'  => [null, 'complement_numero', PDO::PARAM_STR],
-            'nom_voie'           => [null, 'nom_voie',          PDO::PARAM_STR],
-            'localite'           => [null, 'localite',          PDO::PARAM_STR],
-            'precision_int'      => [null, 'precision_int',     PDO::PARAM_STR],
-            'precision_ext'      => [null, 'precision_ext',     PDO::PARAM_STR],
-            'latitude'           => [null, 'latitude',          PDO::PARAM_STR],
-            'longitude'          => [null, 'longitude',         PDO::PARAM_STR],
+            'nom_voie'           => [null, 'nom_voie', PDO::PARAM_STR],
+            'localite'           => [null, 'localite', PDO::PARAM_STR],
+            'precision_int'      => [null, 'precision_int', PDO::PARAM_STR],
+            'precision_ext'      => [null, 'precision_ext', PDO::PARAM_STR],
+            'lat'                => [null, 'lat', PDO::PARAM_STR],
+            'long'               => [null, 'long', PDO::PARAM_STR],
         ];
     }
 
@@ -41,8 +41,8 @@ final class Adresse extends Model
         public ?string $localite          = null,
         public ?string $precision_int     = null,
         public ?string $precision_ext     = null,
-        public ?float $latitude           = null,
-        public ?float $longitude          = null,
+        public ?float $lat                = null,
+        public ?float $long               = null,
     ) {}
 
     /**
@@ -53,19 +53,19 @@ final class Adresse extends Model
     static function from_db(int $id_adresse): self|false
     {
         $stmt = notfalse(DB\connect()->prepare('select
-            '.static::TABLE.'.numero_voie,
-            '.static::TABLE.'.complement_numero,
-            '.static::TABLE.'.nom_voie,
-            '.static::TABLE.'.localite,
-            '.static::TABLE.'.precision_int,
-            '.static::TABLE.'.precision_ext,
-            '.static::TABLE.'.latitude,
-            '.static::TABLE.'.longitude,
-            '.static::TABLE.'.numero_departement,
-            '.static::TABLE.'.code_commune,
+            ' . static::TABLE . '.numero_voie,
+            ' . static::TABLE . '.complement_numero,
+            ' . static::TABLE . '.nom_voie,
+            ' . static::TABLE . '.localite,
+            ' . static::TABLE . '.precision_int,
+            ' . static::TABLE . '.precision_ext,
+            ' . static::TABLE . '.lat,
+            ' . static::TABLE . '.long,
+            ' . static::TABLE . '.numero_departement,
+            ' . static::TABLE . '.code_commune,
             c.nom from '
             . self::TABLE . '  inner join ' . Commune::TABLE
-            . ' c on c.numero_departement = '.static::TABLE.'.numero_departement and c.code = '.static::TABLE.'.code_commune'
+            . ' c on c.numero_departement = ' . static::TABLE . '.numero_departement and c.code = ' . static::TABLE . '.code_commune'
             . ' where id = ?'));
         DB\bind_values($stmt, [1 => [$id_adresse, PDO::PARAM_INT]]);
         notfalse($stmt->execute());
@@ -79,20 +79,20 @@ final class Adresse extends Model
             $row['localite'],
             $row['precision_int'],
             $row['precision_ext'],
-            $row['latitude'],
-            $row['longitude'],
+            $row['lat'],
+            $row['long'],
         );
     }
 
     function format(): string
     {
-        return elvis($this->precision_ext, ', ')
-            . elvis($this->precision_int, ', ')
-            . elvis($this->numero_voie, ' ')
-            . elvis($this->complement_numero, ' ')
-            . elvis($this->nom_voie, ', ')
-            . elvis($this->localite, ', ')
-            . elvis($this->commune->nom, ', ')
+        return ifnntaws($this->precision_ext, ', ')
+            . ifnntaws($this->precision_int, ', ')
+            . ifnntaws($this->numero_voie, ' ')
+            . ifnntaws($this->complement_numero, ' ')
+            . ifnntaws($this->nom_voie, ', ')
+            . ifnntaws($this->localite, ', ')
+            . ifnntaws($this->commune->nom, ', ')
             . $this->commune->code_postaux()[0];
     }
 

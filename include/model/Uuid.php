@@ -14,7 +14,7 @@ final class Uuid {
         return $output === null ? null : new self($output);
     }
 
-    function __tostring(): string {
+    function __toString(): string {
         return $this->repr;
     }
 }

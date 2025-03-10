@@ -16,11 +16,10 @@ final class InputNote extends Input
      */
     public function put(mixed $current = null): void
     {
-        $form_attr = $this->form_id ? "form=\"$this->form_id\"" : '';
 ?>
-<select <?= $form_attr ?>
-    id="<?= $this->id ?>"
-    name="<?= $this->name ?>"
+<select <?= $this->form_attr ?>
+    <?= $this->id_attr ?>
+    name="<?= h14s($this->name) ?>"
     required>
     <option value="5" <?= $current === 5 ? 'checked' : '' ?>>5 étoiles</option>
     <option value="4" <?= $current === 4 ? 'checked' : '' ?>>4 étoiles</option>

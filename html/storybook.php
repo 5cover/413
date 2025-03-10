@@ -28,7 +28,7 @@ $page->put(function () {
 
         <?php if ($adresse) { ?>
             <h3>Sortie</h3>
-            <p><?= $adresse->format() ?></p>
+            <p><?= h14s($adresse->format()) ?></p>
             <pre><samp>
                 <?php var_dump($adresse) ?>
             </samp></pre>
@@ -52,7 +52,7 @@ $page->put(function () {
 
         <?php if ($duree) { ?>
             <h3>Sortie</h3>
-            <p><?= $duree ?></p>
+            <p><?= h14s($duree) ?></p>
             <pre><samp>
                 <?php var_dump($duree) ?>
             </samp></pre>

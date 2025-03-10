@@ -44,24 +44,9 @@ final class Membre extends Compte
         ' . static::TABLE . '.nom,
         ' . static::TABLE . '.prenom,
         ' . static::TABLE . '.telephone,
-        ' . static::TABLE . '.id_adresse,
-        ' . static::TABLE . '.pseudo,
-
-        a.code_commune adresse_code_commune,
-        a.numero_departement adresse_numero_departement,
-        c.nom adresse_commune_nom,
-        a.numero_voie adresse_numero_voie,
-        a.complement_numero adresse_complement_numero,
-        a.nom_voie adresse_nom_voie,
-        a.localite adresse_localite,
-        a.precision_int adresse_precision_int,
-        a.precision_ext adresse_precision_ext,
-        a.latitude adresse_latitude,
-        a.longitude adresse_longitude
-
-        from membre
-            join _adresse a on a.id = ' . static::TABLE . '.id_adresse
-            join _commune c on c.code = a.code_commune and c.numero_departement = a.numero_departement';
+        ' . static::TABLE . '.adresse,
+        ' . static::TABLE . '.pseudo
+        from membre';
     }
 
     protected static function from_db_row(array $row): self
@@ -73,22 +58,7 @@ final class Membre extends Compte
             $row['nom'],
             $row['prenom'],
             $row['telephone'],
-            new Adresse(
-                $row['id_adresse'],
-                new Commune(
-                    $row['adresse_code_commune'],
-                    $row['adresse_numero_departement'],
-                    $row['adresse_commune_nom'],
-                ),
-                $row['adresse_numero_voie'],
-                $row['adresse_complement_numero'],
-                $row['adresse_nom_voie'],
-                $row['adresse_localite'],
-                $row['adresse_precision_int'],
-                $row['adresse_precision_ext'],
-                $row['adresse_latitude'],
-                $row['adresse_longitude'],
-            ),
+            $row['adresse'],
         ], $row['pseudo']);
     }
 

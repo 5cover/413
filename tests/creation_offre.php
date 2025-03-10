@@ -1,4 +1,5 @@
 <?php
+require_once 'util.php';
 require_once 'testing.php';
 require_once 'component/InputOffre.php';
 
@@ -25,7 +26,7 @@ notfalse(ob_start());
     <title>Test creation_offre</title>
 </head>
 <body>
-<form id="<?= FORM_ID ?>">
+<form id="<?= h14s(FORM_ID) ?>">
     <?php $input_offre->put() ?>
 </form>
 </body>
@@ -89,7 +90,7 @@ $_FILES['galerie'] = [
         'assmy',
     ],
     'error' => [
-        0
+        0,
     ]
 ];
 

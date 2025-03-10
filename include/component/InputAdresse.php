@@ -26,8 +26,8 @@ final class InputAdresse extends Input
             $data['localite'] ?: null,
             $data['precision_int'] ?: null,
             $data['precision_ext'] ?: null,
-            $data['latitude'] ?? null ?: null,
-            $data['longitude'] ?? null ?: null,
+            $data['lat'] ?? null ?: null,
+            $data['long'] ?? null ?: null,
         );
     }
 
@@ -42,71 +42,70 @@ final class InputAdresse extends Input
      */
     function put(mixed $current = null): void
     {
-        $form_attr = $this->form_id ? "form=\"$this->form_id\"" : '';
         self::put_datalist();
 ?>
-<details <?= $this->id ? "id=\"$this->id\"" : '' ?> class="input-address">
+<details <?= $this->id ? 'id="' . h14s($this->id) . '"' : '' ?> class="input-address">
     <summary>
-        <input <?= $form_attr ?> type="text" readonly>
+        <input <?= $this->form_attr ?> type="text" readonly>
     </summary>
-    <p><label>Commune&nbsp;: <input <?= $form_attr ?>
+    <p><label>Commune&nbsp;: <input <?= $this->form_attr ?>
         id="<?= $this->id('commune') ?>"
         name="<?= $this->name('commune') ?>"
         type="text"
         list="datalist-input-address-communes"
         autocomplete="on"
         required
-        value="<?= $current?->commune->nom ?>">
+        value="<?= h14s($current?->commune->nom) ?>">
     </label></p>
-    <p><label>Localité&nbsp;: <input <?= $form_attr ?>
+    <p><label>Localité&nbsp;: <input <?= $this->form_attr ?>
         id="<?= $this->id('localite') ?>"
         name="<?= $this->name('localite') ?>"
         type="text"
         maxlength="255"
         placeholder="hameau, lieu-dit&hellip; (optionnel)"
-        value="<?= $current?->localite ?>">
+        value="<?= h14s($current?->localite) ?>">
     </label></p>
-    <p><label>Nom voie&nbsp;: <input <?= $form_attr ?>
+    <p><label>Nom voie&nbsp;: <input <?= $this->form_attr ?>
         id="<?= $this->id('nom_voie') ?>"
         name="<?= $this->name('nom_voie') ?>"
         type="text"
         maxlength="255"
         placeholder="rue de l'Église&hellip; (optionnel)"
-        value="<?= $current?->nom_voie ?>">
+        value="<?= h14s($current?->nom_voie) ?>">
     </label></p>
-    <p><label>Numéro voie&nbsp;: <input <?= $form_attr ?>
+    <p><label>Numéro voie&nbsp;: <input <?= $this->form_attr ?>
         id="<?= $this->id('numero_voie') ?>"
         name="<?= $this->name('numero_voie') ?>"
         type="number"
         min="1"
         placeholder="1,2&hellip; (optionnel)"
-        value="<?= $current?->numero_voie ?>">
+        value="<?= h14s($current?->numero_voie) ?>">
     </label></p>
-    <p><label>Complément numéro&nbsp;: <input <?= $form_attr ?>
+    <p><label>Complément numéro&nbsp;: <input <?= $this->form_attr ?>
         id="<?= $this->id('complement_numero') ?>"
         name="<?= $this->name('complement_numero') ?>"
         type="text"
         maxlength="10"
         placeholder="bis, ter&hellip; (optionnel)"
-        value="<?= $current?->complement_numero ?>">
+        value="<?= h14s($current?->complement_numero) ?>">
     </label></p>
-    <p><label>Précision interne&nbsp;: <input <?= $form_attr ?>
+    <p><label>Précision interne&nbsp;: <input <?= $this->form_attr ?>
         id="<?= $this->id('precision_int') ?>"
         name="<?= $this->name('precision_int') ?>"
         type="text" maxlength="255"
         placeholder="apt., boîte à lettre, étage (optionnel)&hellip;"
-        value="<?= $current?->precision_int ?>">
+        value="<?= h14s($current?->precision_int) ?>">
     </label></p>
-    <p><label>Précision externe&nbsp;: <input <?= $form_attr ?>
+    <p><label>Précision externe&nbsp;: <input <?= $this->form_attr ?>
         id="<?= $this->id('precision_ext') ?>"
         name="<?= $this->name('precision_ext') ?>"
         type="text"
         maxlength="255"
         placeholder="bâtiment, voie, résidence (optionnel)&hellip;"
-        value="<?= $current?->precision_ext ?>">
+        value="<?= h14s($current?->precision_ext) ?>">
     </label></p>
-    <input type="hidden" name="latitude" value="<?= $current?->latitude ?>">
-    <input type="hidden" name="longitude" value="<?= $current?->longitude ?>">
+    <input type="hidden" name="lat" value="<?= h14s($current?->lat) ?>">
+    <input type="hidden" name="long" value="<?= h14s($current?->long) ?>">
 </details>
 <?php
     }
@@ -124,7 +123,7 @@ final class InputAdresse extends Input
 ?>
 <datalist id="datalist-input-address-communes">
 <?php foreach ($communes as $c) { ?>
-    <option><?= $c['nom'] ?></option>
+    <option><?= h14s($c['nom']) ?></option>
 <?php } ?>
 </datalist>
 <?php

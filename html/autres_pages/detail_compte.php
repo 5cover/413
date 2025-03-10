@@ -15,49 +15,49 @@ $page->put(function () use ($compte) {
         <!-- PHP dynamique commence ici -->
         <?php if ($compte instanceof Membre): ?>
             <div id="pseudo">
-                <p>Pseudo :</p>
-                <span><?= $compte->pseudo ?></span>
+                <p>Pseudo&nbsp;:</p>
+                <span><?= h14s($compte->pseudo) ?></span>
             </div>
         <?php elseif ($compte instanceof Professionnel): ?>
             <div id="denomination">
-                <p>Dénomination :</p>
-                <span><?= $compte->denomination ?></span>
+                <p>Dénomination&nbsp;:</p>
+                <span><?= h14s($compte->denomination) ?></span>
             </div>
             <?php if ($compte instanceof ProfessionnelPrive): ?>
                 <div id="siren">
-                    <p>Siren :</p>
-                    <span><?= $compte->siren ?></span>
+                    <p>Siren&nbsp;:</p>
+                    <span><?= h14s($compte->siren) ?></span>
                 </div>
             <?php endif ?>
         <?php endif ?>
 
         <div id="nom">
-            <p>Nom :</p>
-            <span><?= $compte->nom ?></span>
+            <p>Nom&nbsp;:</p>
+            <span><?= h14s($compte->nom) ?></span>
         </div>
 
         <div id="prenom">
-            <p>Prénom :</p>
-            <span><?= $compte->prenom ?></span>
+            <p>Prénom&nbsp;:</p>
+            <span><?= h14s($compte->prenom) ?></span>
         </div>
 
         <div id="email">
-            <p>Email :</p>
-            <span><?= $compte->email ?></span>
+            <p>Email&nbsp;:</p>
+            <span><?= h14s($compte->email) ?></span>
         </div>
 
         <div id="telephone">
-            <p>Numéro de téléphone :</p>
-            <span><?= $compte->telephone ?></span>
+            <p>Numéro de téléphone&nbsp;:</p>
+            <span><?= h14s($compte->telephone) ?></span>
         </div>
 
         <div id="adresse">
-            <p>Adresse :</p>
-            <span><?= $compte->adresse->format() ?></span>
+            <p>Adresse&nbsp;:</p>
+            <span><?= h14s($compte->adresse) ?></span>
         </div>
 
         <div id="api_key">
-            <p>Clé d'API :</p></span>
+            <p>Clé d'API&nbsp;:</p><span>
             <?php if ($compte->api_key) { ?>
             <code class="spoiler"><?= $compte->api_key ?></code>
             <?php } else { ?>
@@ -66,7 +66,7 @@ $page->put(function () use ($compte) {
             </span>
         </div>
 
-        <a href="modif_compte.php?id=<?= $compte->id ?>">Modifier</a>
+        <a class="btn-publish" href="<?= h14s(location_modifier_compte($compte->id)) ?>">Modifier</a>
     </section>
     <?php
 });

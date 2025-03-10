@@ -19,8 +19,6 @@ final class Restaurant extends Offre
         ];
     }
 
-    // todo: langues
-
     function __construct(
         array $args_offre,
         public string $carte,

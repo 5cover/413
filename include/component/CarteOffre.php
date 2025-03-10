@@ -23,10 +23,15 @@ final class CarteOffre
 ?>
 <div class="offer-card">
     <?php $this->image_principale->put_img() ?>
-    <h3><a href="<?= location_detail_offre($this->offre->id) ?>"><?= $this->offre->titre ?></a></h3>
-    <p class="location"><?= $this->offre->adresse->format() ?></p>
-    <p><?= $this->offre->resume ?></p>
-    <p class="category"><?= ucfirst($this->offre->categorie) ?></p>
+    <h3><a class="titre" href="<?= h14s(location_detail_offre($this->offre->id)) ?>"><?= h14s($this->offre->titre) ?></a></h3>
+    <p class="location"><?= h14s($this->offre->adresse->format()) ?></p>
+    <p><?= h14s($this->offre->resume) ?></p>
+    <p class="category"><?= h14s(ucfirst($this->offre->categorie)) ?></p>
+    <?php if ($this->offre->prix_min) { ?>
+    <p>À partir de &nbsp;: <?= $this->offre->prix_min ?>&nbsp;€</p>
+    <?php } ?>
+    <p>Note&nbsp;: <?= $this->offre->note_moyenne ?>&nbsp;/&nbsp;5</p>
+    <p>Créee le&nbsp;: <?= $this->offre->creee_le->format_date() ?></p>
 </div>
 <?php
     }
@@ -34,11 +39,14 @@ final class CarteOffre
     static function put_template(): void {
 ?>
 <div class="offer-card">
-    <?php ImageView::put_template() ?>
-    <h3><a href="MISSING">MISSING</a></h3>
-    <p class="location">MISSING</p>
-    <p>MISSING</p>
-    <p class="category">MISSING</p>
+    <?php ImageView::put_template('offer-image-principale') ?>
+    <h3><a class="titre" href=""></a></h3>
+    <p class="location"></p>
+    <p class="offer-resume"></p>
+    <p class="category"></p>
+    <p>À partir de &nbsp;: <span class="offer-prix-min"></span>&nbsp;€</p>
+    <p>Note&nbsp; <span class="offer-note"></span>&nbsp;/&nbsp;5</p>
+    <p>Crée le&nbsp; <span class="offer-creee-le"></span></p>
 </div>
 <?php   
     }

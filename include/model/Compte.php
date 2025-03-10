@@ -19,7 +19,7 @@ abstract class Compte extends Signalable
             'nom' => [null, 'nom', PDO::PARAM_STR],
             'prenom' => [null, 'prenom', PDO::PARAM_STR],
             'telephone' => [null, 'telephone', PDO::PARAM_STR],
-            'id_adresse' => [fn($x) => $x->id, 'adresse', PDO::PARAM_STR],
+            'adresse' => [null, 'adresse', PDO::PARAM_STR],
             'api_key' => [Uuid::parse(...), 'api_key', PDO::PARAM_STR],
         ];
     }
@@ -31,7 +31,7 @@ abstract class Compte extends Signalable
         public string $nom,
         public string $prenom,
         public string $telephone,
-        public Adresse $adresse,
+        public ?string $adresse,
         public ?Uuid $api_key = null,
     ) {
         parent::__construct($id);
@@ -63,7 +63,7 @@ abstract class Compte extends Signalable
         ' . static::TABLE . '.nom,
         ' . static::TABLE . '.prenom,
         ' . static::TABLE . '.telephone,
-        ' . static::TABLE . '.id_adresse,
+        ' . static::TABLE . '.adresse,
         ' . static::TABLE . '.api_key,
 
         professionnel.denomination professionnel_denomination,
@@ -71,26 +71,12 @@ abstract class Compte extends Signalable
         
         _prive.siren prive_siren,
 
-        _membre.pseudo membre_pseudo,
-
-        a.code_commune adresse_code_commune,
-        a.numero_departement adresse_numero_departement,
-        o.nom adresse_commune_nom,
-        a.numero_voie adresse_numero_voie,
-        a.complement_numero adresse_complement_numero,
-        a.nom_voie adresse_nom_voie,
-        a.localite adresse_localite,
-        a.precision_int adresse_precision_int,
-        a.precision_ext adresse_precision_ext,
-        a.latitude adresse_latitude,
-        a.longitude adresse_longitude
+        _membre.pseudo membre_pseudo
 
         from ' . self::TABLE . '
             left join professionnel using (id)
             left join _prive using (id)
-            left join _membre using (id)
-            join _adresse a on a.id = ' . static::TABLE . '.id_adresse
-            join _commune o on o.code = a.code_commune and o.numero_departement = a.numero_departement';
+            left join _membre using (id)';
     }
 
     protected static function from_db_row(array $row): self
@@ -103,22 +89,7 @@ abstract class Compte extends Signalable
             $row['nom'],
             $row['prenom'],
             $row['telephone'],
-            new Adresse(
-                $row['id_adresse'],
-                new Commune(
-                    $row['adresse_code_commune'],
-                    $row['adresse_numero_departement'],
-                    $row['adresse_commune_nom'],
-                ),
-                $row['adresse_numero_voie'],
-                $row['adresse_complement_numero'],
-                $row['adresse_nom_voie'],
-                $row['adresse_localite'],
-                $row['adresse_precision_int'],
-                $row['adresse_precision_ext'],
-                $row['adresse_latitude'],
-                $row['adresse_longitude'],
-            ),
+            $row['adresse'],
             Uuid::parse($row['api_key'] ?? null),
         ];
         if ($denomination = $row['professionnel_denomination'] ?? null) {

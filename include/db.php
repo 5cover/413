@@ -20,31 +20,24 @@ function connect(): PDO
         return $_pdo;
     }
 
-    // Load .env file
-    {
-        $envfile = __DIR__ . '/.env';
-        foreach (notfalse(file($envfile, FILE_SKIP_EMPTY_LINES), "dotenv file missing at $envfile") as $line) {
-            notfalse(putenv(trim($line)));
-        }
-    }
-
     // Connect to the database
     $driver = 'pgsql';
-    [$host, $port, $dbname, $username, $password] = is_localhost()
-        ? [
-            'localhost',
-            5432,
-            'raphael',
-            'postgres',
-            'postgres'
-        ]
-        : [
-            'postgresdb',
-            notfalse(getenv('PGDB_PORT'), 'PGDB_PORT not set'),
-            'postgres',
-            notfalse(getenv('DB_USER'), 'DB_USER not set'),
-            notfalse(getenv('DB_ROOT_PASSWORD'), 'DB_ROOT_PASSWORD not set')
-        ];
+
+    /// Load .env
+    $env   = file_get_contents(__DIR__ . '/../.env');
+    $lines = explode("\n", $env);
+
+    foreach ($lines as $line) {
+        preg_match('/([^#]+)\=(.*)/', $line, $matches);
+        if (isset($matches[2])) { putenv(trim($line)); }
+    }
+
+    // dotenv variables
+    $host     = notfalse(getenv('DB_HOST'), 'DB_HOST unset');
+    $port     = notfalse(getenv('PGDB_PORT'), 'PGDB_PORT unset');
+    $dbname   = notfalse(getenv('DB_NAME'), 'DB_NAME unset');
+    $username = notfalse(getenv('DB_USER'), 'DB_USER unset');
+    $password = notfalse(getenv('DB_ROOT_PASSWORD'), 'DB_ROOT_PASSWORD unset');
 
     $args = [
         "$driver:host=$host;port=$port;dbname=$dbname",
@@ -93,23 +86,24 @@ function is_localhost(): bool
 {
     $http_host = $_SERVER['HTTP_HOST'] ?? null;
     return $http_host === null || str_starts_with($http_host, 'localhost:');
+
     /*
-    $server_ip = null;
-
-    if (defined('INPUT_SERVER') && filter_has_var(INPUT_SERVER, 'REMOTE_ADDR')) {
-        $server_ip = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_VALIDATE_IP);
-    } elseif (defined('INPUT_ENV') && filter_has_var(INPUT_ENV, 'REMOTE_ADDR')) {
-        $server_ip = filter_input(INPUT_ENV, 'REMOTE_ADDR', FILTER_VALIDATE_IP);
-    } elseif (isset($_SERVER['REMOTE_ADDR'])) {
-        $server_ip = filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP);
-    }
-
-    if (empty($server_ip)) {
-        $server_ip = '127.0.0.1';
-    }
-
-    return empty(filter_var($server_ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_RES_RANGE | FILTER_FLAG_NO_PRIV_RANGE));
-    */
+     * $server_ip = null;
+     *
+     * if (defined('INPUT_SERVER') && filter_has_var(INPUT_SERVER, 'REMOTE_ADDR')) {
+     *     $server_ip = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_VALIDATE_IP);
+     * } elseif (defined('INPUT_ENV') && filter_has_var(INPUT_ENV, 'REMOTE_ADDR')) {
+     *     $server_ip = filter_input(INPUT_ENV, 'REMOTE_ADDR', FILTER_VALIDATE_IP);
+     * } elseif (isset($_SERVER['REMOTE_ADDR'])) {
+     *     $server_ip = filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP);
+     * }
+     *
+     * if (empty($server_ip)) {
+     *     $server_ip = '127.0.0.1';
+     * }
+     *
+     * return empty(filter_var($server_ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_RES_RANGE | FILTER_FLAG_NO_PRIV_RANGE));
+     */
 }
 
 /**
@@ -126,7 +120,7 @@ function document_root(): string
 enum BoolOperator: string
 {
     case AND = 'and';
-    case OR = 'or';
+    case OR  = 'or';
 }
 
 function quote_identifier(string $identifier): string
@@ -149,7 +143,7 @@ function quote_string(string $string): string
 function where_clause(BoolOperator $operator, array $clauses, string $prefix = ''): string
 {
     return $clauses
-        ? ' where ' . implode(" $operator->value ", array_map(fn($attr) => elvis($prefix, '.') . "$attr = :$attr", $clauses)) . ' '
+        ? ' where ' . implode(" $operator->value ", array_map(fn($attr) => ifnntaws($prefix, '.') . "$attr = :$attr", $clauses)) . ' '
         : ' ';
 }
 
@@ -167,8 +161,8 @@ function insert_into(string $table, array $args, array $returning = []): PDOStat
     }
 
     $column_names = implode(',', array_keys($args));
-    $arg_names = implode(',', array_map(fn($col) => ":$col", array_keys($args)));
-    $stmt = notfalse(connect()->prepare("insert into $table ($column_names) values ($arg_names)"
+    $arg_names    = implode(',', array_map(fn($col) => ":$col", array_keys($args)));
+    $stmt         = notfalse(connect()->prepare("insert into $table ($column_names) values ($arg_names)"
         . ($returning ? 'returning ' . implode(',', array_map(quote_identifier(...), $returning)) : '')));
 
     bind_values($stmt, $args);
@@ -191,7 +185,7 @@ function update(string $table, array $args, array $key_args, array $returning = 
 
     $stmt = notfalse(connect()->prepare("update $table set "
         . implode(',', array_map(fn($col) => "$col = :$col", array_keys($args)))
-        . where_clause(BoolOperator::AND , array_keys($key_args))
+        . where_clause(BoolOperator::AND, array_keys($key_args))
         . ($returning ? 'returning ' . implode(',', array_map(quote_identifier(...), $returning)) : '')));
 
     bind_values($stmt, $args);
@@ -201,7 +195,7 @@ function update(string $table, array $args, array $key_args, array $returning = 
 
 function delete_from(string $table, array $key_args): PDOStatement
 {
-    $stmt = notfalse(connect()->prepare("delete from $table " . where_clause(BoolOperator::AND , array_keys($key_args))));
+    $stmt = notfalse(connect()->prepare("delete from $table " . where_clause(BoolOperator::AND, array_keys($key_args))));
     bind_values($stmt, $key_args);
     return $stmt;
 }
@@ -235,7 +229,6 @@ final class LogPDO extends PDO
 
     function query(string $query, ?int $fetchMode = null, mixed ...$fetchModeArgs): PDOStatement|false
     {
-
         error_log("LogPDO ({$this->query_no}) query: '$query'");
         ++$this->query_no;
         return parent::query($query, $fetchMode, $fetchModeArgs);

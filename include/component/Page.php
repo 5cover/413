@@ -9,10 +9,10 @@ require_once 'redirect.php';
 final class Page
 {
     private const BASE_STYLESHEETS = [
-        'style.css',
         'offer-list.css',
         'footer.css',
         'dynamic-table.css',
+        'style.css',
     ];
 
     private const BASE_SCRIPTS = [
@@ -26,12 +26,11 @@ final class Page
      */
     function __construct(
         readonly string $title,
-        readonly array $stylesheets = [],
-        readonly array $scripts = [],
-        readonly ?string $body_id = null,
+        readonly array $stylesheets  = [],
+        readonly array $scripts      = [],
+        readonly ?string $body_id    = null,
         readonly ?string $main_class = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Affiche la page.
@@ -86,7 +85,7 @@ final class Page
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title><?= h14s($this->title) ?></title>
-            <link rel="icon" href="/icon/favicon-32x32.png" type="image/x-icon" alt="test">
+            <link rel="icon" href="/icon/favicon-32x32.png" type="image/x-icon">
             <?php
             foreach (array_merge(self::BASE_STYLESHEETS, $this->stylesheets) as $href) {
                 // Si c'est une URL (contient un ':'), on laisse tel quel. Sinon on préfixe par le dossier des feuilles de style.
@@ -110,13 +109,13 @@ final class Page
         ?>
         <header>
             <div class="logo">
-                <a href="<?= Auth\location_home() ?>"><img src="/images/logo.png" alt="Logo pact"></a>
+                <a href="<?= h14s(Auth\location_home()) ?>"><img src="/images/logo.png" alt="Logo pact"></a>
             </div>
             <?php
             if (Auth\est_connecte()) {
                 // Vérification du statut de la session
                 ?>
-                <a href="<?= location_logout() ?>">
+                <a href="<?= h14s(location_logout()) ?>">
                     <div class="auth-button">
                         <img src="/images/logout-icon.png" alt="Profil">
                         <span>Déconnexion</span>
@@ -129,27 +128,15 @@ final class Page
                             <span>Compte</span>
                         </div>
                     </a>
-                    <?php if (Auth\est_connecte_pro()) { ?>
-                        <!-- <a href="facturation.php">
-                <div class="acces-facturation">
-                    <img src="/images/facturation.png" alt="Profil">
-                    <span>Facturation</span>
                 </div>
-            </a> -->
-                    </div>
-                    <?php
-                    }
-            } else {
-                ?>
+            <?php } else { ?>
                 <a href="connexion.php">
                     <div class="auth-button">
                         <img src="/images/login-icon.png" alt="Profil">
                         <span>Connexion</span>
                     </div>
                 </a>
-                <?php
-            }
-            ?>
+            <?php } ?>
         </header>
         <?php
     }
@@ -160,10 +147,9 @@ final class Page
         <footer>
             <div class="footer-content">
                 <div class="footer-logo">
-                    <a href="/"><img src="/images/logo_vertical_big.png" alt="Logo PACT" width="500" height="500" loading="lazy"></a>
-                    <article>
-                        <p><a href="https://github.com/5cover/413/issues/new" target="_blank" rel="noopener noreferrer">Nous contacter</a></p>
-                    </article>
+                    <a href="/">
+                        <img src="/images/logo_vertical_big.png" alt="Logo PACT" loading="lazy">
+                    </a>
                 </div>
                 <ul class="social-links">
                     <li><a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer"><img src="/images/social/facebook.png" alt="Facebook" width="90" height="90" loading="lazy" title="Facebook"></a></li>
@@ -172,9 +158,10 @@ final class Page
                     <li><a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer"><img src="/images/social/youtube.png" alt="YouTube" width="90" height="90" loading="lazy" title="YouTube"></a></li>
                 </ul>
                 <article>
-                    <p><a href="/autres_pages/legal/cgu.php"><abbr title="Conditions Générales d'Utilisation">CGU</abbr></a></p>
-                    <p><a href="/autres_pages/legal/cgv.php"><abbr title="Conditions Générales de Vente">CGV</abbr></a></p>
-                    <p><a href="/autres_pages/legal/mentions-legales.php">Mentions légales</a></p>
+                    <p><a href="https://github.com/5cover/413/issues/new" target="_blank" rel="noopener noreferrer">Nous contacter</a></p>
+                    <p><a href="<?= h14s(location_mentions_legales()) ?>">Mentions légales</a></p>
+                    <p><a href="<?= h14s(location_cgu()) ?>"><abbr title="Conditions Générales d'Utilisation">CGU</abbr></a></p>
+                    <p><a href="<?= h14s(location_cgv()) ?>"><abbr title="Conditions Générales de Vente">CGV</abbr></a></p>
                 </article>
             </div>
             <div class="footer-bottom">

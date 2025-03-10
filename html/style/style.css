@@ -16,6 +16,15 @@
     font-family: "Tw Cen MT", Arial, sans-serif;
 }
 
+textarea, input {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+button {
+    font-family: "Tw Cen MT", Arial, sans-serif;
+    font-size: 1em;
+}
+
 html,
 body {
     height: 100%;
@@ -80,6 +89,7 @@ header {
     padding: 10px 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     position: relative;
+    z-index: 1;
 }
 
 header #header_pro {
@@ -307,7 +317,7 @@ h6 {
     display: block;
     width: 100%;
     padding: 10px;
-    background-color: #4051FD;
+    background-color: #4A90E2;
     color: white;
     border: none;
     border-radius: 0.5em;
@@ -630,12 +640,20 @@ textarea {
 }
 
 .btn-publish {
+    width: fit-content;
+    display: inline-block;
     background-color: #4A90E2;
+    text-decoration: none;
     color: white;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.btn-publish a {
+    text-decoration: none;
+    color: white;
 }
 
 .offer-info h2 {
@@ -965,7 +983,7 @@ a:not(:hover, :focus, :focus-within) {
 }
 
 #changer_mdp {
-    padding: 20 px;
+    padding: 20px;
     width: 300px;
 }
 
@@ -1006,18 +1024,6 @@ section#info_compte div span {
     color: #333;
 }
 
-#info_compte :is(a, button[type=submit]) {
-    display: inline-block;
-    text-decoration: none;
-    background-color: #3498db;
-    color: white;
-    padding: 0.8rem 1.5rem;
-    border-radius: 5px;
-    font-size: 1rem;
-    margin-top: 1rem;
-    text-align: center;
-}
-
 #info_compte a:hover {
     background-color: #2980b9;
 }
@@ -1031,17 +1037,23 @@ section#info_compte div span {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px;
-    border-radius: 5px;
     margin-bottom: 20px;
+    border-radius: 5px;
+    padding: .8em;
+    position: relative;
 }
 
-.bandeau-etat.vert {
+#a-facturation {
+    position: absolute;
+    right: 1em;
+}
+
+.vert {
     background-color: #d4f4dd;
     /* Vert pastel */
 }
 
-.bandeau-etat.rouge {
+.rouge {
     background-color: #f4d4d4;
     /* Rouge pastel */
 }
@@ -1066,7 +1078,7 @@ section#info_compte div span {
 
 .bouton_principale_pro {
     max-width: 200px;
-    margin: 2rem auto;
+    margin: 2vh auto;
 }
 
 #bouton_creer_offre {
@@ -1120,9 +1132,13 @@ section#info_compte div span {
     justify-content: center;
 }
 
-#facturation td {
+#facturation td,thead th {
     border: 1px solid;
     padding: 8px 10px;
+}
+
+#facturation tfoot th {
+    padding: 10px;
 }
 
 .body-center {
@@ -1226,13 +1242,11 @@ label > input {
 }
 
 .button-signaler {
-    padding: 0.8rem 1.5rem;
-    background-color: #e74c3c;
     /* Rouge pour le bouton */
-    color: white;
-    border: 2px solid #e74c3c;
-    border-radius: 10px;
+    background-color: transparent;
+    border: none;
     /* Arrondir les bords */
+    color: white;
     cursor: pointer;
     font-size: 1rem;
     transition: background-color 0.3s ease;
@@ -1252,4 +1266,41 @@ label > input {
 .spoiler:not(:hover, :focus, :focus-within) {
     filter: blur(.33em);
     transition: filter .1s;
+}
+
+.report-form{
+    margin: 20px auto;
+    max-width: 80%;
+    text-align: center;
+}
+
+.centrer-enfants{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 5vh;
+}
+
+.mention-legales-sections {
+    text-align: center;
+    list-style-position: inside;
+}
+
+.deleted-pseudo {
+    opacity: .67;
+    font-style: italic;
+}
+
+.prix-ht{
+    text-align: right;
+}
+
+#facturation th{
+    text-align: left;
+}
+
+#map {
+    height: 400px;
+    width: 100%;
+    margin: 20px 0;
 }

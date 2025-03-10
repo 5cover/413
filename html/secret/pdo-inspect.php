@@ -1,4 +1,5 @@
 <?php
+require_once 'util.php';
 require_once 'db.php';
 
 $stmt = notfalse(DB\connect()->query(<<<SQL
@@ -34,7 +35,7 @@ SQL));
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <h1><code><?= $stmt->queryString ?></code></h1>
+    <h1><code><?= h14s($stmt->queryString) ?></code></h1>
     <?php dbg_print($stmt->fetchAll()) ?>
 </head>
 <body>

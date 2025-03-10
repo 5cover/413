@@ -1,5 +1,8 @@
 <?php
 
+// If you change this, change it in the tchatator too.
+const PASSWORD_ALGO = PASSWORD_BCRYPT;
+
 /**
  * Des propositions de tag.
  * @var string[]
@@ -64,6 +67,21 @@ const JOURS_SEMAINE = [
     6 => 'samedi',
 ];
 
+const MOIS = [
+    1 => 'janvier',
+    2 => 'février',
+    3 => 'mars',
+    4 => 'avril',
+    5 => 'mai',
+    6 => 'juin',
+    7 => 'juillet',
+    8 => 'août',
+    9 => 'septembre',
+    10 => 'octobre',
+    11 => 'novembre',
+    12 => 'décembre',
+];
+
 /**
  * Des propositions de contextes de visite pour les avis.
  * @var string[]
@@ -74,6 +92,9 @@ const CONTEXTES_VISITE = [
     'solo',
     'famille',
     'amis',
+    'autre',
 ];
 
 const PDO_PARAM_FLOAT = PDO::PARAM_STR;
+
+const NBSP = "\xc2\xa0";

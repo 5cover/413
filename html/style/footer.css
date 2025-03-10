@@ -9,12 +9,9 @@ footer p > a {
 }
 
 footer > div:first-child {
-    padding: 1em;
     display: flex;
     justify-content: space-between;
     background-color: var(--color-secondary);
-    border-top-left-radius: 1.5em;
-    border-top-right-radius: 1.5em;
 }
 
 footer > div:first-child ul {
@@ -24,25 +21,12 @@ footer > div:first-child ul {
     column-gap: 4em;
     height: fit-content;
     align-items: center;
+    align-self: center;
 }
 
 footer > div:first-child ul li img {
     -webkit-filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.2));
     filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.2));
-}
-
-footer > div:first-child > div:first-child {
-    display: flex;
-    column-gap: 3em;
-}
-
-footer > div:first-child > div:first-child img {
-    box-sizing: content-box;
-    border: 2em solid #F3F3F8;
-    border-radius: 2em;
-    width: 6.25em;
-    height: 6.25em;
-    margin: 1em;
 }
 
 footer > div:nth-child(2) {
@@ -51,6 +35,26 @@ footer > div:nth-child(2) {
     justify-content: space-between;
     background-color: #4051FD;
 }
+
+.footer-logo {
+    background-color: #f2f3f9;
+    border: 2px solid #f2f3f9;
+    border-radius: 0.5em; /* Les bords arrondis pour le conteneur */
+    height: 12vh;
+    width: 12vh;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centre le contenu, y compris l'image */
+    align-self: center;
+    margin-left: 1vh;
+}
+
+.footer-logo img {
+    height: 10vh;
+    width: 10vh;
+    display: block; 
+}
+
 
 @media (max-width: 576px) {
     footer > div:first-child {
@@ -68,7 +72,8 @@ footer > div:nth-child(2) {
     }
 }
 
-@media (max-width: 767px) {
+/* tt ce qui est pc et tel */
+@media (max-width: 767px) { 
     .social-links {
         display: none !important;
     }
@@ -92,7 +97,7 @@ footer > div:nth-child(2) {
     }
 
     footer .footer-logo img {
-        width: 150px;
+        width: 5vh;
         /* Réduit la taille du logo */
         height: auto;
     }
