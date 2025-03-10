@@ -27,7 +27,7 @@ function se_deconnecter(): never
     notfalse(session_unset());
     $_SESSION = [];
     notfalse(session_destroy());
-    notfalse(session_regenerate_id(true));
+    session_regenerate_id(true);
     redirect_to(location_home());
 }
 
