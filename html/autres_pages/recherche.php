@@ -60,6 +60,18 @@ $page->put(function () {
 
         </div>
     </section>
+    <section class="map-section">
+        <h2>Carte des offres :</h2>
+        <div id="map"></div>
+    </section>
+    <?php 
+    $page = new Page('Recherche', scripts: [
+        'https://unpkg.com/leaflet/dist/leaflet.js' => 'defer',
+        'tri_recherche.js' => 'defer',
+    ]);
+    
+    ?>
+
     <template id="template-offer-card"><?php CarteOffre::put_template() ?></template>
     <?php
 });

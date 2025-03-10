@@ -147,6 +147,7 @@ function filterOffers() {
 
     // Affichage des offres filtrées
     displayOffers(filteredOffers);
+    updateMap(filteredOffers);
 }
 
 function createOfferCardElement(offer) {
@@ -203,3 +204,30 @@ document.getElementById('main-category').addEventListener('change', showSubcateg
 function getImageFilename(id_image) {
     return `/images_utilisateur/${id_image}.${images[id_image].mime_subtype}`;
 }
+
+
+//debut carte
+
+let map = L.map('map').setView([48.8566, 2.3522], 12); // Centré sur Paris
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+let markersLayer = L.layerGroup().addTo(map);
+
+function updateMap(offersToDisplay) {
+    markersLayer.clearLayers(); // Efface les anciens marqueurs
+    offersToDisplay.forEach(offer => {
+        if (offer.lat && offer.lng) {
+            let marker = L.marker([offer.lat, offer.lng])
+                .bindPopup(`<b>${offer.titre}</b><br>${offer.formatted_address}`)
+                .addTo(markersLayer);
+        }
+    });
+}
+
+
+
+
+// fin carte
