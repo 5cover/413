@@ -133,8 +133,14 @@ function createOfferCardElement(offer) {
 
     get('offer-note').textContent = offer.note_moyenne;
     get('offer-creee-le').textContent = new Date(offer.creee_le).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-    get('lat').parseFloat(textContent) = offer.lat;
-    get('long').parseFloat(textContent) = offer.long;
+
+    const lat = get('offer-prix-min');
+    if (offer.lat) parseFloat(lat.textContent) = offer.lat;
+    else lat.parentElement.remove();
+
+    const long = get('offer-prix-min');
+    if (offer.long) parseFloat(long.textContent) = offer.long;
+    else long.parentElement.remove();
 
     return element;
 }
