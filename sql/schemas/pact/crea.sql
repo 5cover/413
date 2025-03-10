@@ -218,7 +218,6 @@ create table _avis (
     date_experience date not null,
     contexte mot_minuscule not null,
     lu bool not null default false,
-    blackliste bool not null default false,
     likes int not null default 0,
     dislikes int not null default 0,
 

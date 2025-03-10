@@ -84,7 +84,6 @@ create view avis_restaurant as select
     date_experience,
     contexte,
     lu,
-    blackliste,
     id_membre_auteur,
     id_offre id_restaurant,
     likes,
