@@ -5,7 +5,7 @@ require_once 'component/CarteOffre.php';
 
 $page = new Page('Recherche',["https://unpkg.com/leaflet/dist/leaflet.css"] ,scripts: [
     'tri_recherche.js' => 'defer',
-    'https://unpkg.com/leaflet/dist/leaflet.js' => 'defer',
+    
 
 ]);
 
@@ -83,6 +83,8 @@ $page->put(function () {
         <div id="map"></div>
     </section>
     
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
     <script>var map = L.map('map').setView([48.8566, 2.3522], 12); // Centré sur Paris
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
