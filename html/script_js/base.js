@@ -105,7 +105,7 @@ function setup_input_image(element) {
     // - Dynamic preview
     const e_input_image = element.querySelector('input[type=file]');
     const e_preview = document.getElementById(element.id + '-preview');
-    addEventListener('change', () => preview_image(e_input_image, e_preview));
+    element.addEventListener('change', () => preview_image(e_input_image, e_preview));
 }
 
 /**

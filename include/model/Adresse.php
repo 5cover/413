@@ -86,13 +86,13 @@ final class Adresse extends Model
 
     function format(): string
     {
-        return elvis($this->precision_ext, ', ')
-            . elvis($this->precision_int, ', ')
-            . elvis($this->numero_voie, ' ')
-            . elvis($this->complement_numero, ' ')
-            . elvis($this->nom_voie, ', ')
-            . elvis($this->localite, ', ')
-            . elvis($this->commune->nom, ', ')
+        return ifnntaws($this->precision_ext, ', ')
+            . ifnntaws($this->precision_int, ', ')
+            . ifnntaws($this->numero_voie, ' ')
+            . ifnntaws($this->complement_numero, ' ')
+            . ifnntaws($this->nom_voie, ', ')
+            . ifnntaws($this->localite, ', ')
+            . ifnntaws($this->commune->nom, ', ')
             . $this->commune->code_postaux()[0];
     }
 

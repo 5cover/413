@@ -128,14 +128,14 @@ final class InputOffre extends Input
      */
     function get(array $get_or_post, ?Offre $current_offre = null): ?Offre
     {
-        $image_princiaple = $this->input_image_principale->get($get_or_post)[0] ?? $current_offre?->image_principale;
+        $image_principale = $this->input_image_principale->get($get_or_post)[0] ?? $current_offre?->image_principale;
 
-        if ($image_princiaple === null) return null;
+        if ($image_principale === null) return null;
 
         $args_offre = [
             $current_offre?->id,
             $this->input_adresse->get($get_or_post),
-            $image_princiaple,
+            $image_principale,
             $this->professionnel,
             Abonnement::all()[getarg($get_or_post, $this->name('libelle_abonnement'), required: false) ?? 'gratuit'],
             getarg($get_or_post, $this->name('titre')),

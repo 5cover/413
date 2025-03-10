@@ -1,17 +1,17 @@
 /// @file
 /// @author Raphaël
-/// @brief Tchattator413 JSON front-end - Main program
+/// @brief Tchatator413 server - Main program
 /// @date 23/01/2025
 
 #include <assert.h>
 #include <getopt.h>
-#include <json-c/json.h>
+#include <json-c.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <tchattator413/cfg.h>
-#include <tchattator413/json-helpers.h>
-#include <tchattator413/tchattator413.h>
-#include <tchattator413/util.h>
+#include <tchatator413/cfg.h>
+#include <tchatator413/json-helpers.h>
+#include <tchatator413/tchatator413.h>
+#include <tchatator413/util.h>
 #include <unistd.h>
 
 /* to run it
@@ -25,11 +25,13 @@ nc 127.0.0.1 4113 <<< '[]'
 
 */
 
-static inline char *require_env(char const *name) {
+static inline char const *require_env(cfg_t *cfg, char const *name) {
     char *value = getenv(name);
-    if (value) return value;
-    put_error("environment variable '%s' is required\n", name);
-    exit(EX_USAGE);
+    if (!value) {
+        cfg_log(cfg, log_error, "envvar missing: %s\n", name);
+        exit(EX_USAGE);
+    }
+    return value;
 }
 
 int main(int argc, char **argv) {
@@ -78,11 +80,11 @@ int main(int argc, char **argv) {
                 .name = "config",
                 .val = opt_config,
             },
-            {0},
+            { 0 },
         };
 
         int opt;
-        while (-1 != (opt = getopt_long(argc, argv, "qvh:", long_options, NULL))) {
+        while (-1 != (opt = getopt_long(argc, argv, "qvic:", long_options, NULL))) {
             switch (opt) {
             case opt_help:
                 puts(HELP);
@@ -98,7 +100,7 @@ int main(int argc, char **argv) {
             case opt_interactive: interactive = true; break;
             case opt_config:
                 if (cfg) {
-                    put_error("config already specified by previous argument\n");
+                    cfg_log(cfg, log_error, "config already specified by previous argument\n");
                     return EX_USAGE;
                 }
                 cfg = cfg_from_file(optarg);
@@ -115,23 +117,31 @@ int main(int argc, char **argv) {
 
     int result;
 
+    cfg_set_verbosity(cfg, verbosity);
+
     if (dump_config) {
         cfg_dump(cfg);
         result = EX_OK;
     } else {
-        db_t *db = db_connect(verbosity,
-            require_env("DB_HOST"),
-            require_env("PGDB_PORT"),
-            require_env("DB_NAME"),
-            require_env("DB_USER"),
-            require_env("DB_ROOT_PASSWORD"));
+        db_t *db = db_connect(cfg, verbosity,
+            require_env(cfg, "DB_HOST"),
+            require_env(cfg, "PGDB_PORT"),
+            require_env(cfg, "DB_NAME"),
+            require_env(cfg, "DB_USER"),
+            require_env(cfg, "DB_ROOT_PASSWORD"));
         if (!db) return EX_NODB;
+        
+        api_key_t admin_api_key;
+        if (!uuid4_parse(&admin_api_key, require_env(cfg, "ADMIN_API_KEY"))) {
+            cfg_log(cfg, log_error, "invalid ADMIN_API_KEY\n");
+            return EX_USAGE;
+        }
 
-        server_t *server = server_create(server_rate_limiting);
+        server_t *server = server_create(admin_api_key, require_env(cfg, "ADMIN_PASSWORD"));
 
         result = interactive
-            ? tchattator413_run_console(cfg, db, server, argc, argv)
-            : tchattator413_run_server(cfg, db, server);
+            ? tchatator413_run_interactive(cfg, db, server, argc, argv)
+            : tchatator413_run_socket(cfg, db, server);
 
         server_destroy(server);
         db_destroy(db);

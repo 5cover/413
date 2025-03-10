@@ -1,6 +1,11 @@
+/// @file
+/// @author Raphaël
+/// @brief Tchatator413 miscaelannous utilities - Implementation
+/// @date 1/02/2025
+
 #include <limits.h>
 #include <stdarg.h>
-#include <tchattator413/util.h>
+#include <tchatator413/util.h>
 
 char *strfmt(const char *fmt, ...) {
     va_list ap;
@@ -43,8 +48,8 @@ char *vstrfmt(const char *fmt, va_list ap) {
 char *fslurp(FILE *fp) {
     char *answer;
     char *temp;
-    int buffsize = 1024;
-    int i = 0;
+    size_t buffsize = 1024;
+    size_t i = 0;
     int ch;
 
     answer = malloc(1024);

@@ -1,8 +1,13 @@
-#include "tchattator413/tests_tchattator413.h"
+/// @file
+/// @author Raphaël
+/// @brief Tchatator413 test utilities - Implementation
+/// @date 1/02/2025
+
+#include "tchatator413/const.h"
 #include "tests.h"
 #include <stdlib.h>
-#include <tchattator413/cfg.h>
-#include <tchattator413/db.h>
+#include <tchatator413/cfg.h>
+#include <tchatator413/db.h>
 
 // #define DO_OBSERVE
 #define OUT stdout
@@ -17,10 +22,10 @@ int main(void) {
     struct test t;
     bool success = true;
     cfg_t *cfg = cfg_defaults();
-    db_t *db = db_connect(0, DB_HOST, PGDB_PORT, DB_NAME, DB_USER, DB_ROOT_PASSWORD);
+    db_t *db = db_connect(cfg, 0, DB_HOST, PGDB_PORT, DB_NAME, DB_USER, DB_ROOT_PASSWORD);
     if (!db) return EX_NODB;
 
-    server_t *server = server_create(server_regular);
+    server_t *server = server_create(API_KEY_TEST_ADMIN_UUID, API_KEY_TEST_ADMIN_PASSWORD);
 
 #define test(new_test)                \
     do {                              \
@@ -30,7 +35,7 @@ int main(void) {
 
     test(test_uuid4());
 
-#define CALL_TEST(name) test(test_tchattator413_##name(cfg, db, server));
+#define CALL_TEST(name) test(test_tchatator413_##name(cfg, db, server));
     X_TESTS(CALL_TEST)
 #undef CALL_TEST
 

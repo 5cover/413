@@ -79,7 +79,7 @@ ul {
 
 
 </style>
-# Tests d'usage du chat Tchattator
+# Tests d'usage du chat Tchatator
 
 ## Connexion au serveur
 

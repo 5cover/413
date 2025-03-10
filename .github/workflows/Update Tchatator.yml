@@ -1,0 +1,30 @@
+name: Update Tchatator
+on:
+  workflow_dispatch:
+  # workflow disabled
+  #push:
+  #  branches:
+  #    - main
+  #  paths:
+  #    - '**.c'
+  #    - '**.h'
+jobs:
+  update_tchatator:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Update Tchatator
+        env:
+          ARTIFACT_SSH_KEY: '${{secrets.ARTIFACT_SSH_KEY}}'
+          ARTIFACT_HOST: '${{secrets.ARTIFACT_HOST}}'
+        run: 'cd "$GITHUB_WORKSPACE"/scripts && ./server-run-script.bash ./server/update-tchatator.bash'
+
+      - name: Send Discord message
+        env:
+          DISCORD_WEBHOOK_URL: '${{secrets.DISCORD_WEBHOOK_URL}}'
+          ACTOR: "${{github.actor}}"
+          COMMIT: "${{ github.event.head_commit.message }}"
+          URL: "${{ github.event.head_commit.url }}"
+        run: 'cd "$GITHUB_WORKSPACE"/scripts && ./discord-send-msg.bash "Tchatator mis à jour ($ACTOR - \`$COMMIT\`) ([github]($URL))"'

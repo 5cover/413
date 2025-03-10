@@ -1,18 +1,19 @@
 /// @file
 /// @author Raphaël
-/// @brief Tchattator413 protocol - Implementation (JSON-related)
+/// @brief Tchatator413 protocol - Implementation (JSON-related)
 /// @date 23/01/2025
 
-#include <json-c/json.h>
-#include <tchattator413/action.h>
-#include <tchattator413/errstatus.h>
-#include <tchattator413/json-helpers.h>
-#include <tchattator413/util.h>
+#include <json-c.h>
+#include <tchatator413/action.h>
+#include <tchatator413/const.h>
+#include <tchatator413/errstatus.h>
+#include <tchatator413/json-helpers.h>
+#include <tchatator413/util.h>
 
 /// @return @ref serial_t The user ID.
 /// @return @ref errstatus_handled An error occured and was handled.
 /// @return @ref errstatus_error Invalid user key.
-static inline serial_t get_user_id(json_object *obj_user, db_t *db) {
+static inline serial_t get_user_id(cfg_t *cfg, db_t *db, json_object *obj_user) {
     switch (json_object_get_type(obj_user)) {
     case json_type_int: {
         serial_t maybe_user_id = json_object_get_int(obj_user);
@@ -22,23 +23,23 @@ static inline serial_t get_user_id(json_object *obj_user, db_t *db) {
         if (json_object_get_string_len(obj_user) > MAX(EMAIL_LENGTH, PSEUDO_LENGTH)) break;
         const char *email_or_pseudo = json_object_get_string(obj_user);
         return strchr(email_or_pseudo, '@')
-            ? db_get_user_id_by_email(db, email_or_pseudo)
-            : db_get_user_id_by_name(db, email_or_pseudo);
+            ? db_get_user_id_by_email(db, cfg, email_or_pseudo)
+            : db_get_user_id_by_name(db, cfg, email_or_pseudo);
     }
     default:;
     }
     return errstatus_error;
 }
 
-action_t action_parse(json_object *obj, db_t *db) {
+action_t action_parse(cfg_t *cfg, db_t *db, json_object *obj) {
     action_t action = { 0 };
 
-#define fail()                                                                \
-    do {                                                                      \
-        action.type = action_type_error;                                      \
-        action.with.error.type = action_error_type_runtime;                   \
-        action.with.error.info.runtime.status = status_internal_server_error; \
-        return action;                                                        \
+#define fail()                                                              \
+    do {                                                                    \
+        action.type = action_type_error;                                    \
+        action.with.error.type = action_error_type_other;                   \
+        action.with.error.info.other.status = status_internal_server_error; \
+        return action;                                                      \
     } while (0)
 
 #define fail_missing_key(_location)                              \
@@ -87,7 +88,7 @@ action_t action_parse(json_object *obj, db_t *db) {
         if (!json_object_object_get_ex(obj_with, key, &obj)) {                     \
             fail_missing_key(arg_loc(key));                                        \
         }                                                                          \
-        switch (*out_value = get_user_id(obj, db)) {                               \
+        switch (*out_value = get_user_id(cfg, db, obj)) {                          \
         case errstatus_error: fail_invalid(arg_loc(key), obj, "invalid user key"); \
         case errstatus_handled: fail();                                            \
         case errstatus_ok:;                                                        \
@@ -129,7 +130,7 @@ action_t action_parse(json_object *obj, db_t *db) {
 
 #define DO login
     if (action_is(DO)) {
-        action.type = action_type(DO);
+        action.type = ACTION_TYPE(DO);
 
         // api_key
         json_object *obj_api_key;
@@ -141,7 +142,7 @@ action_t action_parse(json_object *obj, db_t *db) {
 #undef DO
 #define DO logout
     } else if (action_is(DO)) {
-        action.type = action_type(DO);
+        action.type = ACTION_TYPE(DO);
 
         // token
         json_object *obj_token;
@@ -149,7 +150,7 @@ action_t action_parse(json_object *obj, db_t *db) {
 #undef DO
 #define DO whois
     } else if (action_is(DO)) {
-        action.type = action_type(DO);
+        action.type = ACTION_TYPE(DO);
 
         // api_key
         json_object *obj_api_key;
@@ -161,7 +162,7 @@ action_t action_parse(json_object *obj, db_t *db) {
 #undef DO
 #define DO send
     } else if (action_is(DO)) {
-        action.type = action_type(DO);
+        action.type = ACTION_TYPE(DO);
 
         // token
         json_object *obj_token;
@@ -177,7 +178,7 @@ action_t action_parse(json_object *obj, db_t *db) {
 #undef DO
 #define DO motd
     } else if (action_is(DO)) {
-        action.type = action_type(DO);
+        action.type = ACTION_TYPE(DO);
 
         // token
         json_object *obj_token;
@@ -185,7 +186,7 @@ action_t action_parse(json_object *obj, db_t *db) {
 #undef DO
 #define DO inbox
     } else if (action_is(DO)) {
-        action.type = action_type(DO);
+        action.type = ACTION_TYPE(DO);
 
         // token
         json_object *obj_token;
@@ -197,7 +198,7 @@ action_t action_parse(json_object *obj, db_t *db) {
 #undef DO
 #define DO outbox
     } else if (action_is(DO)) {
-        action.type = action_type(DO);
+        action.type = ACTION_TYPE(DO);
 
         // token
         json_object *obj_token;
@@ -209,7 +210,7 @@ action_t action_parse(json_object *obj, db_t *db) {
 #undef DO
 #define DO edit
     } else if (action_is(DO)) {
-        action.type = action_type(DO);
+        action.type = ACTION_TYPE(DO);
 
         // token
         json_object *obj_token;
@@ -225,7 +226,7 @@ action_t action_parse(json_object *obj, db_t *db) {
 #undef DO
 #define DO rm
     } else if (action_is(DO)) {
-        action.type = action_type(DO);
+        action.type = ACTION_TYPE(DO);
 
         // token
         json_object *obj_token;
@@ -237,7 +238,7 @@ action_t action_parse(json_object *obj, db_t *db) {
 #undef DO
 #define DO block
     } else if (action_is(DO)) {
-        action.type = action_type(DO);
+        action.type = ACTION_TYPE(DO);
 
         // token
         json_object *obj_token;
@@ -249,7 +250,7 @@ action_t action_parse(json_object *obj, db_t *db) {
 #undef DO
 #define DO unblock
     } else if (action_is(DO)) {
-        action.type = action_type(DO);
+        action.type = ACTION_TYPE(DO);
 
         // token
         json_object *obj_token;
@@ -261,7 +262,7 @@ action_t action_parse(json_object *obj, db_t *db) {
 #undef DO
 #define DO ban
     } else if (action_is(DO)) {
-        action.type = action_type(DO);
+        action.type = ACTION_TYPE(DO);
 
         // token
         json_object *obj_token;
@@ -273,7 +274,7 @@ action_t action_parse(json_object *obj, db_t *db) {
 #undef DO
 #define DO unban
     } else if (action_is(DO)) {
-        action.type = action_type(DO);
+        action.type = ACTION_TYPE(DO);
         // token
         json_object *obj_token;
         getarg_int64(obj_token, "token", &action.with.DO.token);
@@ -282,7 +283,7 @@ action_t action_parse(json_object *obj, db_t *db) {
         json_object *obj_user;
         getarg_user(obj_user, "user", &action.with.DO.user_id);
     } else {
-        put_error("unknown action: %s\n", action_name.val);
+        cfg_log(cfg, log_error, "unknown action: %s\n", action_name.val);
         fail();
     }
 
@@ -305,14 +306,12 @@ static json_object *msg_to_json_object(msg_t *msg) {
 }
 
 json_object *response_to_json(response_t *response) {
-    json_object *obj = json_object_new_object(), *obj_body = json_object_new_object();
-
-    if (response->has_next_page) add_key(obj, "has_next_page", json_object_new_boolean(true));
-    add_key(obj, response->type == action_type_error ? "error" : "body", obj_body);
+    json_object *obj_body = NULL, *obj_error = NULL;
 
     switch (response->type) {
     case action_type_error: {
         status_t status;
+        obj_error = json_object_new_object();
         switch (response->body.error.type) {
         case action_error_type_type: {
             status = status_bad_request;
@@ -328,14 +327,14 @@ json_object *response_to_json(response_t *response) {
                       json_type_to_name(response->body.error.info.type.expected),
                       json_type_to_name(actual_type),
                       min_json(obj_actual));
-            if (msg) add_key(obj_body, "message", json_object_new_string(msg));
+            if (msg) add_key(obj_error, "message", json_object_new_string(msg));
             free(msg);
             break;
         }
         case action_error_type_missing_key: {
             status = status_bad_request;
             char *msg = strfmt("%s: key missing", response->body.error.info.missing_key.location);
-            if (msg) add_key(obj_body, "message", json_object_new_string(msg));
+            if (msg) add_key(obj_error, "message", json_object_new_string(msg));
             free(msg);
             break;
         }
@@ -344,31 +343,33 @@ json_object *response_to_json(response_t *response) {
             char *msg = strfmt("%s: %s: %s", response->body.error.info.invalid.location,
                 response->body.error.info.invalid.reason,
                 json_object_to_json_string(response->body.error.info.invalid.obj_bad));
-            if (msg) add_key(obj_body, "message", json_object_new_string(msg));
+            if (msg) add_key(obj_error, "message", json_object_new_string(msg));
             free(msg);
             break;
         }
-        case action_error_type_runtime: {
-            status = response->body.error.info.runtime.status;
+        case action_error_type_other: {
+            status = response->body.error.info.other.status;
             break;
         }
         case action_error_type_rate_limit: {
             status = status_too_many_requests;
-            add_key(obj_body, "next_request_at", json_object_new_int64(response->body.error.info.rate_limit.next_request_at));
+            add_key(obj_error, "next_request_at", json_object_new_int64(response->body.error.info.rate_limit.next_request_at));
             break;
         }
         default: unreachable();
         }
-        add_key(obj_body, "status", json_object_new_int(status));
+        add_key(obj_error, "status", json_object_new_int(status));
         break;
     }
     case action_type_login:
+        obj_body = json_object_new_object();
         add_key(obj_body, "token", json_object_new_int64(response->body.login.token));
         break;
     case action_type_logout:
 
         break;
     case action_type_whois:
+        obj_body = json_object_new_object();
         add_key(obj_body, "user_id", json_object_new_int(response->body.whois.user.id));
         add_key(obj_body, "email", json_object_new_string(response->body.whois.user.email));
         add_key(obj_body, "last_name", json_object_new_string(response->body.whois.user.last_name));
@@ -377,20 +378,18 @@ json_object *response_to_json(response_t *response) {
         add_key(obj_body, "kind", json_object_new_int(response->body.whois.user.kind));
         break;
     case action_type_send:
-
+        obj_body = json_object_new_object();
+        add_key(obj_body, "msg_id", json_object_new_int(response->body.send.msg_id));
         break;
     case action_type_motd:
 
         break;
     case action_type_inbox: {
-        json_object *o = json_object_new_array();
-        json_object_object_del(obj, "body");    // FIXME
+        obj_body = json_object_new_array();
 
         for (size_t i = 0; i < response->body.inbox.n_msgs; ++i) {
-            json_object_array_add(o, msg_to_json_object(response->body.inbox.msgs));
+            json_object_array_add(obj_body, msg_to_json_object(response->body.inbox.msgs));
         }
-
-        json_object_object_add(obj, "body", o); // FIXME
         break;
     }
     case action_type_outbox:
@@ -416,6 +415,13 @@ json_object *response_to_json(response_t *response) {
         break;
     default: unreachable();
     }
+
+    json_object *obj = json_object_new_object();
+
+    if (response->has_next_page) add_key(obj, "has_next_page", json_object_new_boolean(true));
+    if (obj_body) add_key(obj, "body", obj_body);
+    if (obj_error) add_key(obj, "error", obj_error);
+
 #undef add_key
 
     return obj;

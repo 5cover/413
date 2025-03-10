@@ -5,7 +5,6 @@ require_once 'util.php';
 require_once 'auth.php';
 require_once 'redirect.php';
 require_once 'component/Page.php';
-require_once 'component/InputAdresse.php';
 require_once 'model/Compte.php';
 
 $page        = new Page('Modification compte', body_id: 'detail_compte', scripts: ['module/modif_compte.js' => 'type="module"']);
@@ -15,8 +14,6 @@ $error_email = null;
 $error_siren = null;
 
 $compte = notfalse(Compte::from_db(Auth\id_compte_connecte()));
-
-$input_adresse = new InputAdresse('adresse', 'adresse');
 
 // Afficher le détail du compte du membre
 
@@ -68,6 +65,10 @@ if ($_POST) {
         }
     }
 
+    if (null !== $new_adresse = getarg($_POST, 'new_adresse', required: false)) {
+        $compte->adresse = $new_adresse;
+    }
+
     // modif mot de passe
 
     if ($old_mdp = getarg($_POST, 'old_mdp', required: false)
@@ -94,7 +95,7 @@ if ($_POST) {
     redirect_to(location_detail_compte());
 }
 
-$page->put(function () use ($compte, $input_adresse, $error_email, $error_mdp, $error_siren, $error_tel) {
+$page->put(function () use ($compte, $error_email, $error_mdp, $error_siren, $error_tel) {
     ?>
     <h1>Modifier les informations de votre compte</h1>
     <section id="info_compte">
@@ -167,9 +168,8 @@ $page->put(function () use ($compte, $input_adresse, $error_email, $error_mdp, $
             <br>
             <div>
                 <label>Adresse&nbsp;: </label>
-                <?= h14s($compte->adresse->format()) ?>
+                <input type="text" name="new_adresse" id="new_adresse" value="<?= h14s($compte->adresse) ?>">
             </div>
-            <?php $input_adresse->put($compte->adresse) ?>
             <br>
             <details id="changer_mdp">
                 <summary>Modifier son mot de passe</su>

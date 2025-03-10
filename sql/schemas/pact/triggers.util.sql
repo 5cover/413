@@ -115,7 +115,7 @@ begin
         nom,
         prenom,
         telephone,
-        id_adresse,
+        adresse,
         api_key
     ) values (
         new.id,
@@ -124,7 +124,7 @@ begin
         new.nom,
         new.prenom,
         new.telephone,
-        new.id_adresse,
+        new.adresse,
         new.api_key
     ) returning id into new.id;
 end
@@ -182,7 +182,7 @@ begin
         nom = new.nom,
         prenom = new.prenom,
         telephone = new.telephone,
-        id_adresse = new.id_adresse,
+        adresse = new.adresse,
         api_key = new.api_key
     where
         id = new.id;
@@ -191,8 +191,7 @@ $$ language plpgsql;
 
 create function _compte_delete() returns trigger as $$
 begin
-    delete from _signalable where id = old.id;
-    call delete_unused_adress(old.id_adresse);
+    -- fixme do nothing
     return old;
 end
 $$ language plpgsql;

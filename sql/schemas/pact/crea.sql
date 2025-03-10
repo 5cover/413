@@ -78,8 +78,7 @@ create table _compte (
     nom ligne not null,
     prenom ligne not null,
     telephone numero_telephone not null,
-    id_adresse int not null
-        constraint compte_fk_adresse references _adresse,
+    adresse text, -- adresse libre facultative
     api_key uuid unique
 );
 

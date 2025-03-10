@@ -25,11 +25,6 @@ if (isset($_POST['motdepasse'])) {
     $email = $_POST['email'];
     if (false !== Compte::from_db_by_email($email)) fail('Cette adresse e-mail est déjà utilisée.');
 
-    $commune = Commune::from_db_by_nom($_POST['adresse']);
-    if (false === $commune) fail("La commune '{$_POST['adresse']}' n'existe pas.");
-
-    $adresse = new Adresse(null, $commune);
-    $adresse->push_to_db();
 
     $mdp_hash = notfalse(password_hash($_POST['motdepasse'], PASSWORD_ALGO));
 
@@ -40,7 +35,7 @@ if (isset($_POST['motdepasse'])) {
         $_POST['nom'],
         $_POST['prenom'],
         $_POST['telephone'],
-        $adresse,
+        $_POST['adresse'],
         null,
     ], $pseudo);
     try {

@@ -19,15 +19,20 @@ jobs:
       - name: Send discord message before
         env:
           DISCORD_WEBHOOK_URL: "${{secrets.DISCORD_WEBHOOK_URL}}"
-        run: 'cd "$GITHUB_WORKSPACE"/script && ./discord-send-msg.bash "@here Redémarrage serveur."'
+        run: 'cd "$GITHUB_WORKSPACE"/scripts && ./discord-send-msg.bash "@ here Redémarrage serveur."'
+
+      - name: create dotenv
+        uses: alekangelov/secret-envfile@v1
+        with:
+          content: ${{ secrets.DOTENV }}
 
       - name: Restart Server
         env:
           ARTIFACT_SSH_KEY: '${{secrets.ARTIFACT_SSH_KEY}}'
           ARTIFACT_HOST: '${{secrets.ARTIFACT_HOST}}'
-        run: 'cd "$GITHUB_WORKSPACE"/script && ./server-run-script.bash ./server/restart.bash'
+        run: 'cd "$GITHUB_WORKSPACE"/scripts && ./server-cp.bash "$GITHUB_WORKSPACE"/.env /docker/sae/data/.env && ./server-run-script.bash ./server/restart.bash'
 
       - name: Send discord message after
         env:
           DISCORD_WEBHOOK_URL: "${{secrets.DISCORD_WEBHOOK_URL}}"
-        run: 'cd "$GITHUB_WORKSPACE"/script && ./discord-send-msg.bash "@here Serveur redémarré."'
+        run: 'cd "$GITHUB_WORKSPACE"/scripts && ./discord-send-msg.bash "@ here Serveur redémarré."'

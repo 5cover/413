@@ -3,7 +3,7 @@
 /// @brief UUID library - Implementation
 /// @date 23/01/2025
 
-#include <tchattator413/uuid.h>
+#include <tchatator413/uuid.h>
 
 #include "assert.h"
 #include <stdint.h>
@@ -25,54 +25,54 @@ static inline uint8_t hex_repr_to_half(char c);
 
 #define INVALID_HALF 255
 
-#define X_42226 o o o o h o o h o o h o o h o o o o o o
+#define X_42226 O O O O H O O H O O H O O H O O O O O O
 
 char *uuid4_repr(uuid4_t uuid, char repr[static const UUID4_REPR_LENGTH]) {
     size_t idata = 0, i = 0;
-#define o                                                    \
+#define O                                                    \
     do {                                                     \
         repr[i++] = hex_half_to_repr(uuid.data[idata] >> 4); \
         repr[i++] = hex_half_to_repr(uuid.data[idata] & 15); \
         ++idata;                                             \
     } while (0);
-#define h repr[i++] = '-';
+#define H repr[i++] = '-';
     X_42226;
-#undef o
-#undef h
+#undef O
+#undef H
     return repr;
 }
 
 bool uuid4_parse(uuid4_t *out_uuid, char const repr[static const UUID4_REPR_LENGTH]) {
     size_t idata = 0, i = 0;
     uint8_t v1, v2;
-#define o                                                            \
+#define O                                                            \
     do {                                                             \
         if ((v1 = hex_repr_to_half(repr[i++])) == INVALID_HALF       \
             || (v2 = hex_repr_to_half(repr[i++])) == INVALID_HALF) { \
             return false;                                            \
         }                                                            \
-        out_uuid->data[idata++] = (v1 << 4) + v2;                    \
+        out_uuid->data[idata++] = (uint8_t)(v1 << 4) + v2;                    \
     } while (0);
-#define h \
+#define H \
     if (repr[i++] != '-') return false;
     X_42226
-#undef o
-#undef h
+#undef O
+#undef H
     return true;
 }
 
 void uuid4_put(uuid4_t uuid, FILE *stream) {
     size_t idata = 0;
-#define o                                                      \
+#define O                                                      \
     do {                                                       \
         putc(hex_half_to_repr(uuid.data[idata] >> 4), stream); \
         putc(hex_half_to_repr(uuid.data[idata] & 15), stream); \
         ++idata;                                               \
     } while (0);
-#define h putc('-', stream);
+#define H putc('-', stream);
     X_42226;
-#undef o
-#undef h
+#undef O
+#undef H
 }
 
 char hex_half_to_repr(uint8_t value) {
@@ -82,11 +82,11 @@ char hex_half_to_repr(uint8_t value) {
 
 uint8_t hex_repr_to_half(char c) {
     return '0' <= c && c <= '9'
-        ? c - '0'
+        ? (uint8_t)c - '0'
         : 'A' <= c && c <= 'F'
-        ? c - 'A' + 10
+        ? (uint8_t)c - 'A' + 10
         : 'a' <= c && c <= 'f'
-        ? c - 'a' + 10
+        ? (uint8_t)c - 'a' + 10
         : INVALID_HALF;
 }
 

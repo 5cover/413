@@ -272,12 +272,13 @@ function html_error(mixed $arg): never
 }
 
 /**
+ * if-not-null-then-append-with-separator
  * Concatène une chaîne à un suffixe ou retourne la chaîne vide.
  * @param ?string $chaine La chaîne (peut être `null`).
  * @param ?string $suffixe Le suffixe à concaténer à $chaine.
  * @return string La chaîne formatée.
  */
-function elvis(?string $chaine, ?string $suffixe): string
+function ifnntaws(?string $chaine, ?string $suffixe): string
 {
     return $chaine ? "$chaine$suffixe" : '';
 }

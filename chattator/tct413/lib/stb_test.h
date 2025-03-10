@@ -1,11 +1,10 @@
-/** @file
- * @author 5cover (Scover)
- * @brief Quick unit testing library
- * @copyright Public Domain - The Unlicense
- * @date 30/01/2024
- * @details
- * See README.md for details and usage.
- */
+/// @file
+/// @author 5cover (Scover)
+/// @brief Quick unit testing library
+/// @copyright Public Domain - The Unlicense
+/// @date 30/01/2024
+/// @details
+/// See README.md for details and usage.
 
 #ifndef STB_TEST_H_
 #define STB_TEST_H_
@@ -19,11 +18,12 @@
 #include <stdio.h>
 
 #ifdef __GNUC__
-#define _stbtest_attr_format(archetype, string_index, first_to_check) __attribute__((format(archetype, string_index, first_to_check)))
+#define _STBTEST_ATTR_FORMAT(archetype, string_index, first_to_check) __attribute__((format(archetype, string_index, first_to_check)))
 #else
-#define _stbtest_attr_format(archetype, string_index, first_to_check)
+#define _STBTEST_ATTR_FORMAT(archetype, string_index, first_to_check)
 #endif // __GNUC__
 
+/// @brief Represents a test suite with a name and a collection of test cases.
 struct test {
     char const *name;
     struct _stbtest_case *cases;
@@ -37,9 +37,15 @@ struct _stbtest_case {
     char *file;
 };
 
+/// @brief Start a new test suite with the given name.
+///
+/// This function creates a new `struct test` instance with the provided name and an empty list of test cases.
+///
+/// @param name The name of the test suite.
+/// @return The newly created `struct test` instance.
 STB_TEST_DEFINITION struct test test_start(char const *name);
 
-/// @brief Add a test case that is always a faliure.
+/// @brief Add a test case that is always a failure.
 #define test_fail(test, name, ...) _stbtest_test_case(__LINE__, __FILE_NAME__, (test), false, "(fail)", (name)__VA_OPT__(, ) __VA_ARGS__)
 /// @brief Add a test case.
 #define test_case(test, expr, name, ...) _stbtest_test_case(__LINE__, __FILE_NAME__, (test), (expr), #expr, (name)__VA_OPT__(, ) __VA_ARGS__)
@@ -47,8 +53,18 @@ STB_TEST_DEFINITION struct test test_start(char const *name);
 #define test_case_wide(test, expr, name, ...) _stbtest_test_case(__LINE__, __FILE_NAME__, (test), (expr), NULL, (name)__VA_OPT__(, ) __VA_ARGS__)
 
 STB_TEST_DEFINITION bool _stbtest_test_case(unsigned line, char const *file, struct test *test, bool ok, char const *expr, char const *fmt_name, ...)
-    _stbtest_attr_format(printf, 6, 7);
+    _STBTEST_ATTR_FORMAT(printf, 6, 7);
 
+/// @brief Finish a test suite and prints the results to the provided output stream.
+///
+/// This function takes a `struct test` instance and an output stream, and prints the results of the test suite to the output stream. It includes information about the number of successful and failed test cases, as well as the names and file locations of the failed test cases.
+///
+/// @remark This function destroys @p test Dereferencing @p test after calling this function is undefined behavior.
+///
+/// @param test The test suite to be finished.
+/// @param output The output stream to print the results to.
+/// @return @c true if all test cases passed
+/// @return @c false otherwise.
 STB_TEST_DEFINITION bool test_end(struct test *test, FILE *output);
 
 #endif // STB_TEST_H_

@@ -11,7 +11,7 @@ Donc je pars sur une réorganisation de l'arborescence pour le SQL, afin de mont
     - crea.sql
     - shared_data.sql : peuplement partagé (données identiques pour toutes les instances)
     - ...
-  - tchattator
+  - tchatator
     - crea.sql
     - ...
 - instances

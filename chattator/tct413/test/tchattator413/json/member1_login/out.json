@@ -1,9 +1,0 @@
-[
-  {
-    "body": {
-      "token": {
-        "$fmt_number": "%*ld"
-      }
-    }
-  }
-]

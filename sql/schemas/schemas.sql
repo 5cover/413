@@ -5,5 +5,5 @@ select pg_terminate_backend(pid)
 drop schema if exists pact cascade;
 create schema pact;
 
-drop schema if exists tchattator cascade;
-create schema tchattator;
+drop schema if exists tchatator cascade;
+create schema tchatator;

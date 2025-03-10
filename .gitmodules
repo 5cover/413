@@ -1,0 +1,3 @@
+[submodule "chattator/tct413/lib/bcrypt"]
+	path = chattator/tct413/lib/bcrypt
+	url = https://github.com/rg3/libbcrypt
