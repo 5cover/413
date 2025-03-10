@@ -5,6 +5,7 @@ require_once 'component/CarteOffre.php';
 
 $page = new Page('Recherche',["https://unpkg.com/leaflet/dist/leaflet.css"] ,scripts: [
     'tri_recherche.js' => 'defer',
+    'https://unpkg.com/leaflet/dist/leaflet.js'=> 'defer',
     
 
 ]);
@@ -85,7 +86,7 @@ $page->put(function () {
 
 
     <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script> -->
     
     <script>
         document.addEventListener('DOMContentLoaded', function () {
