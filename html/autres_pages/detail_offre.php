@@ -42,7 +42,12 @@ $id_membre_co = Auth\id_membre_connecte();
 $review_list  = new ReviewList($offre);
 
 if (null !== $report_message = getarg($_POST, 'report_message', required: false)) {
-    redirect_to(location_signaler($id_membre_co, $offre->id, $report_message));
+    $ch = curl_init(location_signaler($id_membre_co, $offre->id, $report_message));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_NOBODY, true);
+    curl_exec($ch);
+    //$ok = curl_getinfo($ch, CURLINFO_HTTP_CODE) == 200;
+    curl_close($ch);
 }
 
 // Si on a un POST de publication d'avis
