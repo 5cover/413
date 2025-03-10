@@ -76,6 +76,30 @@ $page->put(function () {
 
         </div>
     </section>
+    
     <template id="template-offre-card"><?php CarteOffre::put_template() ?></template>
+    <section class="map-section">
+        <h2>Carte des offres :</h2>
+        <div id="map"></div>
+    </section>
+    
+    <script>var map = L.map('map').setView([48.8566, 2.3522], 12); // Centré sur Paris
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    let markersLayer = L.layerGroup().addTo(map);
+
+    function updateMap(offersToDisplay) {
+        markersLayer.clearLayers(); // Efface les anciens marqueurs
+        offersToDisplay.forEach(offer => {
+            if (offer.lat && offer.lng) {
+                let marker = L.marker([offer.lat, offer.lng])
+                    .bindPopup(`<b>${offer.titre}</b><br>${offer.formatted_address}`)
+                    .addTo(markersLayer);
+            }
+        });
+    }</script>
     <?php
 });
