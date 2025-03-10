@@ -133,6 +133,8 @@ function createOfferCardElement(offer) {
 
     get('offer-note').textContent = offer.note_moyenne;
     get('offer-creee-le').textContent = new Date(offer.creee_le).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    get('lat').parseFloat(textContent) = offer.lat;
+    get('long').parseFloat(textContent) = offer.long;
 
     return element;
 }
@@ -182,8 +184,8 @@ L.marker([48.8566, 2.3522]).addTo(map)
 function updateMap(offersToDisplay) {
     markersLayer.clearLayers(); // Efface les anciens marqueurs
     offersToDisplay.forEach(offer => {
-        if (offer.lat && offer.lng) {
-            let marker = L.marker([offer.lat, offer.lng])
+        if (offer.lat && offer.long) {
+            let marker = L.marker([offer.lat, offer.long])
                 .bindPopup(`<b>${offer.titre}</b><br>${offer.formatted_address}`)
                 .addTo(markersLayer);
         }
