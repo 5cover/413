@@ -78,7 +78,7 @@ $page->put(function () {
         </div>
     </section>
     
-    <template id="template-offre-card"><?php CarteOffre::put_template() ?></template>
+    <template id="template-offer-card"><?php CarteOffre::put_template() ?></template>
     <section class="map-section">
         <h2>Carte des offres :</h2>
         <div id="map"></div>
