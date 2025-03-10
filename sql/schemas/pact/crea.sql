@@ -240,6 +240,12 @@ create table _avis_restaurant (
     note_qualite_prix int not null check (note_qualite_prix between 1 and 5)
 );
 
+create table _blacklist (
+    id int
+        constraint blacklist_pk primary key
+        constraint blacklist_inherits_avis references _avis on delete cascade,
+);
+
 create table _reponse (
     id int
         constraint reponse_pk primary key
