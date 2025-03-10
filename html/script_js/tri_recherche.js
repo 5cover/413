@@ -176,7 +176,9 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 let markersLayer = L.layerGroup().addTo(map);
-
+L.marker([48.8566, 2.3522]).addTo(map)
+    .bindPopup('A pretty CSS popup.<br> Easily customizable.')
+    .openPopup();
 function updateMap(offersToDisplay) {
     markersLayer.clearLayers(); // Efface les anciens marqueurs
     offersToDisplay.forEach(offer => {
