@@ -1,8 +1,5 @@
 <?php
 
-/**
- * @property-read float $total_days
- */
 final class Duree
 {
     function __construct(
@@ -13,18 +10,6 @@ final class Duree
         readonly int $minutes   = 0,
         readonly float $seconds = 0,
     ) {}
-
-    function __get(string $name): mixed
-    {
-        return match ($name) {
-            'total_days' => $this->years * 360
-                + $this->months * 30
-                + $this->days
-                + $this->hours / 24
-                + $this->minutes / 1440
-                + $this->seconds / 86400
-        };
-    }
 
     function __toString(): string
     {
@@ -51,13 +36,13 @@ final class Duree
         if (notfalse(preg_match('/(\d+) years/', $output, $matches)) === 1
             && false === ($years = parse_int($matches[1]))
             || notfalse(preg_match('/(\d+) mons/', $output, $matches)) === 1
-                && false === ($months = parse_int($matches[1]))
+            && false === ($months = parse_int($matches[1]))
             || notfalse(preg_match('/(\d+) days/', $output, $matches)) === 1
-                && false === ($days = parse_int($matches[1]))
+            && false === ($days = parse_int($matches[1]))
             || notfalse(preg_match('/(\d+):(\d+):(\d*\.?\d+)/', $output, $matches)) === 1
-                && (false === ($hours = parse_int($matches[1], 0))
-                    || false === ($minutes = parse_int($matches[2], 0))
-                    || false === ($seconds = parse_float($matches[3], 0)))) {
+            && (false === ($hours = parse_int($matches[1], 0))
+                || false === ($minutes = parse_int($matches[2], 0))
+                || false === ($seconds = parse_float($matches[3], 0)))) {
             throw new DomainException();
         }
         return new Duree($years, $months, $days, $hours, $minutes, $seconds);

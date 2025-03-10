@@ -38,42 +38,33 @@ final class ReviewList
                 <?php if (!empty($avis)) {
                     foreach ($avis as $a) { ?>
                         <div class="review">
-                            <p><?php if (null === $a->membre_auteur) { ?>
-                                    <span class="deleted-pseudo">Compte supprimé</span>
-                                <?php } else { ?>
-                                    <strong><?= h14s($a->membre_auteur->pseudo) ?></strong>
-                                <?php } ?>
-                                &ndash; <?= h14s($a->note) ?>/5
-                                <?php
-                                if (null !== $idcco = Auth\id_compte_connecte()) {
+                            <p><strong><?= h14s($a->membre_auteur->pseudo) ?></strong> - <?= h14s($a->note) ?>/5
+                                <?php if (null !== $idcco = Auth\id_compte_connecte()) {
                                     $raison_signalement_actuel = Signalable::signalable_from_db($a->id)->get_signalement($idcco);
                                     ?>
-                                    <button class="button-signaler" data-idcco="<?= $idcco ?>" data-avis-id="<?= $a->id ?>" type="button"><img class="signalement-flag" src="/images/<?= $raison_signalement_actuel === null ? 'flag' : 'flag-filled' ?>.svg" title="<?= $raison_signalement_actuel === null ? 'Signaler' : 'Retirer le signalement (' . h14s($raison_signalement_actuel) . ')' ?>" width="24" height="29" alt="Drapeau"></button>
+                                    <button class="button-signaler" data-idcco="<?= $idcco ?>" data-avis-id="<?= $a->id ?>" type="button"><img class="signalement-flag" src="/images/<?= $raison_signalement_actuel === null ? 'flag' : 'flag-filled' ?>.svg" width="24" height="29" alt="Drapeau" title="Signaler"></button>
                                 </p>
                             <?php } ?>
                             <p class="review-contexte">Contexte&nbsp;: <?= h14s($a->contexte) ?></p>
                             <p><?= h14s($a->commentaire) ?></p>
                             <p class="review-date"><?= h14s($a->date_experience) ?></p>
                             <?php
-                            if ($a->membre_auteur !== null and $a->membre_auteur->id === Auth\id_membre_connecte()) {
-                                ?>
-                                <form method="post" action="<?= h14s(location_modifier_avis($this->offre->id, $a->id)) ?>">
-                                    <button type="submit" class="btn-publish">Modifier</button>
-                                    <button class="btn-publish">
-                                        <a href="<?= h14s(location_avis_supprimer($a->id, location_detail_offre($this->offre->id))) ?>">Supprimer</a>
-                                    </button>
+                            if (notnull($a->membre_auteur->id) === Auth\id_membre_connecte()) { ?>
+                                <form method="post" action="<?= location_modifier_avis($this->offre->id, $a->id) ?>">
+                                    <button type="submit" class="btn-modif">Modifier</button>
+                                    <a href="<?= location_avis_supprimer($a->id, location_detail_offre($this->offre->id)) ?>">Supprimer</a>
                                 </form>
                             <?php }
-                            $h14s_rep_contenu = h14s(Reponse::from_db_by_avis($a->id)?->contenu);
+                            $h14s_rep_contenu = mapnull(Reponse::from_db_by_avis($a->id)?->contenu, h14s(...));
                             if (notnull($this->offre->professionnel->id) === Auth\id_pro_connecte()) { ?>
-                                <form method="post" action="<?= h14s(location_repondre_avis($a->id)) ?>">
+                                <form method="post" action="<?= location_repondre_avis($a->id) ?>">
                                     <p><label for="contenu">Votre réponse&nbsp;:</label></p>
                                     <textarea name="contenu" placeholder="Réponse&hellip;" title="Laisser vide pour supprimer la réponse"><?= $h14s_rep_contenu ?></textarea>
-                                    <button type="submit" class="btn-publish">Répondre</button>
+                                    <button type="submit">Répondre</button>
                                 </form>
                             <?php } else if ($h14s_rep_contenu !== null) { ?>
-                                    <p>Réponse de <?= h14s($this->offre->professionnel->denomination) ?>&nbsp;:</p>
-                                    <p><?= $h14s_rep_contenu ?></p>
+                                <p>Réponse de <?= h14s($this->offre->professionnel->denomination) ?>&nbsp;:</p>
+                                <p><?= $h14s_rep_contenu ?></p>
                             <?php } ?>
                         </div>
                     <?php }

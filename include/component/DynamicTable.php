@@ -1,5 +1,4 @@
 <?php
-require_once 'component/Input.php';
 require_once 'util.php';
 
 /**
@@ -20,8 +19,8 @@ final class DynamicTable extends Input
         private readonly Closure $put_row,
         private readonly Closure $put_prompt,
         string $id,
-        string $name                         = '',
-        string $form_id                      = '',
+        string $name        = '',
+        string $form_id     = '',
         private readonly array $initial_rows = [],
     ) {
         parent::__construct($id, $name, $form_id);
@@ -39,30 +38,28 @@ final class DynamicTable extends Input
     function put(mixed $current = null): void
     {
         ?>
-<table id="<?= h14s($this->id) ?>" class="dynamic-table">
+<table id="<?= $this->id ?>" class="dynamic-table">
     <thead><tr>
         <?php foreach ($this->columns as $column) { ?>
-            <th><?= h14s($column) ?></th>
+            <th><?= $column ?></th>
         <?php } ?>
     </tr></thead>
     <tbody>
-        <?php
-        foreach ($current ?? $this->initial_rows as $row) {
+        <?php foreach ($current ?? $this->initial_rows as $row) {
             ?>
             <tr>
                 <?php ($this->put_row)($this, $row) ?>
             </tr>
             <?php
-        }
-        ?>
+        } ?>
     </tbody>
     <tfoot>
         <tr>
-            <?php ($this->put_prompt)($this) ?>
+            <?= ($this->put_prompt)($this)?>
         </tr>
     </tfoot>
 </table>
-<template id="<?= h14s($this->id) ?>-tr-template"><tr>
+<template id="<?= $this->id ?>-tr-template"><tr>
     <?php ($this->put_row)($this, null) ?>
 </tr></template>
 <?php

@@ -1,6 +1,0 @@
-{
-  "do": "inbox",
-  "with": {
-    "token": %ld
-  }
-}

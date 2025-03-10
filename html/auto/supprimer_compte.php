@@ -1,7 +1,5 @@
 <?php
 require_once 'util.php';
-require_once 'auth.php';
-require_once 'model/Compte.php';
 
 $id_compte = getarg($_GET, 'id_compte', arg_int());
 

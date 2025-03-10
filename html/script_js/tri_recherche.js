@@ -9,9 +9,16 @@ let images;
 
 async function initializeOffers() {
     [offers, images] = await Promise.all([
-        (await getDataJson(`/json/offres.php`)).filter(o => o.en_ligne),
+        getDataJson(`/json/offres.php`),
         getDataJson(`/json/images.php`),
     ]);
+    offers = offers
+        .filter(offer => offer.en_ligne === true)  // Filter out offers where en_ligne is false
+        .map(offer => ({
+            ...offer,
+            tags: Array.isArray(offer.tags) ? offer.tags.map(tagObj => tagObj.tag.toLowerCase()) : []
+        }))
+        ;
     filterOffers();
 }
 initializeOffers();
@@ -147,39 +154,49 @@ function filterOffers() {
 
     // Affichage des offres filtrées
     displayOffers(filteredOffers);
-    updateMap(filteredOffers);
-}
-
-function createOfferCardElement(offer) {
-    const element = document.getElementById('template-offer-card').content.cloneNode(true).firstElementChild;
-
-    function get(cls) { return element.getElementsByClassName(cls).item(0); }
-
-    const imagePrincipale = get('offer-image-principale');
-    imagePrincipale.src = getImageFilename(offer.id_image_principale);
-
-    const titre = get('titre');
-    titre.href = '/autres_pages/detail_offre.php?id' + offer.id;
-    titre.textContent = offer.titre;
-
-    get('location').textContent = offer.formatted_address;
-    get('offer-resume').textContent = offer.resume;
-    get('category').textContent = offer.categorie;
-
-    const prix_min = get('offer-prix-min');
-    if (offer.prix_min) prix_min.textContent = offer.prix_min;
-    else prix_min.parentElement.remove();
-
-    get('offer-note').textContent = offer.note_moyenne;
-    get('offer-creee-le').textContent = new Date(offer.creee_le).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-
-    return element;
 }
 
 function displayOffers(offersToDisplay = offers) {
-    const offerList = document.getElementsByClassName('offer-list').item(0);
+    const offerList = document.querySelector('.offer-list');
     offerList.innerHTML = ''; // Réinitialisation avant de commencer à ajouter les éléments
-    offersToDisplay.forEach(offer => offerList.appendChild(createOfferCardElement(offer)));
+
+    offersToDisplay.forEach(offer => {
+        const offerElement = document.createElement('div');
+        offerElement.className = 'offer-card';
+
+        // Formate la date
+        const date = new Date(offer.creee_le);
+        const formattedDate = date instanceof Date && !isNaN(date)
+            ? date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })
+            : 'Date inconnue';
+
+        // Affichage des offres avec ou sans prix minimum
+        if (offer.prix_min != null) {
+            offerElement.innerHTML = `
+                <h3><a href="/autres_pages/detail_offre.php?id=${offer.id}">${offer.titre}</a></h3>
+                <img src="${get_image_filename(offer.id_image_principale)}">
+                <p>Catégorie : ${offer.categorie}</p>
+                <p>Description : ${offer.resume}</p>
+                <p>Adresse : ${offer.formatted_address}</p>
+                <p>À partir de : ${offer.prix_min}€</p>
+                <p>Note : ${offer.note_moyenne}/5</p>
+                <p>Date : ${formattedDate}</p>
+            `;
+        } else {
+            offerElement.innerHTML = `
+                <h3><a href="/autres_pages/detail_offre.php?id=${offer.id}">${offer.titre}</a></h3>
+                <img src="${get_image_filename(offer.id_image_principale)}">
+                <p>Catégorie : ${offer.categorie}</p>
+                <p>Description : ${offer.resume}</p>
+                <p>Adresse : ${offer.formatted_address}</p>
+                <p>Gratuit</p>
+                <p>Note : ${offer.note_moyenne}/5</p>
+                <p>Date : ${formattedDate}</p>
+            `;
+        }
+
+        offerList.appendChild(offerElement);
+    });
 }
 
 const sortButtons = document.querySelectorAll('.btn-sort');
@@ -201,33 +218,6 @@ document.getElementById('sort-date-up').addEventListener('click', () => sortOffe
 document.getElementById('sort-date-down').addEventListener('click', () => sortOffers('creee_le', true));
 document.getElementById('main-category').addEventListener('change', showSubcategories);
 
-function getImageFilename(id_image) {
+function get_image_filename(id_image) {
     return `/images_utilisateur/${id_image}.${images[id_image].mime_subtype}`;
 }
-
-
-//debut carte
-
-var map = L.map('map').setView([48.8566, 2.3522], 12); // Centré sur Paris
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
-
-let markersLayer = L.layerGroup().addTo(map);
-
-function updateMap(offersToDisplay) {
-    markersLayer.clearLayers(); // Efface les anciens marqueurs
-    offersToDisplay.forEach(offer => {
-        if (offer.lat && offer.lng) {
-            let marker = L.marker([offer.lat, offer.lng])
-                .bindPopup(`<b>${offer.titre}</b><br>${offer.formatted_address}`)
-                .addTo(markersLayer);
-        }
-    });
-}
-
-
-
-
-// fin carte

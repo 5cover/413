@@ -49,11 +49,12 @@ final class InputImage extends Input
     function put(mixed $current = null, bool $required = true): void
     {
         $current ??= [];
+        $form_attr = $this->form_id ? "form=\"$this->form_id\"" : '';
         ?>
-<fieldset <?= $this->id_attr ?> class="input-image">
-    <legend><?= h14s($this->fieldset_legend) ?></legend>
+<fieldset id="<?= $this->id ?>" class="input-image">
+    <legend><?= $this->fieldset_legend ?></legend>
     <p>
-        <input class="pourquoi"<?= $this->form_attr ?>
+        <input class="pourquoi"<?= $form_attr ?>
             name="<?= $this->name . ($this->multiple ? '[]' : '') ?>"
             type="file"
             accept="image/*"
@@ -61,12 +62,12 @@ final class InputImage extends Input
             <?= $this->multiple ? 'multiple' : '' ?>>
     </p>
     <p>
-        <input <?= $this->form_attr ?>
+        <input <?= $form_attr ?>
             id="<?= $this->id ?>_legende"
             name="<?= $this->name ?>_legende"
             type="text"
             placeholder="Légende"
-            value="<?= h14s(($current[0] ?? null)?->legende) ?>">
+            value="<?= ($current[0] ?? null)?->legende ?>">
     </p>
     <div id="<?= $this->id ?>-preview">
         <?php foreach ($current as $image) {

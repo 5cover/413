@@ -24,7 +24,7 @@ final class Date
         return $output === null
             ? null
             : new self(notfalse(iterator_first_notfalse(self::FORMATS,
-                fn($fmt_quoted) => DateTimeImmutable::createFromFormat($fmt_quoted, $output))));
+                fn($fmt) => DateTimeImmutable::createFromFormat($fmt, $output))));
     }
 
     function __toString(): string

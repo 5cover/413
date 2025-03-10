@@ -1,15 +1,12 @@
 name: Reset database
 on:
-  workflow_run:
-    workflows: [Restart Server]
   workflow_dispatch:
   push:
     branches:
       - main
     paths:
       - '.github/workflows/Reset database.yml'
-      - 'sql/instances/main/**.sql'
-      - 'sql/schemas/**.sql'
+      - '**.sql'
 jobs:
   reset_db:
     runs-on: ubuntu-latest
@@ -21,11 +18,11 @@ jobs:
         env:
           ARTIFACT_SSH_KEY: '${{secrets.ARTIFACT_SSH_KEY}}'
           ARTIFACT_HOST: '${{secrets.ARTIFACT_HOST}}'
-        run: 'cd "$GITHUB_WORKSPACE"/scripts && ./server-run-script.bash ./server/reset-database.bash'
+        run: 'cd "$GITHUB_WORKSPACE"/script && ./server-run-script.bash ./server/reset-database.bash'
 
       - name: Send Discord message
         env:
           DISCORD_WEBHOOK_URL: '${{secrets.DISCORD_WEBHOOK_URL}}'
           ACTOR: "${{github.actor}}"
           COMMIT: "${{ github.event.head_commit.message }}"
-        run: 'cd "$GITHUB_WORKSPACE"/scripts && ./discord-send-msg.bash "BDD réinitialisée ($ACTOR - \`$COMMIT\`)"'
+        run: 'cd "$GITHUB_WORKSPACE"/script && ./discord-send-msg.bash "BDD réinitialisée ($ACTOR - \`$COMMIT\`)"'

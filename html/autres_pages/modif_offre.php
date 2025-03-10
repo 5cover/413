@@ -42,13 +42,13 @@ $page->put(function () use (
 ) {
     if ($error = $_GET['error'] ?? null) {
         ?>
-        <p class="error"><?= h14s($error) ?></p><?php
+        <p class="error"><?= $error ?></p><?php
     }
     $input_offre->put($offre);
     ?>
 
     <form id="f" method="post" enctype="multipart/form-data">
-        <button type="submit" class="btn-publish">Valider</button>
+        <button type="submit">Valider</button>
     </form>
     <?php
 });

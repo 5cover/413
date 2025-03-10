@@ -3,27 +3,20 @@ require_once 'component/Page.php';
 require_once 'auth.php';
 require_once 'redirect.php';
 require_once 'component/CarteOffrePro.php';
-require_once 'model/Professionnel.php';
-require_once 'model/ProfessionnelPrive.php';
 require_once 'model/Offre.php';
-require_once 'util.php';
 
 $page = new Page('Accueil Professionnel');
 
 $page->put(function () {
     $id_professionnel = Auth\exiger_connecte_pro();
 
-    $pro = Professionnel::from_db($id_professionnel);
-
     $nb_offres = Offre::count($id_professionnel);
     $nb_offres_en_ligne = Offre::count($id_professionnel, en_ligne: true);
     ?>
 
     <h1>Accueil Professionnel</h1>
-    <a class="btn-more-info bouton_principale_pro" href="<?= h14s(location_creation_offre()) ?>"  id='bouton_creer_offre' >Créer une offre</a>
-    <?php if ($pro instanceof ProfessionnelPrive) { ?>
-        <a class="btn-more-info bouton_principale_pro" href="<?= h14s(location_facturation()) ?>">Facturation</a>
-    <?php } ?>
+    <a class="btn-more-info bouton_principale_pro" href="<?= location_creation_offre() ?>"  id='bouton_creer_offre' >Créer une offre</a>
+    <a class="btn-more-info bouton_principale_pro" href="<?= location_facturation() ?>" >Facturation</a>
 
     <h3 class="nb-offres"><?= $nb_offres ?> offres</h3>
     <section class="online-offers">
@@ -32,7 +25,7 @@ $page->put(function () {
 
         <div class="offer-list">
             <?php
-            $offres_en_ligne = Offre::from_db_all_ordered($id_professionnel, en_ligne: true);
+            $offres_en_ligne = Offre::from_db_all($id_professionnel, en_ligne: true);
             foreach ($offres_en_ligne as $offre) {
                 (new CarteOffrePro($offre))->put();
             }
@@ -46,7 +39,7 @@ $page->put(function () {
 
         <div class="offer-carousel">
             <?php
-            $offres_hors_ligne = Offre::from_db_all_ordered($id_professionnel, en_ligne: false);
+            $offres_hors_ligne = Offre::from_db_all($id_professionnel, en_ligne: false);
             foreach ($offres_hors_ligne as $offre) {
                 (new CarteOffrePro($offre))->put();
             }
@@ -55,7 +48,7 @@ $page->put(function () {
     </section>
 
     <!-- Bouton pour créer une nouvelle offre -->
-    <a class="btn-more-info bouton_principale_pro" href="<?= h14s(location_creation_offre()) ?>"  id='bouton_creer_offre' >Créer une offre</a>
+    <a class="btn-more-info bouton_principale_pro" href="<?= location_creation_offre() ?>"  id='bouton_creer_offre' >Créer une offre</a>
 
     <?php
 });

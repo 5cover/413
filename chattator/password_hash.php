@@ -1,2 +1,2 @@
 #!/usr/bin/env php
-<?= password_hash(rtrim(stream_get_contents(STDIN), "\n"), PASSWORD_DEFAULT);
+<?php echo password_hash(stream_get_contents(STDIN), PASSWORD_DEFAULT);

@@ -1,7 +1,7 @@
 
-const input_api_key = document.getElementById('api_key');
-const button_regenerate_api_key = document.getElementById('button-regenerate-api-key');
-const button_delete_api_key = document.getElementById('button-delete-api-key');
+const input_uuid = document.getElementById('uuid');
+const button_regenerate_uuid = document.getElementById('button-regenerate-uuid');
+const button_delete_uuid = document.getElementById('button-delete-uuid');
 
-button_regenerate_api_key.addEventListener('click', () => input_api_key.value = crypto.randomUUID());
-button_delete_api_key.addEventListener('click', () => input_api_key.value = '');
+button_regenerate_uuid.addEventListener('click', () => input_uuid.value = crypto.randomUUID());
+button_delete_uuid.addEventListener('click', () => input_uuid.value = '');

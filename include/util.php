@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Apply a function, mutating the argument. Think of it like a generalized assignment operator (e.g. "+=") that can work on any function. Used to avoid specifying the argument twice.
  * @template T
@@ -8,20 +9,18 @@
  * @param callable(T): TResult $fn
  * @return T
  */
-function apply(mixed &$arg, callable $fn): mixed
-{
+function apply(mixed &$arg, callable $fn): mixed {
     return $arg = $fn($arg);
 }
 
 /**
  * HTML5 `htmlspecialchars` (name shortened using numeronym)
- * This function propagates a `null` argument.
- * @param ?string $s String to encode.
+ * @param string $s String to encode.
  * @return string Encoded string.
  */
-function h14s(?string $s)
+function h14s(string $s)
 {
-    return $s === null ? null : htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5);
+    return htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5);
 }
 
 /**
@@ -264,7 +263,7 @@ function arg_filter(int $filter, array|int $options = 0): callable
 function html_error(mixed $arg): never
 {
     ?>
-    <p>Erreur: <?= h14s(strval($arg)) ?></p><?php
+    <p>Erreur: <?= strval($arg) ?></p><?php
     if ($arg instanceof Throwable) {
         throw $arg;
     }
@@ -272,13 +271,12 @@ function html_error(mixed $arg): never
 }
 
 /**
- * if-not-null-then-append-with-separator
  * Concatène une chaîne à un suffixe ou retourne la chaîne vide.
  * @param ?string $chaine La chaîne (peut être `null`).
  * @param ?string $suffixe Le suffixe à concaténer à $chaine.
  * @return string La chaîne formatée.
  */
-function ifnntaws(?string $chaine, ?string $suffixe): string
+function elvis(?string $chaine, ?string $suffixe): string
 {
     return $chaine ? "$chaine$suffixe" : '';
 }
@@ -362,13 +360,11 @@ function soa_to_aos(array $array): array
 }
 
 /**
- * DÉBOGAGE UNIQUEMENT - Affiche une valeur et la renvoie
- * @template T
- * @param T $value
- * @return T
+ * DÉBOGAGE UNIQUEMENT - Affiche une valeur
+ * @param mixed $value
+ * @return void
  */
-function dbg_print(mixed $value): mixed
+function dbg_print(mixed $value): void
 {
 ?><pre><samp><?php var_dump($value) ?></samp></pre><?php
-    return $value;
 }

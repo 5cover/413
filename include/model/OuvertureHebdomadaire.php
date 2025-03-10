@@ -22,8 +22,8 @@ final class OuvertureHebdomadaire implements ArrayAccess, Equatable
     private function args(int $dow): ?array
     {
         return $this->offre->id === null ? null : [
-            'id_offre' => [$this->offre->id, PDO::PARAM_INT],
-            'dow'      => [$dow, PDO::PARAM_INT],
+            'id_offre' => $this->offre->id,
+            'dow'      => $dow,
         ];
     }
 

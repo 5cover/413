@@ -1,0 +1,44 @@
+insert into
+    activite (
+        titre,
+        resume,
+        description_detaillee,
+        modifiee_le,
+        url_site_web,
+        periodes_ouverture,
+        id_adresse,
+        id_image_principale,
+        id_professionnel,
+        libelle_abonnement,
+        indication_duree,
+        age_requis,
+        prestations_incluses,
+        prestations_non_incluses
+    )
+values
+    (
+        'titre',
+        'resume',
+        'description_detaillee',
+        null,
+        'url_site_web',
+        '{}',
+        1,
+        1,
+        1,
+        'standard',
+        '0',
+        '1',
+        'prestations_incluses',
+        'prestations_non_incluses'
+    )
+returning
+    "id",
+    "modifiee_le",
+    "en_ligne",
+    "note_moyenne",
+    "prix_min",
+    "creee_le",
+    "en_ligne_ce_mois_pendant",
+    "changement_ouverture_suivant_le",
+    "est_ouverte"

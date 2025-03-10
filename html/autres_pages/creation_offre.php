@@ -39,19 +39,15 @@ if ($_POST) {
 }
 
 $page->put(function () use ($input_offre) {
-    ?>
-    <section class="centrer-enfants">
-    <?php
-        if ($error = $_GET['error'] ?? null) {
-            ?>
-            <p class="error"><?= h14s($error) ?></p><?php
-        }
+    if ($error = $_GET['error'] ?? null) {
         ?>
-        <?php $input_offre->put() ?>
-        
-        <form id="<?= h14s($input_offre->form_id) ?>" method="post" enctype="multipart/form-data">
-            <button class="btn-publish" type="submit">Valider</button>
-        </form>
-    </section>
+        <p class="error"><?= $error ?></p><?php
+    }
+    ?>
+    <?php $input_offre->put() ?>
+
+    <form id="<?= $input_offre->form_id ?>" method="post" enctype="multipart/form-data">
+        <button type="submit">Valider</button>
+    </form>
     <?php
 });

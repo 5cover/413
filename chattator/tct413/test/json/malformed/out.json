@@ -1,8 +1,0 @@
-[
-  {
-    "error": {
-      "message": "request: expected object, got null",
-      "status": 400
-    }
-  }
-]

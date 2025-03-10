@@ -1,7 +1,3 @@
-<?php
-require_once 'util.php';
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -35,7 +31,7 @@ require_once 'util.php';
     ?>
     <form method="post">
         <p><label for="code">Code</label></p>
-        <p><textarea name="code" id="code" rows="23" cols="120"><?= h14s($code) ?></textarea></p>
+        <p><textarea name="code" id="code" rows="23" cols="120"><?= $code ?></textarea></p>
         <p><button type="submit">Exécuter</button></p>
     </form>
 </body>

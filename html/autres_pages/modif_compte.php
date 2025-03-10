@@ -1,19 +1,21 @@
 <?php
-require_once 'const.php';
 require_once 'model/Uuid.php';
 require_once 'util.php';
 require_once 'auth.php';
 require_once 'redirect.php';
 require_once 'component/Page.php';
+require_once 'component/InputAdresse.php';
 require_once 'model/Compte.php';
 
-$page        = new Page('Modification compte', body_id: 'detail_compte', scripts: ['module/modif_compte.js' => 'type="module"']);
-$error_mdp   = null;
-$error_tel   = null;
+$page = new Page('Modification compte', body_id: 'detail_compte', scripts: ['module/modif_compte.js' => 'type="module"']);
+$error_mdp = null;
+$error_tel = null;
 $error_email = null;
 $error_siren = null;
 
 $compte = notfalse(Compte::from_db(Auth\id_compte_connecte()));
+
+$input_adresse = new InputAdresse('adresse', 'adresse');
 
 // Afficher le détail du compte du membre
 
@@ -65,20 +67,20 @@ if ($_POST) {
         }
     }
 
-    if (null !== $new_adresse = getarg($_POST, 'new_adresse', required: false)) {
-        $compte->adresse = $new_adresse;
-    }
-
     // modif mot de passe
 
-    if ($old_mdp = getarg($_POST, 'old_mdp', required: false)
-            && $new_mdp = getarg($_POST, 'new_mdp', required: false)) {
-        $confirmation_mdp = getarg($_POST, 'confirmation_mdp', required: false);
+    if (null !== $old_mdp = getarg($_POST, 'old_mdp', required: false)) {
+        $new_mdp = getarg($_POST, 'new_mdp', required: false);
+        $confirmation_mdp = getarg($_POST, 'confirmation_mdp', filter: null, required: false);
         if (password_verify($old_mdp, $compte->mdp_hash)) {
-            if ($confirmation_mdp === $new_mdp) {
-                $compte->mdp_hash = password_hash($new_mdp, PASSWORD_ALGO);
+            if ($new_mdp) {
+                if ($confirmation_mdp === $new_mdp) {
+                    $compte->mdp_hash = password_hash($new_mdp, algo: PASSWORD_DEFAULT);
+                } else {
+                    $error_mdp = 'Mot de passe de confirmation different.';
+                }
             } else {
-                $error_mdp = 'Mot de passe de confirmation different.';
+                $error_mdp = 'Nouveau mot de passe manquant.';
             }
         } else {
             $error_mdp = 'Mot de passe incorrect.';
@@ -91,11 +93,9 @@ if ($_POST) {
     }
 
     $compte->push_to_db();
-
-    redirect_to(location_detail_compte());
 }
 
-$page->put(function () use ($compte, $error_email, $error_mdp, $error_siren, $error_tel) {
+$page->put(function () use ($compte, $input_adresse, $error_email, $error_mdp, $error_siren, $error_tel) {
     ?>
     <h1>Modifier les informations de votre compte</h1>
     <section id="info_compte">
@@ -103,7 +103,7 @@ $page->put(function () use ($compte, $error_email, $error_mdp, $error_siren, $er
             <?php if ($compte instanceof Membre) { ?>
                 <div>
                     <div id="pseudo">
-                        <label>Pseudo&nbsp;: </label>
+                        <label>Pseudo : </label>
                     </div>
                     <input id="new_pseudo" name="new_pseudo" type="text" value="<?= h14s($compte->pseudo) ?>" placeholder="votre nouveau pseudo">
                 </div>
@@ -132,21 +132,21 @@ $page->put(function () use ($compte, $error_email, $error_mdp, $error_siren, $er
 
             <div>
                 <div id="nom">
-                    <label>Nom&nbsp;: </label>
+                    <label>Nom : </label>
                 </div>
                 <input id="new_nom" name="new_nom" type="text" value="<?= h14s($compte->nom) ?>" placeholder="votre nouveau nom">
             </div>
             <br>
             <div>
                 <div id="prenom">
-                    <label>Prénom&nbsp;: </label>
+                    <label>Prénom : </label>
                 </div>
                 <input id="new_prenom" name="new_prenom" type="text" value="<?= h14s($compte->prenom) ?>" placeholder="votre nouveau prénom">
             </div>
             <br>
             <div>
                 <div id="email">
-                    <label>Email&nbsp;: </label>
+                    <label>Email : </label>
                 </div>
                 <?php if ($error_email !== null) { ?>
                     <p class="error"><?= h14s($error_email) ?></p>
@@ -157,7 +157,7 @@ $page->put(function () use ($compte, $error_email, $error_mdp, $error_siren, $er
             <br>
             <div>
                 <div id="telephone">
-                    <label>Numéro de téléphone&nbsp;: </label>
+                    <label>Numéro de téléphone : </label>
                 </div>
                 <?php if ($error_tel !== null) { ?>
                     <p class="error"><?= h14s($error_tel) ?></p>
@@ -167,12 +167,13 @@ $page->put(function () use ($compte, $error_email, $error_mdp, $error_siren, $er
             </div>
             <br>
             <div>
-                <label>Adresse&nbsp;: </label>
-                <input type="text" name="new_adresse" id="new_adresse" value="<?= h14s($compte->adresse) ?>">
+                <label>Adresse : </label>
+                <?= $compte->adresse->format() ?>
             </div>
+            <?php $input_adresse->put($compte->adresse) ?>
             <br>
-            <details id="changer_mdp">
-                <summary>Modifier son mot de passe</su>
+            <div id="changer_mdp">
+                <label>Modifier son mot de passe</label>
                 <div class="champ">
                     <label for="mdp">Mot de passe actuel *</label>
                     <input id="mdp" name="old_mdp" type="password" placeholder="**********">
@@ -189,20 +190,20 @@ $page->put(function () use ($compte, $error_email, $error_mdp, $error_siren, $er
                     <p class="error"><?= h14s($error_mdp) ?></p>
                 <?php } ?>
 
-            </details>
-            <br>
-            <div>
-                <label for="api_key">Clé d'API : </label>
-                <input type="text" id="api_key" name="api_key" value="<?= $compte->api_key ?>" readonly></input>
-                <button type="button" id="button-regenerate-api-key" class="btn-publish">Regénérer</button>
-                <button type="button" id="button-delete-api-key" class="btn-publish">Supprimer</button>
             </div>
-            <button type="submit" class="btn-publish">Valider</button>
-            <a class="btn-publish" href="<?= h14s(location_detail_compte()) ?>">Retour</a>
+            <br>
+            <div id="api_key">
+                <label for="uuid">Clé d'API : </label>
+                <input type="text" id="uuid" name="uuid" value="<?= $compte->api_key ?>" readonly></input>
+                <button type="button" id="button-regenerate-uuid">Regénérer</button>
+                <button type="button" id="button-delete-uuid">Supprimer</button>
+            </div>
+            <button type="submit">Valider</button>
+            <a href="<?= location_detail_compte() ?>">Retour</a>
             <?php if ($compte instanceof Membre) { ?>
-                <a class="btn-publish" href="<?= h14s(location_supprimer_compte($compte->id)) ?>">Supprimer le compte</a>
+                <a href="<?= location_supprimer_compte($compte->id) ?>">Supprimer le compte</a>
             <?php } else { ?>
-                <p><small>Pour supprimer votre compte professionnel, veuillez contacter l'administrateur du site. Voir les <a href="<?= h14s(location_mentions_legales()) ?>">mentions légales</a> pour plus d'informations.</small></p>
+                <p><small>Pour supprimer votre compte professionnel, veuillez contacter l'administrateur du site. Voir les <a href="/legal/mentions-legales.php">mentions légales</a> pour plus d'informations.</small></p>
             <?php } ?>
         </form>
     </section>

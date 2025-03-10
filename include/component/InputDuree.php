@@ -35,16 +35,17 @@ final class InputDuree extends Input
      */
     function put(mixed $current = null): void
     {
+        $form_attr = $this->form_id ? "form=\"$this->form_id\"" : '';
 ?>
-<p <?= $this->id_attr ?> class="input-duration">
-    <label><input <?= $this->form_attr ?>
+<p <?= $this->id ? "id=\"$this->id\"" : '' ?> class="input-duration">
+    <label><input <?= $form_attr ?>
             id="<?= $this->id('jours') ?>"
             name="<?= $this->name('jours') ?>"
             type="number"
             min="0"
             required
             value="<?= $current?->days ?? 0 ?>"> jour(s)</label>
-    <label><input <?= $this->form_attr ?>
+    <label><input <?= $form_attr ?>
         id="<?= $this->id('heures') ?>"
         name="<?= $this->name('heures') ?>"
         type="number"
@@ -52,7 +53,7 @@ final class InputDuree extends Input
         max="24"
         required
         value="<?= $current?->hours ?? 0 ?>"> heure(s)</label>
-    <label><input <?= $this->form_attr ?>
+    <label><input <?= $form_attr ?>
         id="<?= $this->id('minutes') ?>"
         name="<?= $this->name('minutes') ?>"
         type="number"

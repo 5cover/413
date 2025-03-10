@@ -16,7 +16,7 @@ DB\transaction(function () {
     echo 'getting pro' . PHP_EOL;
     $pro = Professionnel::from_db(1);
     echo 'getting abo' . PHP_EOL;
-    $abo = Abonnement::all()['standard'];
+    $abo = Abonnement::from_db('standard');
     echo 'creating offre' . PHP_EOL;
     $offre = new Activite(
         [

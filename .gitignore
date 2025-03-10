@@ -1,5 +1,2 @@
-*.env
-bin
-*.o
-#info.php*
-.vscode
+.env
+#info.php

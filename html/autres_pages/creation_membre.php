@@ -1,5 +1,4 @@
 <?php
-require_once 'const.php';
 require_once 'util.php';
 require_once 'redirect.php';
 require_once 'component/Page.php';
@@ -25,8 +24,13 @@ if (isset($_POST['motdepasse'])) {
     $email = $_POST['email'];
     if (false !== Compte::from_db_by_email($email)) fail('Cette adresse e-mail est déjà utilisée.');
 
+    $commune = Commune::from_db_by_nom($_POST['adresse']);
+    if (false === $commune) fail("La commune '{$_POST['adresse']}' n'existe pas.");
 
-    $mdp_hash = notfalse(password_hash($_POST['motdepasse'], PASSWORD_ALGO));
+    $adresse = new Adresse(null, $commune);
+    $adresse->push_to_db();
+
+    $mdp_hash = notfalse(password_hash($_POST['motdepasse'], PASSWORD_DEFAULT));
 
     $membre = new Membre([
         null,
@@ -35,7 +39,7 @@ if (isset($_POST['motdepasse'])) {
         $_POST['nom'],
         $_POST['prenom'],
         $_POST['telephone'],
-        $_POST['adresse'],
+        $adresse,
         null,
     ], $pseudo);
     try {
@@ -43,7 +47,7 @@ if (isset($_POST['motdepasse'])) {
     } catch (PDOException $e) {
         fail($e->getMessage());
     }
-    redirect_to(location_connexion(pseudo: $pseudo));
+    redirect_to(location_connexion());  // todo: passer en GET le pseudo pour l'afficher dans le formulaire connexion, pour que l'utilisateur n'ait pas à le retaper.
 }
 
 $page->put(function () {
@@ -88,10 +92,10 @@ $page->put(function () {
                     <br>
                 </div>
                 <!-- Todo: confirmation mdp -->
-                <p class="error"><?= h14s($_GET['error'] ?? null) ?></p>
+                <p class="error"><?= $_GET['error'] ?? '' ?></p>
 
                 <div class="champ">
-                    <button type="submit" class="btn-publish">Valider</button>
+                    <button type="submit">Valider</button>
                 </div>
             </form>
         </div>

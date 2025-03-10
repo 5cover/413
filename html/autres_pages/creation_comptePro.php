@@ -1,5 +1,4 @@
 <?php
-require_once 'const.php';
 require_once 'db.php';
 require_once 'util.php';
 require_once 'redirect.php';
@@ -35,7 +34,14 @@ if ($_POST) {
     if (false === Compte::from_db_by_email($args['email']))
         fail('Cette adresse e-mail est déjà utilisée.');
 
-    $mdp_hash = password_hash($args['mdp'], PASSWORD_ALGO);
+    $mdp_hash = password_hash($args['mdp'], PASSWORD_DEFAULT);
+
+    $commune = Commune::from_db_by_nom($_POST['adresse']);
+    if (false === $commune)
+        fail("La commune '{$_POST['adresse']}' n'existe pas.");
+
+    $adresse = new Adresse(null, $commune);
+    $adresse->push_to_db();
 
     $args_compte = [
         null,
@@ -89,7 +95,7 @@ $page->put(function () {
                 </p>
                 <p class="champ">
 
-                    <label>Adresse<input type="text" id="adresse" placeholder="22300 1 rue Edouard Branly" name="adresse"></label>
+                    <label>Adresse * <input type="text" id="adresse" placeholder="22300 1 rue Edouard Branly" name="adresse"></labe>
                 </p>
                 <p class="radio_entr">
                     <label>Privé <input type="radio" id="prive" name="type" value="prive" onclick="gererAffichage()" checked></label>
@@ -98,7 +104,7 @@ $page->put(function () {
                 <p class="champ" id="champ-siren">
                     <label>SIREN <input type="text" id="siren" name="siren" placeholder="231 654 988" oninput="formatInput(this)" maxlength="12"></label>
                 </p>
-                <p class="error"><?= h14s($_GET['error'] ?? null) ?></p>
+                <p class="error"><?= $_GET['error'] ?? '' ?></p>
                 <button type="submit" class="btn-connexion">Créer un compte professionnel</button>
             </form>
             <br>
