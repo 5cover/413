@@ -24,7 +24,7 @@ function connect(): PDO
     $driver = 'pgsql';
 
     /// Load .env
-    $env   = file_get_contents(__DIR__ . '/.env');
+    $env   = file_get_contents(__DIR__ . '/../.env');
     $lines = explode("\n", $env);
 
     foreach ($lines as $line) {
