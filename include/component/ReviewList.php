@@ -65,7 +65,7 @@ final class ReviewList
                                 </form>
                             <?php }
                             $h14s_rep_contenu = h14s(Reponse::from_db_by_avis($a->id)?->contenu);
-                            if (notnull($this->offre->professionnel->id) === Auth\id_pro_connecte()) { ?>
+                            if ($this->est_connecte_pro_proprio()) { ?>
                                 <form method="post" action="<?= h14s(location_repondre_avis($a->id)) ?>">
                                     <p><label for="contenu">Votre réponse&nbsp;:</label></p>
                                     <textarea name="contenu" placeholder="Réponse&hellip;" title="Laisser vide pour supprimer la réponse"><?= $h14s_rep_contenu ?></textarea>
@@ -83,5 +83,9 @@ final class ReviewList
             </div>
         </div>
         <?php
+    }
+
+    private function est_connecte_pro_proprio(): bool {
+        return notnull($this->offre->professionnel->id) === Auth\id_pro_connecte();
     }
 }
