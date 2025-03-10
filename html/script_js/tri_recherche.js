@@ -208,10 +208,10 @@ function getImageFilename(id_image) {
 
 //debut carte
 
-let map = L.map('map').setView([48.8566, 2.3522], 12); // Centré sur Paris
+var map = L.map('map').setView([48.8566, 2.3522], 12); // Centré sur Paris
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
 let markersLayer = L.layerGroup().addTo(map);
