@@ -144,7 +144,7 @@ function setup_button_signaler(element) {
             const ok = (await fetch(location_signaler(element.dataset.idcco, element.dataset.avisId, raison))).status == 200;
             element.disabled = false;
             if (ok) {
-                img.src = is_signaled ? 'flag.svg' : 'flag-filled.svg';
+                img.src = '/images/' + (is_signaled ? 'flag.svg' : 'flag-filled.svg');
             } else {
                 console.error('failed signaler avis');
             }
