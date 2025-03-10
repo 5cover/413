@@ -136,11 +136,9 @@ function createOfferCardElement(offer) {
 
     const lat = get('offer-prix-min');
     if (offer.lat) parseFloat(lat.textContent) = offer.lat;
-    else lat.parentElement.remove();
 
     const long = get('offer-prix-min');
     if (offer.long) parseFloat(long.textContent) = offer.long;
-    else long.parentElement.remove();
 
     return element;
 }
@@ -187,6 +185,7 @@ let markersLayer = L.layerGroup().addTo(map);
 L.marker([48.8566, 2.3522]).addTo(map)
     .bindPopup('A pretty CSS popup.<br> Easily customizable.')
     .openPopup();
+    
 function updateMap(offersToDisplay) {
     markersLayer.clearLayers(); // Efface les anciens marqueurs
     offersToDisplay.forEach(offer => {
