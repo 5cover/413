@@ -4,7 +4,8 @@ require_once 'component/CarteOffre.php';
 require_once 'util.php';
 
 $page = new Page('Recherche', scripts: [
-    'tri_recherche.js' => 'defer',
+    'tri_recherche.js' => 'defer', 
+    'https://unpkg.com/leaflet/dist/leaflet.js' => 'defer',
 ]);
 
 $page->put(function () {
