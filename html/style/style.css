@@ -1298,3 +1298,12 @@ label > input {
 #facturation th{
     text-align: left;
 }
+
+
+
+
+#map {
+    height: 400px;
+    width: 100%;
+    margin: 20px 0;
+}
