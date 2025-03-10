@@ -1,22 +1,37 @@
 <?php
 require_once 'component/Page.php';
 require_once 'component/CarteOffre.php';
-require_once 'util.php';
 
-$page = new Page('Recherche', scripts: [
-    'tri_recherche.js' => 'defer', 
+
+$page = new Page('Recherche',["https://unpkg.com/leaflet/dist/leaflet.css"] ,scripts: [
+    'tri_recherche.js' => 'defer',
     'https://unpkg.com/leaflet/dist/leaflet.js' => 'defer',
+
 ]);
 
 $page->put(function () {
+    $valider = getarg($_GET, "valider", required: false);
     $search = getarg($_GET, "search", required: false);
+    $modif_affichage = false;
+
+    if ($valider && !empty($search)) {
+        $modif_affichage = true;
+        $search = getarg($_GET, "search");
+    }
+
+    if ($_POST) {
+        $search = getarg($_POST, 'search', required: false);
+        if (!$search) {
+            $search = null;
+        }
+    }
     ?>
     <section class="search-section">
         <h1>Recherche</h1>
         <br>
         <div class="search-bar">
             <!-- <input id="barre-recherche" type="text" placeholder="Rechercher des activités, restaurants, spectacles..."> -->
-            <input type="text" id="keyword-search" value="<?= h14s($search) ?>" placeholder="Rechercher par mot-clé" oninput="filterOffers()">
+            <input type="text" id="keyword-search" value="<?= $search ?>" placeholder="Rechercher par mot-clé" oninput="filterOffers()">
 
         </div>
     </section>
@@ -61,14 +76,6 @@ $page->put(function () {
 
         </div>
     </section>
-    <section class="map-section">
-        <h2>Carte des offres :</h2>
-        <div id="map"></div>
-    </section>
-    <?php 
-    
-    ?>
-
-    <template id="template-offer-card"><?php CarteOffre::put_template() ?></template>
+    <template id="template-offre-card"><?php CarteOffre::put_template() ?></template>
     <?php
 });
