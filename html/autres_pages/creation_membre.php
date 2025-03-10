@@ -53,45 +53,45 @@ $page->put(function () {
         <div class="champ-connexion">
             <form action="creation_membre.php" method="post" enctype="multipart/form-data">
                 <div class="champ">
-                    <label for="pseudo">Pseudo&nbsp;:</label>
-                    <input type="text" id="pseudo" name="pseudo" autocomplete="nickname" required>
+                    <label for="pseudo">Pseudo*&nbsp;:</label>
+                    <input type="text" id="pseudo" name="pseudo" autocomplete="nickname" placeholder="JeanDu75" required>
                 </div>
 
                 <div class="champ">
-                    <label for="nom">Nom&nbsp;:</label>
-                    <input type="text" id="nom" name="nom" autocomplete="family-name" required>
+                    <label for="nom">Nom*&nbsp;:</label>
+                    <input type="text" id="nom" name="nom" autocomplete="family-name" placeholder="Dupont" required>
                 </div>
 
                 <div class="champ">
-                    <label for="prenom">Prénom&nbsp;:</label>
-                    <input type="text" id="prenom" name="prenom" autocomplete="given-name" required>
+                    <label for="prenom">Prénom*&nbsp;:</label>
+                    <input type="text" id="prenom" name="prenom" autocomplete="given-name" placeholder="Jean" required>
                 </div>
 
                 <div class="champ">
-                    <label for="telephone">Téléphone&nbsp;:</label>
+                    <label for="telephone">Téléphone*&nbsp;:</label>
                     <input type="tel" id="telephone" name="telephone" placeholder="0123456789" pattern="\d{10}" autocomplete="tel" required>
                 </div>
 
                 <div class="champ">
-                    <label for="adresse">Adresse&nbsp;:</label>
-                    <input type="text" id="adresse" name="adresse" autocomplete="Lannion" required>
+                    <label for="adresse">Adresse*&nbsp;:</label>
+                    <input type="text" id="adresse" name="adresse" autocomplete="Lannion" placeholder="Lannion" required>
                 </div>
 
                 <div class="champ">
-                    <label for="email">Email&nbsp;:</label>
-                    <input type="email" id="email" name="email" autocomplete="email" required>
+                    <label for="email">Email*&nbsp;:</label>
+                    <input type="email" id="email" name="email" autocomplete="email" placeholder="jean.dupont@example.com" required>
                 </div>
 
                 <div class="champ">
-                    <label for="motdepasse">Mot de passe&nbsp;:</label>
-                    <input type="password" id="motdepasse" name="motdepasse" required>
+                    <label for="motdepasse">Mot de passe*&nbsp;:</label>
+                    <input type="password" id="motdepasse" name="motdepasse" placeholder="********" required>
                     <br>
                 </div>
                 <!-- Todo: confirmation mdp -->
                 <p class="error"><?= h14s($_GET['error'] ?? null) ?></p>
 
-                <div class="champ">
-                    <button type="submit" class="btn-publish">Valider</button>
+                <div class="champ centrer-enfants" >
+                    <button type="submit" class="btn-connexion">Valider</button>
                 </div>
             </form>
         </div>

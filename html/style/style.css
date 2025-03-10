@@ -112,6 +112,7 @@ header #header_pro {
 .error {
     margin: 0;
     color: #ca2200;
+    text-align: center;
 }
 
 .success {
@@ -471,6 +472,7 @@ h6 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     width: 300px;
 }
 
@@ -485,7 +487,7 @@ h6 {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    margin-left: 10px;
+    
     cursor: pointer;
     font-size: 25px;
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
