@@ -188,7 +188,17 @@ function getImageFilename(id_image) {
 //     });
 // }
 
+document.addEventListener('DOMContentLoaded', function () {
+    // Création de la carte centrée sur la France
+    let map = L.map('map').setView([46.603354, 1.888334], 6);
 
+    // Ajouter la couche de tuiles OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+   
+});
 
 
 // fin carte
