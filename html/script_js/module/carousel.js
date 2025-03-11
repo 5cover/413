@@ -1,5 +1,3 @@
-'use strict';
-
 const carousel = document.querySelector('.carousel');
 const slides = document.querySelectorAll('.carousel-slide');
 const nextButton = document.querySelector('.carousel-next');

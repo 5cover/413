@@ -18,14 +18,12 @@ require_once 'model/Date.php';
 require_once 'util.php';
 require_once 'model/Membre.php';
 
-
-
 $offre = Offre::from_db(getarg($_GET, 'id', arg_int()));
 if ($offre === false) fail_404();
 
 $page = new Page($offre->titre, scripts: [
+    'module/carousel.js'     => 'type="module"',
     'module/detail_offre.js' => 'type="module"',
-    'carousel.js'            => 'defer',
 ]);
 
 $input_rating = new InputNote(name: 'rating');
@@ -49,7 +47,7 @@ if (null !== $report_message = getarg($_POST, 'report_message', required: false)
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_NOBODY, true);
     curl_exec($ch);
-    //$ok = curl_getinfo($ch, CURLINFO_HTTP_CODE) == 200;
+    // $ok = curl_getinfo($ch, CURLINFO_HTTP_CODE) == 200;
     curl_close($ch);
 }
 
