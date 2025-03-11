@@ -24,9 +24,10 @@ final class ReviewList
                     <?php
                     $avis               = iterator_to_array(Avis::from_db_all(
                         id_offre: $this->offre->id,
-                        blackliste: $this->est_connecte_pro_proprio() && $this->offre->libelle = 'premium'
-                            ? null
-                            : false
+                        blackliste: $this->est_connecte_pro_proprio()
+                            && $this->offre->abonnement->libelle === 'premium'
+                                ? null
+                                : false
                     ));
                     $avis_count_by_note = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
                     foreach ($avis as $a) {
