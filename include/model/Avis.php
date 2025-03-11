@@ -153,5 +153,11 @@ class Avis extends Model
         require_once 'model/AvisRestaurant.php';
     }
 
+    function blacklist(): void
+    {
+        $stmt = notfalse(DB\insert_into("blacklist",["id"=>$this->id]));
+        notfalse($stmt->execute());
+    }
+
     const TABLE = 'avis';
 }
