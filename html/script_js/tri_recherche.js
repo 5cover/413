@@ -201,8 +201,9 @@ function updateMap(offersToDisplay) {
     offersToDisplay.forEach(offer => {
         if (offer.lat && offer.long) {
             let lien ='/autres_pages/detail_offre.php?id' + offer.id
-            let marker = L.marker([offer.lat, offer.long])
-                .bindPopup(`<a herf="${lien}"><b>${offer.titre}</b><br>${offer.formatted_address}</a>`)
+            // let marker = L.marker([offer.lat, offer.long])
+            //     .bindPopup(`<a herf="${lien}"><b>${offer.titre}</b><br>${offer.formatted_address}</a>`)
+                .bindPopup(`<b>${offer.titre}</b><br>${offer.formatted_address}`)
                 .addTo(markersLayer);
         }
     });
