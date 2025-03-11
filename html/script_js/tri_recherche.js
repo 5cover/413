@@ -134,13 +134,14 @@ function createOfferCardElement(offer) {
     get('offer-note').textContent = offer.note_moyenne;
     get('offer-creee-le').textContent = new Date(offer.creee_le).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
-    const lat = get('lat');
-    if (offer.lat) parseFloat(lat.textContent) = offer.lat;
+    // Récupération des coordonnées et ajout dans les attributs data
+    if (offer.lat && offer.long) {
+        element.setAttribute('data-lat', offer.lat);
+        element.setAttribute('data-long', offer.long);
+    }
 
-    const long = get('long');
-    if (offer.long) parseFloat(long.textContent) = offer.long;
-    console.log(lat);
-    console.log(long);
+    console.log(offer.lat);
+    console.log(offer.long);
     return element;
 }
 
@@ -172,6 +173,9 @@ document.getElementById('main-category').addEventListener('change', showSubcateg
 function getImageFilename(id_image) {
     return `/images_utilisateur/${id_image}.${images[id_image].mime_subtype}`;
 }
+
+
+const longLat = new Map();
 
 
 //debut carte
