@@ -196,19 +196,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 
-
-// function updateMap(offersToDisplay) {
-//     markersLayer.clearLayers(); // Efface les anciens marqueurs
-//     offersToDisplay.forEach(offer => {
-//         if (offer.lat && offer.long) {
-//             let lien ='/autres_pages/detail_offre.php?id' + offer.id;
-//             let marker = L.marker([offer.lat, offer.long])
-//                 .bindPopup(`<a herf="${lien}"><b>${offer.titre}</b><br>${offer.formatted_address}</a>`)
-//                 // .bindPopup(`<b>${offer.titre}</b><br>${offer.formatted_address}`)
-//                 .addTo(markersLayer);
-//         }
-//     });
-// }
 function updateMap(offersToDisplay) {
     markersLayer.clearLayers(); // Efface les anciens marqueurs
 
@@ -216,7 +203,7 @@ function updateMap(offersToDisplay) {
         if (offer.lat && offer.long) {
             let popupContent = `
                 <b>${offer.titre}</b><br>
-                ${offer.adresse}<br>
+                ${offer.formatted_address}<br>
                 <a href="/autres_pages/detail_offre.php?id=${offer.id}" target="_blank">Voir l'offre</a>
             `;
 
