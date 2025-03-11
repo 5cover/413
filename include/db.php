@@ -180,7 +180,7 @@ function insert_into(string $table, array $args, array $returning = []): PDOStat
 function update(string $table, array $args, array $key_args, array $returning = []): PDOStatement
 {
     if (!$args) {
-        return notfalse(connect()->prepare('select null'));  // todo: does a empty string work as a noop? test it when we get a working thing.
+        return notfalse(connect()->prepare('select null'));
     }
 
     $stmt = notfalse(connect()->prepare("update $table set "
