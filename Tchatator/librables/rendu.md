@@ -2,6 +2,8 @@
 
 Lien vidéo présentation : <https://youtu.be/OO3e9Fy0BSw>
 
+Documentation Tchatator : <https://5cover.github.io/413>
+
 Code source : <https://github.com/5cover/413> (brache main, dossier "chattator")
 
 <!-- omit from toc -->
@@ -10,7 +12,13 @@ Code source : <https://github.com/5cover/413> (brache main, dossier "chattator")
 - [Compilation \& exécution](#compilation--exécution)
   - [1. Clonage du dépôt GitHub](#1-clonage-du-dépôt-github)
   - [2. Serveur (`tct413`)](#2-serveur-tct413)
+    - [Compilation](#compilation)
+    - [Exécution](#exécution)
+    - [Tests](#tests)
   - [3. Client (`tct`)](#3-client-tct)
+    - [Compilation](#compilation-1)
+    - [Exécution](#exécution-1)
+    - [Tests](#tests-1)
 - [Répartition du travail](#répartition-du-travail)
 
 ## Compilation & exécution
