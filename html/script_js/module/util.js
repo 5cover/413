@@ -8,3 +8,41 @@ export function scroller(target) {
         console.log("Impossible de scroller");
     }
 }
+
+/**
+ * @param {string} id 
+ * @returns {HTMLElement}
+ */
+export function requireElementById(id) {
+    const e = document.getElementById(id);
+    if (e === null) throw new Error(`Missing element id '${id}'`);
+    return e;
+}
+
+/**
+ * @param {string} url 
+ * @return {bool}
+ */
+export async function fetchDo(url) {
+    const ok = (await fetch(url)).status == 200;
+    if (!ok) console.error(`failed: fetch ${url}`);
+    return ok;
+}
+
+/**
+ * @param {number} id_compte
+ * @param {number} id_signalable
+ * @param {string} raison
+ * @returns {string}
+ */
+export function location_signaler(id_compte, id_signalable, raison) {
+    return '/do/signaler.php?' + new URLSearchParams({ id_compte, id_signalable, raison, });
+}
+
+/**
+ * @param {number} id_offre 
+ * @returns {string}
+ */
+export function location_delete_offer(id_offre) {
+    return '/do/delete_offer.php?' + new URLSearchParams({ id_offre, });
+}

@@ -18,7 +18,10 @@ require_once 'model/Date.php';
 require_once 'util.php';
 require_once 'model/Membre.php';
 
-$offre = notfalse(Offre::from_db(getarg($_GET, 'id', arg_int())));
+
+
+$offre = Offre::from_db(getarg($_GET, 'id', arg_int()));
+if ($offre === false) fail_404();
 
 $page = new Page($offre->titre, scripts: [
     'module/detail_offre.js' => 'type="module"',
