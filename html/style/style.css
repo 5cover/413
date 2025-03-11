@@ -757,6 +757,13 @@ a:not(:hover, :focus, :focus-within) {
 
 
 /* Section des catégories et sous-catégories */
+.cote{
+    display: flex;
+    flex-direction: row;
+}
+.resultat{
+    width: 100%;
+}
 .criteres{
     width: 30vh;
     margin-left: 5vh;
@@ -771,6 +778,7 @@ a:not(:hover, :focus, :focus-within) {
     border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
 .categories,
@@ -839,6 +847,7 @@ a:not(:hover, :focus, :focus-within) {
     border: 1px solid #ddd;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
 .sorting-section h3 {
