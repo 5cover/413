@@ -134,14 +134,20 @@ function createOfferCardElement(offer) {
     get('offer-note').textContent = offer.note_moyenne;
     get('offer-creee-le').textContent = new Date(offer.creee_le).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
+
+
+    const lat = element.querySelector('lat');
+    console.log(lat);
+
     // Récupération des coordonnées et ajout dans les attributs data
     if (offer.lat && offer.long) {
-        element.setAttribute('data-lat', offer.lat);
+         offer.lat = element.querySelector('lat').dataset.lat;
         element.setAttribute('data-long', offer.long);
     }
 
     console.log(offer.lat);
     console.log(offer.long);
+
     return element;
 }
 
