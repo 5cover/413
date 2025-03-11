@@ -138,13 +138,10 @@ function createOfferCardElement(offer) {
 
 
 
-    const lat = card.querySelector('lat');
-    console.log(lat);
-
-    // Récupération des coordonnées et ajout dans les attributs data
+    // Remplir les attributs data-lat et data-long
     if (offer.lat && offer.long) {
-         offer.lat = card.querySelector('lat').dataset.lat;
-        card.setAttribute('data-long', offer.long);
+        card.dataset.lat = offer.lat;
+        card.dataset.long = offer.long;
     }
 
     console.log(offer.lat);
