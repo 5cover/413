@@ -19,21 +19,22 @@ function fail(string $error): never
 
 if ($_POST) {
     $args = [
-        'nom' => getarg($_POST, 'nom'),
-        'prenom' => getarg($_POST, 'prenom'),
-        'telephone' => getarg($_POST, 'telephone'),
-        'email' => getarg($_POST, 'email'),
-        'mdp' => getarg($_POST, 'mdp'),
-        'adresse' => getarg($_POST, 'adresse'),
+        'nom'          => getarg($_POST, 'nom'),
+        'prenom'       => getarg($_POST, 'prenom'),
+        'telephone'    => getarg($_POST, 'telephone'),
+        'email'        => getarg($_POST, 'email'),
+        'mdp'          => getarg($_POST, 'mdp'),
+        'adresse'      => getarg($_POST, 'adresse'),
         'denomination' => getarg($_POST, 'denomination'),
-        'type' => getarg($_POST, 'type', arg_check(f_is_in(['prive', 'public']))),
+        'type'         => getarg($_POST, 'type', arg_check(f_is_in(['prive', 'public']))),
     ];
     if ($args['type'] === 'prive') {
         $args['siren'] = getarg($_POST, 'siren');
     }
 
-    if (false === Compte::from_db_by_email($args['email']))
+    if (false !== Compte::from_db_by_email($args['email'])) {
         fail('Cette adresse e-mail est déjà utilisée.');
+    }
 
     $mdp_hash = password_hash($args['mdp'], PASSWORD_ALGO);
 
@@ -47,7 +48,7 @@ if ($_POST) {
         $adresse,
         null,
     ];
-    $args_pro = [
+    $args_pro    = [
         $args['denomination'],
     ];
 
