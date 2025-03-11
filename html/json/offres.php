@@ -8,7 +8,7 @@ require_once 'model/FiniteTimestamp.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
-$stmt = notfalse(DB\connect()->prepare("select o.*, coalesce((select json_agg(t.tag) from _tags t where t.id_offre = o.id), json '[]') tags from offres o"));
+$stmt = notfalse(DB\connect()->prepare("table offre_json"));
 notfalse($stmt->execute());
 $offres = $stmt->fetchAll();
 

@@ -58,6 +58,27 @@ Si l''offre est ouverte, c''est la prochaine fermeture, ou infinity si l''offre 
 comment on column offres.en_ligne_ce_mois_pendant is 'La durée pendant laquelle cette offre a été en ligne pour le mois courant. La valeur est inférieure ou égale à 1 mois.';
 
 create view
+    offre_json as
+select
+    o.*,
+    a.lat lat,
+    a.long long,
+    coalesce(
+        (
+            select
+                json_agg(t.tag)
+            from
+                _tags t
+            where
+                t.id_offre = o.id
+        ),
+        json '[]'
+    ) tags
+from
+    offres o
+    join _adresse a on a.id = o.id_adresse;
+
+create view
     activite as
 select
     *
