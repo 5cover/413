@@ -1,8 +1,32 @@
 <?php
+
+use Vtiful\Kernel\Format;
 require_once 'db.php';
 require_once 'util.php';
 require_once 'component/Input.php';
 require_once 'model/Adresse.php';
+
+
+function geocode($address) {
+    // Encoder l'adresse pour l'URL
+    $address = urlencode($address);
+    // URL de l'API Nominatim
+    $url = "https://nominatim.openstreetmap.org/search?q={$address}&format=json&limit=1";
+
+    // Envoyer la requête et récupérer la réponse
+    $response = file_get_contents($url);
+    $data = json_decode($response, true);
+
+    // Vérifier si des résultats ont été trouvés
+    if (!empty($data)) {
+        $latitude = $data[0]['lat'];
+        $longitude = $data[0]['lon'];
+        return array('latitude' => $latitude, 'longitude' => $longitude);
+    } else {
+        return null;
+    }
+}
+
 
 /**
  * @extends Input<Adresse>
@@ -17,7 +41,7 @@ final class InputAdresse extends Input
     function get(array $get_or_post, ?int $current_id_adresse = null): Adresse
     {
         $data = getarg($get_or_post, $this->name);
-        return new Adresse(
+        $addr = new Adresse(
             $current_id_adresse,
             notfalse(Commune::from_db_by_nom($data['commune'])),
             getarg($data, 'numero_voie', arg_int(1), required: false),
@@ -29,6 +53,13 @@ final class InputAdresse extends Input
             $data['lat'] ?? null ?: null,
             $data['long'] ?? null ?: null,
         );
+
+        $latLong = geocode($addr->format());
+        $addr->$lat  = $latLong[0];
+        $addr->$long  = $latLong[1];
+
+
+        return $addr;
     }
 
     function for_id(): string
