@@ -112,9 +112,11 @@ function filterOffers() {
 
 
 function createOfferCardElement(offer) {
-    const element = document.getElementById('template-offer-card').content.cloneNode(true).firstElementChild;
+    const template = document.getElementById('template-offer-card');
+    const content = template.content.cloneNode(true); // Cloner le contenu
+    const card = content.firstElementChild; // Récupérer la carte d'offre clonée
 
-    function get(cls) { return element.getElementsByClassName(cls).item(0); }
+    function get(cls) { return card.getElementsByClassName(cls).item(0); }
 
     const imagePrincipale = get('offer-image-principale');
     imagePrincipale.src = getImageFilename(offer.id_image_principale);
@@ -136,19 +138,19 @@ function createOfferCardElement(offer) {
 
 
 
-    const lat = element.querySelector('lat');
+    const lat = card.querySelector('lat');
     console.log(lat);
 
     // Récupération des coordonnées et ajout dans les attributs data
     if (offer.lat && offer.long) {
-         offer.lat = element.querySelector('lat').dataset.lat;
-        element.setAttribute('data-long', offer.long);
+         offer.lat = card.querySelector('lat').dataset.lat;
+        card.setAttribute('data-long', offer.long);
     }
 
     console.log(offer.lat);
     console.log(offer.long);
 
-    return element;
+    return card;
 }
 
 function displayOffers(offersToDisplay = offers) {

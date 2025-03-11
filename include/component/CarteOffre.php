@@ -38,7 +38,7 @@ final class CarteOffre
 
     static function put_template(): void {
 ?>
-<div class="offer-card" data-lat="111" data-long="h14s($offre->adresse->long ?? '')">
+<div class="offer-card" data-lat="111" data-long="<?php h14s($offre->adresse->long ?? '')?>">
     <?php ImageView::put_template('offer-image-principale') ?>
     <h3><a class="titre" href=""></a></h3>
     <p class="location"></p>
