@@ -55,8 +55,8 @@ final class InputAdresse extends Input
         );
 
         $latLong = geocode($addr->format());
-        $addr->__get('lat')  = $latLong[0];
-        $addr->__get('long')  = $latLong[1];
+        $addr->__set('lat')  = $latLong[0];
+        $addr->__set('long')  = $latLong[1];
 
 
         return $addr;
