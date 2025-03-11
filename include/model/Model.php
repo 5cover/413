@@ -38,7 +38,7 @@ abstract class Model
         }
         throw new Exception('Undefined property: ' . static::class . "::\$$name");
     }
-    function __set(string $name,$value): mixed
+    function __set(string $name, $value): mixed
     {
         if (array_some($this->key_fields(), predicate: fn($f) => $f[1] === $name)
                 || array_some($this->computed_fields(), fn($f) => $f[1] === $name)) {
