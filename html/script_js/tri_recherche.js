@@ -189,6 +189,7 @@ const longLat = new Map();
 
 let map = L.map('map').setView([48.2020, -2.9326], 8); // Centré sur la Bretagne
 
+let markersLayer = L.layerGroup().addTo(map);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
