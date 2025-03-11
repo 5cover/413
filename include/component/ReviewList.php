@@ -23,7 +23,7 @@ final class ReviewList
                 <p>Moyenne&nbsp;: <?= $this->offre->note_moyenne ?? 0 ?>/5 ★</p>
                 <div class="rating-distribution">
                     <?php
-                    if ($this->est_connecte_pro_proprio()) { 
+                    if ($this->est_connecte_pro_proprio() && $this->offre->libelle="premium") { 
                         $avis = iterator_to_array(Avis::from_db_all(id_offre: $this->offre->id));
                     } else {
                         $avis = iterator_to_array(Avis::from_db_all(id_offre: $this->offre->id,blacklist: true));
