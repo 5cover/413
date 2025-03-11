@@ -187,16 +187,14 @@ const longLat = new Map();
 
 //debut carte
 
-let map = L.map('map').setView([48.8566, 2.3522], 12); // Centré sur Paris
+let map = L.map('map').setView([48.2020, -2.9326], 8); // Centré sur la Bretagne
+
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-let markersLayer = L.layerGroup().addTo(map);
-L.marker([48.8566, 2.3522]).addTo(map)
-    .bindPopup('A pretty CSS popup.<br> Easily customizable.')
-    .openPopup();
+
 
 function updateMap(offersToDisplay) {
     markersLayer.clearLayers(); // Efface les anciens marqueurs
@@ -208,18 +206,6 @@ function updateMap(offersToDisplay) {
         }
     });
 }
-
-// document.addEventListener('DOMContentLoaded', function () {
-//     // Création de la carte centrée sur la France
-//     let map = L.map('map').setView([46.603354, 1.888334], 6);
-
-//     // Ajouter la couche de tuiles OpenStreetMap
-//     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//         attribution: '&copy; OpenStreetMap contributors'
-//     }).addTo(map);
-
-   
-// });
 
 
 // fin carte
