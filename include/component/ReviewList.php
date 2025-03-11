@@ -9,8 +9,7 @@ final class ReviewList
 {
     function __construct(
         readonly Offre $offre,
-    ) {
-    }
+    ) {}
 
     function put(): void
     {
@@ -23,11 +22,10 @@ final class ReviewList
                 <p>Moyenne&nbsp;: <?= $this->offre->note_moyenne ?? 0 ?>/5 ★</p>
                 <div class="rating-distribution">
                     <?php
-                    if ($this->est_connecte_pro_proprio()) { 
-                        $avis = iterator_to_array(Avis::from_db_all(id_offre: $this->offre->id));
-                    } else {
-                        $avis = iterator_to_array(Avis::from_db_all(id_offre: $this->offre->id,blackliste: true));
-                    }
+                    $avis               = iterator_to_array(Avis::from_db_all(
+                        id_offre: $this->offre->id,
+                        blackliste: $this->est_connecte_pro_proprio() ? null : false,
+                    ));
                     $avis_count_by_note = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
                     foreach ($avis as $a) {
                         ++$avis_count_by_note[$a->note];
@@ -89,7 +87,8 @@ final class ReviewList
         <?php
     }
 
-    private function est_connecte_pro_proprio(): bool {
+    private function est_connecte_pro_proprio(): bool
+    {
         return notnull($this->offre->professionnel->id) === Auth\id_pro_connecte();
     }
 }
