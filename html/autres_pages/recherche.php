@@ -3,7 +3,7 @@ require_once 'component/Page.php';
 require_once 'component/CarteOffre.php';
 
 
-$page = new Page('Recherche',["https://unpkg.com/leaflet/dist/leaflet.css"] ,scripts: [
+$page = new Page('Recherche',stylesheets: ["https://unpkg.com/leaflet/dist/leaflet.css"] ,scripts: [
     'https://unpkg.com/leaflet/dist/leaflet.js' => 'defer',
     'tri_recherche.js' => 'defer',
     
@@ -79,6 +79,7 @@ $page->put(function () {
     </section>
     
     <template id="template-offer-card"><?php CarteOffre::put_template() ?></template>
+    
     <section class="map-section">
         <h2>Carte des offres :</h2>
         <div id="map"></div>
