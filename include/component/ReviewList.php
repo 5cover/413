@@ -26,7 +26,7 @@ final class ReviewList
                     if ($this->est_connecte_pro_proprio()) { 
                         $avis = iterator_to_array(Avis::from_db_all(id_offre: $this->offre->id));
                     } else {
-                        $avis = iterator_to_array(Avis::from_db_all(id_offre: $this->offre->id,blacklist: true));
+                        $avis = iterator_to_array(Avis::from_db_all(id_offre: $this->offre->id,blackliste: true));
                     }
                     $avis_count_by_note = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
                     foreach ($avis as $a) {
