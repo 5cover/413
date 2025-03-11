@@ -25,13 +25,17 @@ $page->put(function () {
                     <label for="mdp">Mot de passe *</label>
                     <input id="mdp" name="mdp" type="password" placeholder="**********" required>
                 </div>
-                <?php if ($error !== null) { ?>
-                    <p class="error"><?= h14s($error) ?></p>
-                <?php } ?>
-                <button type="submit" class="btn-connexion">Se connecter</button>
-                <?php if ($return_url !== null) { ?>
-                    <input type="hidden" name="return_url" value="<?= h14s($return_url) ?>">
-                <?php } ?>
+                <div class="centrer-enfants">
+                    <?php if ($error !== null) { ?>
+                        <p class="error" style="text-align: center;"><?= h14s($error) ?></p>
+                    <?php } ?>
+                    
+                    <button type="submit" class="btn-connexion">Se connecter</button>
+
+                    <?php if ($return_url !== null) { ?>
+                        <input type="hidden" name="return_url" value="<?= h14s($return_url) ?>">
+                    <?php } ?>
+                </div>
             </form>
             <br><br>
             <label>Pas de compte&nbsp;?</label>

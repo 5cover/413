@@ -32,7 +32,9 @@ function showSubcategories() {
     if (mainCategory && subcategories[mainCategory]) {
         // Crée les sous-catégories pour la catégorie sélectionnée
         subcategories[mainCategory].forEach(subcategory => {
+            //création d'un div qui contiendras le label et le "input"
             const wrapper = document.createElement('div');
+            //wrapper.classList.add('');
 
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
