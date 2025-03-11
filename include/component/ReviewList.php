@@ -23,7 +23,11 @@ final class ReviewList
                 <p>Moyenne&nbsp;: <?= $this->offre->note_moyenne ?? 0 ?>/5 ★</p>
                 <div class="rating-distribution">
                     <?php
-                    $avis = iterator_to_array(Avis::from_db_all(id_offre: $this->offre->id,blacklist: true));
+                    if ($this->est_connecte_pro_proprio()) { 
+                        $avis = iterator_to_array(Avis::from_db_all(id_offre: $this->offre->id));
+                    } else {
+                        $avis = iterator_to_array(Avis::from_db_all(id_offre: $this->offre->id,blacklist: true));
+                    }
                     $avis_count_by_note = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
                     foreach ($avis as $a) {
                         ++$avis_count_by_note[$a->note];
@@ -65,8 +69,7 @@ final class ReviewList
                                 </form>
                             <?php }
                             $h14s_rep_contenu = h14s(Reponse::from_db_by_avis($a->id)?->contenu);
-                            if ($this->est_connecte_pro_proprio()) { 
-                                $avis = iterator_to_array(Avis::from_db_all(id_offre: $this->offre->id)); ?>
+                            if ($this->est_connecte_pro_proprio()) { ?>
                                 <form method="post" action="<?= h14s(location_repondre_avis($a->id)) ?>">
                                     <p><label for="contenu">Votre réponse&nbsp;:</label></p>
                                     <textarea name="contenu" placeholder="Réponse&hellip;" title="Laisser vide pour supprimer la réponse"><?= $h14s_rep_contenu ?></textarea>
