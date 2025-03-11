@@ -1,17 +1,20 @@
 <?php
-require_once 'Parsedown.php';
-require_once 'db.php';
-require_once 'util.php';
-require_once 'redirect.php';
-require_once 'model/Offre.php';
-require_once 'component/ReviewList.php';
-require_once 'component/Page.php';
+
+require_once 'auth.php';
 require_once 'component/ImageView.php';
 require_once 'component/InputOffre.php';
+require_once 'component/Page.php';
+require_once 'component/ReviewList.php';
+require_once 'db.php';
+require_once 'model/Offre.php';
+require_once 'Parsedown.php';
+require_once 'redirect.php';
+require_once 'util.php';
+
+$offre = Offre::from_db(getarg($_GET, 'id', arg_int()));
+if ($offre === false) fail_404();
 
 Auth\exiger_connecte_pro();
-
-$offre = notfalse(Offre::from_db(getarg($_GET, 'id', arg_int())));
 
 $page = new Page($offre->titre, scripts: ['carousel.js' => 'defer', 'module/detail_offre_pro.js' => 'type="module"']);
 
@@ -33,6 +36,7 @@ $page->put(function () use ($offre, $review_list) {
             <button type="submit" name="valider" class="bouton" id="validateButton" disabled>Valider</button>
         </form>
         <a class="bouton modifier" href="<?= h14s(location_modifier_offre($offre)) ?>">Modifier</a>
+        <button id="button-delete-offer" class="bouton">Supprimer</button>
         <?php if ($offre->abonnement->libelle !== 'gratuit') { ?>
             <a id="a-facturation"- class="btn-more-info bouton_principale_pro" href="<?= h14s(location_facturation($offre->id)) ?>">Facturation</a>
         <?php } ?>

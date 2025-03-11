@@ -1,4 +1,4 @@
-'use strict';
+import { fetchDo, location_signaler, requireElementById } from './util.js';
 
 for (const e of document.getElementsByClassName('input-duration')) setup_input_duration(e);
 for (const e of document.getElementsByClassName('input-address')) setup_input_address(e);
@@ -104,7 +104,7 @@ function setup_input_image(element) {
     // Behaviors
     // - Dynamic preview
     const e_input_image = element.querySelector('input[type=file]');
-    const e_preview = document.getElementById(element.id + '-preview');
+    const e_preview = requireElementById(element.id + '-preview');
     element.addEventListener('change', () => preview_image(e_input_image, e_preview));
 }
 
@@ -141,28 +141,12 @@ function setup_button_signaler(element) {
         let raison;
         if (is_signaled || (raison = prompt('Raison de votre signalement'))) {
             element.disabled = true;
-            const ok = (await fetch(location_signaler(element.dataset.idcco, element.dataset.avisId, raison))).status == 200;
-            element.disabled = false;
-            if (ok) {
+            if (await fetchDo(location_signaler(element.dataset.idcco, element.dataset.avisId, raison))) {
                 is_signaled ^= true;
                 img.src = '/images/' + (is_signaled ? 'flag-filled.svg' : 'flag.svg');
-            } else {
-                console.error('failed signaler avis');
             }
+            element.disabled = false;
 
         }
-    });
-}
-
-/**
- * @param {any} id_compte
- * @param {any} id_signalable
- * @param {any} raison
- */
-function location_signaler(id_compte, id_signalable, raison) {
-    return '/do/signaler.php?' + new URLSearchParams({
-        id_compte: id_compte,
-        id_signalable: id_signalable,
-        raison: raison,
     });
 }

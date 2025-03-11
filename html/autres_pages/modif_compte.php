@@ -13,7 +13,8 @@ $error_tel   = null;
 $error_email = null;
 $error_siren = null;
 
-$compte = notfalse(Compte::from_db(Auth\id_compte_connecte()));
+$compte = Compte::from_db(Auth\id_compte_connecte());
+if ($compte === false) fail_404();
 
 // Afficher le détail du compte du membre
 

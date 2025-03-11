@@ -4,7 +4,8 @@ require_once 'redirect.php';
 require_once 'component/Page.php';
 require_once 'model/Compte.php';
 
-$compte = notfalse(Compte::from_db(Auth\id_compte_connecte()));
+$compte = Compte::from_db(Auth\id_compte_connecte());
+if ($compte === false) fail_404();
 
 $page = new Page("$compte->prenom $compte->nom", body_id: 'detail_compte');
 

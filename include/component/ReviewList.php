@@ -9,8 +9,7 @@ final class ReviewList
 {
     function __construct(
         readonly Offre $offre,
-    ) {
-    }
+    ) {}
 
     function put(): void
     {
@@ -89,7 +88,8 @@ final class ReviewList
         <?php
     }
 
-    private function est_connecte_pro_proprio(): bool {
+    private function est_connecte_pro_proprio(): bool
+    {
         return notnull($this->offre->professionnel->id) === Auth\id_pro_connecte();
     }
 }
