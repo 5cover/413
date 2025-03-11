@@ -487,7 +487,6 @@ h6 {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    
     cursor: pointer;
     font-size: 25px;
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
@@ -756,7 +755,15 @@ a:not(:hover, :focus, :focus-within) {
     display: block;
 }
 
+
 /* Section des catégories et sous-catégories */
+.criteres{
+    width: 30vh;
+    margin-left: 5vh;
+    display: flex;
+    flex-direction: column;
+}
+
 .tag-selection {
     padding: 20px;
     margin: 20px auto;
@@ -764,7 +771,6 @@ a:not(:hover, :focus, :focus-within) {
     border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
 }
 
 .categories,
