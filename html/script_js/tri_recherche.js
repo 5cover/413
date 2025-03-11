@@ -107,14 +107,16 @@ function filterOffers() {
         return true;
     });
     displayOffers(filteredOffers);
-    // updateMap(filteredOffers);
+    updateMap(filteredOffers);
 }
 
 
 function createOfferCardElement(offer) {
-    const element = document.getElementById('template-offer-card').content.cloneNode(true).firstElementChild;
+    const template = document.getElementById('template-offer-card');
+    const content = template.content.cloneNode(true); // Cloner le contenu
+    const card = content.firstElementChild; // Récupérer la carte d'offre clonée
 
-    function get(cls) { return element.getElementsByClassName(cls).item(0); }
+    function get(cls) { return card.getElementsByClassName(cls).item(0); }
 
     const imagePrincipale = get('offer-image-principale');
     imagePrincipale.src = getImageFilename(offer.id_image_principale);
@@ -134,7 +136,18 @@ function createOfferCardElement(offer) {
     get('offer-note').textContent = offer.note_moyenne;
     get('offer-creee-le').textContent = new Date(offer.creee_le).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
-    return element;
+
+
+    // Remplir les attributs data-lat et data-long
+    if (offer.lat && offer.long) {
+        card.dataset.lat = offer.lat;
+        card.dataset.long = offer.long;
+    }
+
+    console.log(offer.lat);
+    console.log(offer.long);
+
+    return card;
 }
 
 function displayOffers(offersToDisplay = offers) {
@@ -167,21 +180,27 @@ function getImageFilename(id_image) {
 }
 
 
+const longLat = new Map();
+
+
 //debut carte
 
-var map = L.map('map').setView([48.8566, 2.3522], 12); // Centré sur Paris
+let map = L.map('map').setView([48.8566, 2.3522], 12); // Centré sur Paris
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
 let markersLayer = L.layerGroup().addTo(map);
+L.marker([48.8566, 2.3522]).addTo(map)
+    .bindPopup('A pretty CSS popup.<br> Easily customizable.')
+    .openPopup();
 
 function updateMap(offersToDisplay) {
     markersLayer.clearLayers(); // Efface les anciens marqueurs
     offersToDisplay.forEach(offer => {
-        if (offer.lat && offer.lng) {
-            let marker = L.marker([offer.lat, offer.lng])
+        if (offer.lat && offer.long) {
+            let marker = L.marker([offer.lat, offer.long])
                 .bindPopup(`<b>${offer.titre}</b><br>${offer.formatted_address}`)
                 .addTo(markersLayer);
         }

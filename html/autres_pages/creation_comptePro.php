@@ -10,7 +10,7 @@ require_once 'model/ProfessionnelPrive.php';
 require_once 'model/ProfessionnelPublic.php';
 require_once 'model/Commune.php';
 
-$page = new Page('Créer un compte professionnel');
+$page = new Page('Créer un compte professionnel', scripts: ['module/creation_compte_pro.js' => 'type="module"']);
 
 function fail(string $error): never
 {
@@ -19,21 +19,22 @@ function fail(string $error): never
 
 if ($_POST) {
     $args = [
-        'nom' => getarg($_POST, 'nom'),
-        'prenom' => getarg($_POST, 'prenom'),
-        'telephone' => getarg($_POST, 'telephone'),
-        'email' => getarg($_POST, 'email'),
-        'mdp' => getarg($_POST, 'mdp'),
-        'adresse' => getarg($_POST, 'adresse'),
+        'nom'          => getarg($_POST, 'nom'),
+        'prenom'       => getarg($_POST, 'prenom'),
+        'telephone'    => getarg($_POST, 'telephone'),
+        'email'        => getarg($_POST, 'email'),
+        'mdp'          => getarg($_POST, 'mdp'),
+        'adresse'      => getarg($_POST, 'adresse'),
         'denomination' => getarg($_POST, 'denomination'),
-        'type' => getarg($_POST, 'type', arg_check(f_is_in(['prive', 'public']))),
+        'type'         => getarg($_POST, 'type', arg_check(f_is_in(['prive', 'public']))),
     ];
     if ($args['type'] === 'prive') {
         $args['siren'] = getarg($_POST, 'siren');
     }
 
-    if (false === Compte::from_db_by_email($args['email']))
+    if (false !== Compte::from_db_by_email($args['email'])) {
         fail('Cette adresse e-mail est déjà utilisée.');
+    }
 
     $mdp_hash = password_hash($args['mdp'], PASSWORD_ALGO);
 
@@ -47,7 +48,7 @@ if ($_POST) {
         $adresse,
         null,
     ];
-    $args_pro = [
+    $args_pro    = [
         $args['denomination'],
     ];
 
@@ -120,40 +121,5 @@ $page->put(function () {
             <br>
         </div>
     </section>
-    <script>
-        // Fonction pour afficher ou masquer la ligne supplémentaire
-        function gererAffichage() {
-            // Récupère tous les boutons radio
-            let radios = document.querySelectorAll('input[name="type"]');
-            let ligneSupplementaire = document.getElementById('champ-siren');
-            // Parcourt chaque bouton radio pour voir s'il est sélectionné
-            radios.forEach(radio => {
-                if (radio.checked && radio.value === 'prive') {
-                    // Si Option 2 est sélectionnée, on affiche la ligne
-                    ligneSupplementaire.style.display = 'block';
-                    ligneSupplementaire.querySelector('input').setAttribute('required', 'required');
-
-                } else if (radio.checked) {
-                    // Si une autre option est sélectionnée, on masque la ligne
-                    ligneSupplementaire.style.display = 'none';
-                    ligneSupplementaire.querySelector('input').removeAttribute('required');
-                }
-            });
-        }
-    </script>
-    <script>
-        // texte siren
-        function formatInput(input) {
-            // Supprimer tous les espaces
-            let value = input.value.replace(/\s/g, '');
-            // Limiter à 9 caractères
-            if (value.length > 9) {
-                value = value.substring(0, 9);
-            }
-            // Ajouter un espace tous les 3 caractères
-            let formattedValue = value.replace(/(.{3})/g, '$1 ').trim();
-            input.value = formattedValue;
-        }
-    </script>
     <?php
 });

@@ -18,11 +18,12 @@ require_once 'model/Date.php';
 require_once 'util.php';
 require_once 'model/Membre.php';
 
-$offre = notfalse(Offre::from_db(getarg($_GET, 'id', arg_int())));
+$offre = Offre::from_db(getarg($_GET, 'id', arg_int()));
+if ($offre === false) fail_404();
 
 $page = new Page($offre->titre, scripts: [
+    'module/carousel.js'     => 'type="module"',
     'module/detail_offre.js' => 'type="module"',
-    'carousel.js'            => 'defer',
 ]);
 
 $input_rating = new InputNote(name: 'rating');
@@ -42,7 +43,12 @@ $id_membre_co = Auth\id_membre_connecte();
 $review_list  = new ReviewList($offre);
 
 if (null !== $report_message = getarg($_POST, 'report_message', required: false)) {
-    redirect_to(location_signaler($id_membre_co, $offre->id, $report_message));
+    $ch = curl_init(location_signaler($id_membre_co, $offre->id, $report_message));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_NOBODY, true);
+    curl_exec($ch);
+    // $ok = curl_getinfo($ch, CURLINFO_HTTP_CODE) == 200;
+    curl_close($ch);
 }
 
 // Si on a un POST de publication d'avis

@@ -22,8 +22,8 @@ class Avis extends Model
     protected static function computed_fields()
     {
         return [
-            'publie_le'     => [FiniteTimestamp::parse(...), 'publie_le', PDO::PARAM_STR],
-            'lu'            => [null, 'lu', PDO::PARAM_BOOL],
+            'publie_le' => [FiniteTimestamp::parse(...), 'publie_le', PDO::PARAM_STR],
+            'lu'        => [null, 'lu', PDO::PARAM_BOOL],
         ];
     }
 
@@ -78,13 +78,18 @@ class Avis extends Model
 
     /**
      * Récupère les avis de la BDD.
-     * @param mixed $id_membre_auteur
-     * @param mixed $id_offre
+     * @param ?int $id_membre_auteur
+     * @param ?int $id_offre
+     * @param ?bool $blackliste
      * @return Iterator<int, self>
      */
-    static function from_db_all(?int $id_membre_auteur = null, ?int $id_offre = null): Iterator
+    static function from_db_all(?int $id_membre_auteur = null, ?int $id_offre = null, ?bool $blackliste = null): Iterator
     {
-        $args = DB\filter_null_args(['id_membre_auteur' => [$id_membre_auteur, PDO::PARAM_INT], 'id_offre' => [$id_offre, PDO::PARAM_INT]]);
+        $args = DB\filter_null_args([
+            'id_membre_auteur' => [$id_membre_auteur, PDO::PARAM_INT],
+            'id_offre'         => [$id_offre, PDO::PARAM_INT],
+            'blackliste'       => [$blackliste, PDO::PARAM_BOOL]
+        ]);
         $stmt = notfalse(DB\connect()->prepare(self::make_select() . DB\where_clause(DB\BoolOperator::AND, array_keys($args), static::TABLE)));
         DB\bind_values($stmt, $args);
         notfalse($stmt->execute());
@@ -146,6 +151,12 @@ class Avis extends Model
     private static function require_subclasses(): void
     {
         require_once 'model/AvisRestaurant.php';
+    }
+
+    function blacklist(): void
+    {
+        $stmt = notfalse(DB\insert_into("blacklist",["id"=>$this->id]));
+        notfalse($stmt->execute());
     }
 
     const TABLE = 'avis';

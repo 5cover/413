@@ -14,7 +14,8 @@ $page = new Page(
 );
 
 $categorie = getarg($_GET, 'categorie', arg_check(f_is_in(array_keys(CATEGORIES_OFFRE))));
-$offre = notfalse(Offre::from_db($id_offre = getarg($_GET, 'id', arg_int())));
+$offre = Offre::from_db($id_offre = getarg($_GET, 'id', arg_int()));
+if ($offre === false) fail_404();
 
 $input_offre = new InputOffre(
     $categorie,
