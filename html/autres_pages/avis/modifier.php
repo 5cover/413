@@ -13,7 +13,8 @@ Auth\exiger_connecte_membre();
 $id_avis = getarg($_GET, 'id_avis', arg_int());
 $id_offre = getarg($_GET, 'id_offre', arg_int());
 
-$avis = notfalse(Avis::from_db($id_avis));
+$avis = Avis::from_db($id_avis);
+if ($avis === false) fail_404();
 
 $error_message = null;
 

@@ -8,10 +8,11 @@ define('EURO', chr(128));
 
 // Récupérer ls information du compte
 
-$compte = notfalse(valeur: Compte::from_db(id_compte: Auth\id_compte_connecte()));
+$compte = Compte::from_db(Auth\id_compte_connecte());
+if ($compte === false) fail_404();
 
 if (!$compte instanceof Professionnel) {
-    echo 'error';
+    echo 'error'; // FIXME: Marius, putain...
 }
 
 function convertToIso88591($string)

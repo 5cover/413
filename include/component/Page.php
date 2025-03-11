@@ -16,7 +16,7 @@ final class Page
     ];
 
     private const BASE_SCRIPTS = [
-        'base.js' => 'defer',
+        'module/base.js' => 'type="module"',
     ];
 
     /**
@@ -71,7 +71,7 @@ final class Page
      *     <title>Création d'une offre</title>
      *     <link rel="stylesheet" href="/style/style.css">
      *     <link rel="stylesheet" href="/style/creation_offre.css">
-     *     <script defer src="/script_js/base.js">
+     *     <script defer type="module" src="/script_js/module/base.js">
      *     <script defer type="module" src="/script_js/module/creation_offre.js">
      * </head>
      * ```

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Apply a function, mutating the argument. Think of it like a generalized assignment operator (e.g. "+=") that can work on any function. Used to avoid specifying the argument twice.
  * @template T
@@ -371,4 +372,11 @@ function dbg_print(mixed $value): mixed
 {
 ?><pre><samp><?php var_dump($value) ?></samp></pre><?php
     return $value;
+}
+
+function fail_404(): never
+{
+    http_response_code(404);
+    require __DIR__ . '/../html/404.html';
+    exit;
 }
