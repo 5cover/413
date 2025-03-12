@@ -61,7 +61,9 @@ final class ReviewList
                             <p><?= h14s($a->commentaire) ?></p>
                             <p class="review-date"><?= h14s($a->date_experience) ?></p>
                             <?php
-                            
+                            if ($this->est_connecte_pro_proprio()) { ?>
+                                <button class="button-blacklist" data-idcco="<?= $idcco ?>" data-avis-id="<?= $a->id ?>" type="button"><img class="signalement-flag" src="/images/<?= $raison_signalement_actuel === null ? 'flag' : 'flag-filled' ?>.svg" title="<?= $raison_signalement_actuel === null ? 'Signaler' : 'Retirer le signalement (' . h14s($raison_signalement_actuel) . ')' ?>" width="24" height="29" alt="Drapeau"></button>
+                            <?php }
                             if ($a->membre_auteur !== null and $a->membre_auteur->id === Auth\id_membre_connecte()) {
                                 ?>
                                 <form method="post" action="<?= h14s(location_modifier_avis($this->offre->id, $a->id)) ?>">
