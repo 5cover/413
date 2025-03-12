@@ -110,7 +110,8 @@ function filterOffers() {
     });
     displayOffers(filteredOffers);
     // updateMap(filteredOffers);
-    updateMapWithIcons(filteredOffers); // Utilisation de la nouvelle fonction
+    // updateMapWithIcons(filteredOffers); // Utilisation de la nouvelle fonction
+    updateMapWithIconsAndColors(filteredOffers);
 
 }
 
@@ -217,6 +218,7 @@ function updateMap(offersToDisplay) {
         }
     });
 }
+
 function updateMapWithIcons(offersToDisplay) {
     markersLayer.clearLayers(); // Efface les anciens marqueurs
 
@@ -227,7 +229,7 @@ function updateMapWithIcons(offersToDisplay) {
         visite: L.icon({ iconUrl: "../images/visite.png", iconSize: [40, 40] }),
         spectacle: L.icon({ iconUrl: "../images/spectacle.png", iconSize: [40, 40] }),
         parc_d_attraction: L.icon({ iconUrl: "../images/parc-attraction.png", iconSize: [40, 40] }),
-        default: L.icon({ iconUrl: "..images/place-marker.png", iconSize: [40, 40] }) // Icône par défaut
+        default: L.icon({ iconUrl: "../images/place-marker.png", iconSize: [40, 40] }) // Icône par défaut
     };
 
     offersToDisplay.forEach(offer => {
@@ -247,6 +249,50 @@ function updateMapWithIcons(offersToDisplay) {
         }
     });
 }
+function updateMapWithIconsAndColors(offersToDisplay) {
+    markersLayer.clearLayers(); // Efface les anciens marqueurs
+
+    // Définition des icônes et des couleurs de fond selon la catégorie principale
+    const categorySettings = {
+        restaurant: { iconUrl: "../images/restaurant.png", color: "red" },
+        activité: { iconUrl:  "../images/activite.png", color: "blue" },
+        visite: { iconUrl: "../images/visite.png", color: "green" },
+        spectacle: { iconUrl: "../images/spectacle.png", color: "purple" },
+        parc_d_attraction: { iconUrl: "../images/parc-attraction.png", color: "orange" },
+        default: { iconUrl: "../images/place-marker.png", color: "gray" } // Icône par défaut
+    };
+
+    offersToDisplay.forEach(offer => {
+        if (offer.lat && offer.long) {
+            let category = offer.categorie.toLowerCase().replace(/\s+/g, '_'); // Normaliser le nom
+            let settings = categorySettings[category] || categorySettings.default;
+
+            // Création d'une icône personnalisée avec couleur de fond
+            let markerIcon = L.divIcon({
+                className: "custom-marker",
+                html: `
+                    <div style="background-color:${settings.color}; padding:5px; border-radius:50%; display:flex; align-items:center; justify-content:center;">
+                        <img src="${settings.iconUrl}" style="width:30px; height:30px; border-radius:50%;">
+                    </div>
+                `,
+                iconSize: [40, 40], // Taille du marqueur
+                iconAnchor: [20, 40], // Ancrage
+                popupAnchor: [0, -40] // Position du popup
+            });
+
+            let popupContent = `
+                <b>${offer.titre}</b><br>
+                ${offer.formatted_address}<br>
+                <a href="/autres_pages/detail_offre.php?id=${offer.id}" target="_blank">Voir l'offre</a>
+            `;
+
+            L.marker([offer.lat, offer.long], { icon: markerIcon })
+                .bindPopup(popupContent)
+                .addTo(markersLayer);
+        }
+    });
+}
+
 
 
 function toggleMap() {
