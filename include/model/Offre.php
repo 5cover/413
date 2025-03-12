@@ -173,7 +173,7 @@ abstract class Offre extends Signalable
      */
     static function from_db_nouveaute_ordered(): Iterator
     {
-        $stmt = notfalse(DB\connect()->prepare(self::make_select() . ' where ' . static::TABLE . ' ORDER BY creee_le DESC LIMIT 10'));
+        $stmt = notfalse(DB\connect()->prepare(self::make_select('nouveaute')));
         notfalse($stmt->execute());
         while (false !== $row = $stmt->fetch()) {
             yield $row['id'] => self::from_db_row($row);
@@ -238,34 +238,34 @@ abstract class Offre extends Signalable
         }
     }
 
-    private static function make_select(): string
+    private static function make_select(?string $table = null): string
     {
         // Todo: this is just a proof of concept for single-query inheritance.
         /* vous comprenez l'enfer de travailler dans ce groupe quand je cherche 
          * d'où es-ce qu'il tire une donnée et que je tombe sur ça? 
          */
         return 'select
-            ' . static::TABLE . '.id,
-            ' . static::TABLE . '.id_adresse,
-            ' . static::TABLE . '.id_image_principale,
-            ' . static::TABLE . '.id_professionnel,
-            ' . static::TABLE . '.libelle_abonnement,
-            ' . static::TABLE . '.titre,
-            ' . static::TABLE . '.resume,
-            ' . static::TABLE . '.description_detaillee,
-            ' . static::TABLE . '.modifiee_le,
-            ' . static::TABLE . '.url_site_web,
-            ' . static::TABLE . '.periodes_ouverture,
-            ' . static::TABLE . '.en_ligne,
-            ' . static::TABLE . '.note_moyenne,
-            ' . static::TABLE . '.prix_min,
-            ' . static::TABLE . '.nb_avis,
-            ' . static::TABLE . '.creee_le,
-            ' . static::TABLE . '.categorie,
-            ' . static::TABLE . '.en_ligne_ce_mois_pendant,
-            ' . static::TABLE . '.changement_ouverture_suivant_le,
-            ' . static::TABLE . '.est_ouverte,
-            ' . static::TABLE . '.option,
+            ' . ($table ?? static::TABLE) . '.id,
+            ' . ($table ?? static::TABLE) . '.id_adresse,
+            ' . ($table ?? static::TABLE) . '.id_image_principale,
+            ' . ($table ?? static::TABLE) . '.id_professionnel,
+            ' . ($table ?? static::TABLE) . '.libelle_abonnement,
+            ' . ($table ?? static::TABLE) . '.titre,
+            ' . ($table ?? static::TABLE) . '.resume,
+            ' . ($table ?? static::TABLE) . '.description_detaillee,
+            ' . ($table ?? static::TABLE) . '.modifiee_le,
+            ' . ($table ?? static::TABLE) . '.url_site_web,
+            ' . ($table ?? static::TABLE) . '.periodes_ouverture,
+            ' . ($table ?? static::TABLE) . '.en_ligne,
+            ' . ($table ?? static::TABLE) . '.note_moyenne,
+            ' . ($table ?? static::TABLE) . '.prix_min,
+            ' . ($table ?? static::TABLE) . '.nb_avis,
+            ' . ($table ?? static::TABLE) . '.creee_le,
+            ' . ($table ?? static::TABLE) . '.categorie,
+            ' . ($table ?? static::TABLE) . '.en_ligne_ce_mois_pendant,
+            ' . ($table ?? static::TABLE) . '.changement_ouverture_suivant_le,
+            ' . ($table ?? static::TABLE) . '.est_ouverte,
+            ' . ($table ?? static::TABLE) . '.option,
 
             _activite.indication_duree activite_indication_duree,
             _activite.age_requis activite_age_requis,
