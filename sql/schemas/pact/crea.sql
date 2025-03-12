@@ -243,7 +243,9 @@ create table _avis_restaurant (
 create table _blacklist (
     id int
         constraint blacklist_pk primary key
-        constraint blacklist_inherits_avis references _avis on delete cascade
+        constraint blacklist_inherits_avis references _avis on delete cascade,
+    date_blacklist timestamp default localtimestamp,
+    fin_blacklist timestamp 
 );
 
 create table _reponse (
