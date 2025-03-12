@@ -3,9 +3,9 @@ set schema 'pact';
 with
     id_adresse as (
         insert into
-            _adresse (numero_departement, code_commune, numero_voie, nom_voie)
+            _adresse (numero_departement, code_commune, numero_voie, nom_voie, lat, long)
         values
-            ('22', 186, 1, 'Rue de Belvédère')
+            ('22', 186, 1, 'Rue de Belvédère',48.538782, -2.719332)
         returning
             id
     ),
