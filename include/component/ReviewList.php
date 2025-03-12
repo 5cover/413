@@ -54,7 +54,13 @@ final class ReviewList
                                 if (null !== $idcco = Auth\id_compte_connecte()) {
                                     $raison_signalement_actuel = Signalable::signalable_from_db($a->id)->get_signalement($idcco);
                                     ?>
-                                    <button class="button-signaler" data-idcco="<?= $idcco ?>" data-avis-id="<?= $a->id ?>" type="button"><img class="signalement-flag" src="/images/<?= $raison_signalement_actuel === null ? 'flag' : 'flag-filled' ?>.svg" title="<?= $raison_signalement_actuel === null ? 'Signaler' : 'Retirer le signalement (' . h14s($raison_signalement_actuel) . ')' ?>" width="24" height="29" alt="Drapeau"></button>
+                                    <button class="button-signaler"
+                                    data-idcco="<?= $idcco ?>"
+                                    data-avis-id="<?= $a->id ?>"
+                                    type="button"><img
+                                        class="signalement-flag"
+                                        src="/images/<?= $raison_signalement_actuel === null ? 'flag' : 'flag-filled' ?>.svg"
+                                        title="<?= $raison_signalement_actuel === null ? 'Signaler' : 'Retirer le signalement (' . h14s($raison_signalement_actuel) . ')' ?>" width="24" height="29" alt="Drapeau"></button>
                                 </p>
                             <?php } ?>
                             <p class="review-contexte">Contexte&nbsp;: <?= h14s($a->contexte) ?></p>
