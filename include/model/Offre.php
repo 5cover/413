@@ -289,7 +289,7 @@ abstract class Offre extends Signalable
             
             _visite.indication_duree visite_indication_duree
 
-            from ' . self::TABLE . ' 
+            from ' . ($table ?? self::TABLE) . ' 
                 left join _activite using (id)
                 left join _parc_attractions using (id)
                 left join _restaurant using (id)
