@@ -2,11 +2,11 @@
 require_once 'component/Page.php';
 require_once 'component/CarteOffre.php';
 require_once 'model/Offre.php';
+require_once 'cookie.php';
 
 $page = new Page('Accueil');
 $page->put(function () {
     ?>
-    <!-- Section de recherche -->
     <section class="search-section">
         <h1>Accueil</h1>
         <br>
@@ -15,8 +15,19 @@ $page->put(function () {
             <button class="searchbutton" type="submit" name="valider">Recherche</button>
         </form>
     </section>
-
-    <!-- Section des offres à la une -->
+    <?php if (Cookie\RecentOffers::get()) { ?>
+    <section class="highlight-offers"> <!-- todo: rename this class to something more generic -->
+        <h2>Consultations récentes</h2>
+        <div class="offer-list">
+        <?php
+        foreach (Cookie\RecentOffers::get() as $id_offre) {
+            $offre = Offre::from_db($id_offre);
+            if ($offre !== false) (new CarteOffre($offre))->put();
+        }
+        ?>
+        </div>
+    </section>
+    <?php } ?>
     <section class="highlight-offers">
         <h2>Offres à la une</h2>
         <div class="offer-list">
@@ -25,7 +36,7 @@ $page->put(function () {
             $offres = Offre::from_db_a_la_une_ordered();
 
             // Préparer et exécuter la requête SQL pour récupérer toutes les offres
-        
+
             // Boucler sur les résultats pour afficher chaque offre
             foreach ($offres as $offre) {
                 (new CarteOffre($offre))->put();
@@ -33,22 +44,14 @@ $page->put(function () {
             ?>
         </div>
     </section>
-
-    <!-- Section des offres en ligne -->
     <section class="online-offers">
         <h2>Offres en ligne</h2>
         <div class="offer-list">
-            <?php
-
-            $offres = Offre::from_db_en_ligne_ordered();
-
-            // Préparer et exécuter la requête SQL pour récupérer toutes les offres
-        
-            // Boucler sur les résultats pour afficher chaque offre
-            foreach ($offres as $offre) {
-                (new CarteOffre($offre))->put();
-            }
-            ?>
+        <?php
+        foreach (Offre::from_db_en_ligne_ordered() as $offre) {
+            (new CarteOffre($offre))->put();
+        }
+        ?>
         </div>
     </section>
     <?php
