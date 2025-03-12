@@ -100,8 +100,10 @@ final class InputAdresse extends Input
             throw new Exception("Aucune donnée de géolocalisation trouvée.");
         }else {
             print_r($latLong);
-            $addr->__set('lat',$latLong['latitude']);
-            $addr->__set('long',$latLong['longitude']) ;
+            $addr->lat=$latLong['latitude'];
+            $addr->long=$latLong['longitude'];
+
+            // $addr->__set('long',$latLong['longitude']) ;
         }
         
 
