@@ -167,6 +167,20 @@ abstract class Offre extends Signalable
         }
     }
 
+   /**
+     * Récupère les offres "À la Une" de la BDD.
+     * @return Iterator<int, self> Les offres "À la Une" de la BDD, indexés par ID.
+     */
+    static function from_db_nouveaute_ordered(): Iterator
+    {
+        $stmt = notfalse(DB\connect()->prepare(self::make_select() . ' where ' . static::TABLE . '. ORDER BY modifiee_le DESC LIMIT 10'));
+        notfalse($stmt->execute());
+        while (false !== $row = $stmt->fetch()) {
+            yield $row['id'] => self::from_db_row($row);
+        }
+    }
+
+
     /**
      * Récupère les offres "en ligne" de la BDD.
      * @return Iterator<int, self> Les offres "À la Une" de la BDD, indexés par ID.
