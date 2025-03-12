@@ -4,7 +4,7 @@ require_once 'model/Offre.php';
 require_once 'model/Reponse.php';
 require_once 'redirect.php';
 require_once 'util.php';
-require_once 'Avis.php';
+require_once 'model/Avis.php';
 
 final class ReviewList
 {
