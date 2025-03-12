@@ -18,7 +18,7 @@ foreach ($offres as &$o) {
     $o['tags']               = json_decode($o['tags']);
     $o['periodes_ouverture'] = MultiRange::parse($o['periodes_ouverture'], FiniteTimestamp::parse(...))->ranges;
     
-    if (isset($o['option'])) $o['option'] = json_decode($o['option']);
+    if ($o['option'] ?? null !== null) $o['option'] = json_decode($o['option']);
 }
 
 echo notfalse(json_encode($offres));
