@@ -99,6 +99,7 @@ final class InputAdresse extends Input
         if (!$latLong || empty($latLong)) {
             throw new Exception("Aucune donnée de géolocalisation trouvée.");
         }else {
+            print_r($latLong);
             $addr->__set('lat',$latLong[0]);
             $addr->__set('long',$latLong[1]) ;
         }
