@@ -44,6 +44,19 @@ $page->put(function () {
             ?>
         </div>
     </section>
+    <section class="highlight-offers">
+        <h2>Nouveautés</h2>
+        <div class="offer-list">
+            <?php
+
+            $offres = Offre::from_db_nouveaute_ordered();
+
+            foreach ($offres as $offre) {
+                (new CarteOffre($offre))->put();
+            }
+            ?>
+        </div>
+    </section>
     <section class="online-offers">
         <h2>Offres en ligne</h2>
         <div class="offer-list">

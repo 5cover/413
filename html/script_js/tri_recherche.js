@@ -109,7 +109,9 @@ function filterOffers() {
         return true;
     });
     displayOffers(filteredOffers);
-    updateMap(filteredOffers);
+    // updateMap(filteredOffers);
+    updateMapWithIcons(filteredOffers); // Utilisation de la nouvelle fonction
+
 }
 
 
@@ -215,6 +217,37 @@ function updateMap(offersToDisplay) {
         }
     });
 }
+function updateMapWithIcons(offersToDisplay) {
+    markersLayer.clearLayers(); // Efface les anciens marqueurs
+
+    // Définition des icônes personnalisées selon la catégorie principale
+    const icons = {
+        restaurant: L.icon({ iconUrl: "../images/icons/restaurant.png", iconSize: [40, 40] }),
+        activité: L.icon({ iconUrl: "../images/icons/activite.png", iconSize: [40, 40] }),
+        visite: L.icon({ iconUrl: "../images/icons/visite.png", iconSize: [40, 40] }),
+        spectacle: L.icon({ iconUrl: "../images/icons/spectacle.png", iconSize: [40, 40] }),
+        parc_d_attraction: L.icon({ iconUrl: "../images/icons/parc-attraction.png", iconSize: [40, 40] }),
+        default: L.icon({ iconUrl: "..images/icons/place-marker.png", iconSize: [40, 40] }) // Icône par défaut
+    };
+
+    offersToDisplay.forEach(offer => {
+        if (offer.lat && offer.long) {
+            let category = offer.categorie.toLowerCase().replace(/\s+/g, '_'); // Normaliser le nom
+            let icon = icons[category] || icons.default; // Utilise l'icône correspondante ou celle par défaut
+
+            let popupContent = `
+                <b>${offer.titre}</b><br>
+                ${offer.formatted_address}<br>
+                <a href="/autres_pages/detail_offre.php?id=${offer.id}" target="_blank">Voir l'offre</a>
+            `;
+
+            L.marker([offer.lat, offer.long], { icon: icon })
+                .bindPopup(popupContent)
+                .addTo(markersLayer);
+        }
+    });
+}
+
 
 function toggleMap() {
     document.getElementById('map').classList.toggle('hidden');
