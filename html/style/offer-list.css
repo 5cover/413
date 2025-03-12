@@ -2,7 +2,7 @@
 .offer-list {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: space-between;
     padding: 20px;
     background-color: white;
 }
