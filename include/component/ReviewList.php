@@ -4,6 +4,7 @@ require_once 'model/Offre.php';
 require_once 'model/Reponse.php';
 require_once 'redirect.php';
 require_once 'util.php';
+require_once 'Avis.php'
 
 final class ReviewList
 {
@@ -60,6 +61,7 @@ final class ReviewList
                             <p><?= h14s($a->commentaire) ?></p>
                             <p class="review-date"><?= h14s($a->date_experience) ?></p>
                             <?php
+                            
                             if ($a->membre_auteur !== null and $a->membre_auteur->id === Auth\id_membre_connecte()) {
                                 ?>
                                 <form method="post" action="<?= h14s(location_modifier_avis($this->offre->id, $a->id)) ?>">
