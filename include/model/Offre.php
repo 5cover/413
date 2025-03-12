@@ -173,7 +173,7 @@ abstract class Offre extends Signalable
      */
     static function from_db_nouveaute_ordered(): Iterator
     {
-        $stmt = notfalse(DB\connect()->prepare(self::make_select() . ' where ' . static::TABLE . '. ORDER BY creee_le DESC LIMIT 10'));
+        $stmt = notfalse(DB\connect()->prepare(self::make_select() . ' where ' . static::TABLE . ' ORDER BY creee_le DESC LIMIT 10'));
         notfalse($stmt->execute());
         while (false !== $row = $stmt->fetch()) {
             yield $row['id'] => self::from_db_row($row);
