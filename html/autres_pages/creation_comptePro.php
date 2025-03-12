@@ -67,37 +67,47 @@ $page->put(function () {
         <div class="champ-connexion">
             <form action="creation_comptePro.php" method="post" enctype="multipart/form-data">
                 <p class="champ">
-                    <label>E-mail * <input type="mail" placeholder="exemple@mail.fr" id="email" name="email" required></label>
+                    <label for="email">E-mail * </label>
+                    <input type="mail" placeholder="exemple@mail.fr" id="email" name="email" required>
                 </p>
                 <p class="champ">
-                    <label>Mot de passe * <input type="password" placeholder="**********" id="mdp" name="mdp" required></label>
+                    <label for="mdp">Mot de passe * </label>
+                    <input type="password" placeholder="**********" id="mdp" name="mdp" required>
                 </p>
                 <!-- Texte avec label -->
                 <p class="champ">
-                    <label>Nom * <input type="text" id="nom" name="nom" placeholder="Breton" required></label>
+                    <label for="nom">Nom * </label>
+                    <input type="text" id="nom" name="nom" placeholder="Breton" required>
                 </p>
                 <p class="champ">
                     <!-- Texte avec label -->
-                    <label>Prénom * <input type="text" id="prenom" name="prenom" placeholder="Louis" required></label>
+                    <label for="prenom">Prénom *</label>
+                    <input type="text" id="prenom" name="prenom" placeholder="Louis" required>
                 </p>
                 <p class="champ">
                     <!-- Texte avec label -->
-                    <label>Téléphone * <input id="telephone" name="telephone" type="tel" placeholder="Format: 0123456789" pattern="[0-9]{10}" maxlength="10" required></label>
+                    <label for="telephone">Téléphone *</label>
+                    <input id="telephone" name="telephone" type="tel" placeholder="Format: 0123456789" pattern="[0-9]{10}" maxlength="10" required>
                 </p>
                 <p class="champ">
                     <!-- Texte avec label -->
-                    <label>Dénomination (raison sociale) * <input type="text" id="denomination" name="denomination" placeholder="Amazon" required></label>
+                    <label for="denomination">Dénomination (raison sociale) *</label>
+                    <input type="text" id="denomination" name="denomination" placeholder="Amazon" required>
                 </p>
                 <p class="champ">
-
-                    <label>Adresse<input type="text" id="adresse" placeholder="22300 1 rue Edouard Branly" name="adresse"></label>
+                    <label for="adresse">Adresse</label>
+                    <input type="text" id="adresse" placeholder="22300 1 rue Edouard Branly" name="adresse" >
                 </p>
                 <p class="radio_entr">
-                    <label>Privé <input type="radio" id="prive" name="type" value="prive" checked></label>
-                    <label>Public <input type="radio" id="public" name="type" value="public"></label>
+                    <label for="prive">Privé</label>
+                    <input type="radio" id="prive" name="type" value="prive" onclick="gererAffichage()" checked>
+
+                    <label for="public">Public</label>
+                    <input type="radio" id="public" name="type" value="public" onclick="gererAffichage()">
                 </p>
                 <p class="champ" id="champ-siren">
-                    <label>SIREN <input type="text" id="siren" name="siren" placeholder="231 654 988" maxlength="12"></label>
+                    <label for="siren">SIREN</label>
+                    <input type="text" id="siren" name="siren" placeholder="231 654 988" oninput="formatInput(this)" maxlength="12">
                 </p>
                 <p class="error"><?= h14s($_GET['error'] ?? null) ?></p>
                 <button type="submit" class="btn-connexion">Créer un compte professionnel</button>

@@ -112,6 +112,7 @@ header #header_pro {
 .error {
     margin: 0;
     color: #ca2200;
+    text-align: center;
 }
 
 .success {
@@ -471,6 +472,7 @@ h6 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     width: 300px;
 }
 
@@ -485,7 +487,6 @@ h6 {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    margin-left: 10px;
     cursor: pointer;
     font-size: 25px;
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
@@ -754,7 +755,22 @@ a:not(:hover, :focus, :focus-within) {
     display: block;
 }
 
+
 /* Section des catégories et sous-catégories */
+.cote{
+    display: flex;
+    flex-direction: row;
+}
+.resultat{
+    width: 100%;
+}
+.criteres{
+    width: 30vh;
+    margin-left: 5vh;
+    display: flex;
+    flex-direction: column;
+}
+
 .tag-selection {
     padding: 20px;
     margin: 20px auto;
@@ -762,7 +778,7 @@ a:not(:hover, :focus, :focus-within) {
     border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
+    width: 100%;
 }
 
 .categories,
@@ -831,6 +847,7 @@ a:not(:hover, :focus, :focus-within) {
     border: 1px solid #ddd;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
 .sorting-section h3 {

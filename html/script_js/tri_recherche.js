@@ -32,7 +32,9 @@ function showSubcategories() {
     if (mainCategory && subcategories[mainCategory]) {
         // Crée les sous-catégories pour la catégorie sélectionnée
         subcategories[mainCategory].forEach(subcategory => {
+            //création d'un div qui contiendras le label et le "input"
             const wrapper = document.createElement('div');
+            //wrapper.classList.add('');
 
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
@@ -185,39 +187,32 @@ const longLat = new Map();
 
 //debut carte
 
-let map = L.map('map').setView([48.8566, 2.3522], 12); // Centré sur Paris
+let map = L.map('map').setView([48.2020, -2.9326], 8); // Centré sur la Bretagne
+
+let markersLayer = L.layerGroup().addTo(map);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-let markersLayer = L.layerGroup().addTo(map);
-L.marker([48.8566, 2.3522]).addTo(map)
-    .bindPopup('A pretty CSS popup.<br> Easily customizable.')
-    .openPopup();
 
 function updateMap(offersToDisplay) {
     markersLayer.clearLayers(); // Efface les anciens marqueurs
+
     offersToDisplay.forEach(offer => {
         if (offer.lat && offer.long) {
+            let popupContent = `
+                <b>${offer.titre}</b><br>
+                ${offer.formatted_address}<br>
+                <a href="/autres_pages/detail_offre.php?id=${offer.id}" target="_blank">Voir l'offre</a>
+            `;
+
             let marker = L.marker([offer.lat, offer.long])
-                .bindPopup(`<b>${offer.titre}</b><br>${offer.formatted_address}`)
+                .bindPopup(popupContent)
                 .addTo(markersLayer);
         }
     });
 }
-
-// document.addEventListener('DOMContentLoaded', function () {
-//     // Création de la carte centrée sur la France
-//     let map = L.map('map').setView([46.603354, 1.888334], 6);
-
-//     // Ajouter la couche de tuiles OpenStreetMap
-//     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//         attribution: '&copy; OpenStreetMap contributors'
-//     }).addTo(map);
-
-   
-// });
 
 
 // fin carte
