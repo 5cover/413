@@ -17,7 +17,7 @@ $page->put(function () {
             <!-- Formulaire de connexion -->
             <form action="<?= h14s(location_login()) ?>" method="post">
                 <div class="champ">
-                    <label for="login">Pseudo/Adresse e-mail *</label>
+                    <label for="login">Adresse e-mail *</label>
                     <input id="login" name="login" type="text" placeholder="exemple@mail.fr" required value="<?= h14s($pseudo) ?>">
                 </div>
                 <br>
