@@ -6,8 +6,6 @@ require_once 'component/CarteOffre.php';
 $page = new Page('Recherche',stylesheets: ["https://unpkg.com/leaflet/dist/leaflet.css"] ,scripts: [
     'https://unpkg.com/leaflet/dist/leaflet.js' => 'defer',
     'tri_recherche.js' => 'defer',
-    
-
 ]);
 
 $page->put(function () {
@@ -28,10 +26,13 @@ $page->put(function () {
     }
     ?>
     <section class="map-section">
-        <h2>Carte des offres :</h2>
-        <div id="map"></div>
+        <div class="header-carte">
+            <h2>Carte des offres :</h2>
+            <button class="droite btn-creer" onclick="toggleMap()" id="mapToggle">Afficher la arte</button>
+        </div>
+        <div id="map" class=""></div>
     </section>
-    
+
     <section class="search-section">
         <h1>Recherche</h1>
         <br>

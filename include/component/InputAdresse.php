@@ -7,25 +7,66 @@ require_once 'component/Input.php';
 require_once 'model/Adresse.php';
 
 
+// function geocode($address) {
+//     // Encoder l'adresse pour l'URL
+//     $address = urlencode($address);
+//     // URL de l'API Nominatim
+//     $url = "https://nominatim.openstreetmap.org/search?q={$address}&format=json&limit=1";
+
+//     // Envoyer la requête et récupérer la réponse
+//     $response = file_get_contents($url);
+//     $data = json_decode($response, true);
+
+//     // Vérifier si des résultats ont été trouvés
+//     if (!empty($data)) {
+//         $latitude = $data[0]['lat'];
+//         $longitude = $data[0]['lon'];
+//         return array('latitude' => $latitude, 'longitude' => $longitude);
+//     } else {
+//         return null;
+//     }
+// }
 function geocode($address) {
     // Encoder l'adresse pour l'URL
     $address = urlencode($address);
+    
     // URL de l'API Nominatim
     $url = "https://nominatim.openstreetmap.org/search?q={$address}&format=json&limit=1";
 
+    // Définition du User-Agent
+    $options = [
+        "http" => [
+            "header" => "User-Agent: MyCustomApp/1.0 (contact@exemple.com)\r\n"
+        ]
+    ];
+    
+    // Création du contexte de requête
+    $context = stream_context_create($options);
+
     // Envoyer la requête et récupérer la réponse
-    $response = file_get_contents($url);
+    $response = @file_get_contents($url, false, $context);
+
+    // Vérifier si la requête a réussi
+    if ($response === false) {
+        error_log("Erreur: Impossible d'accéder à l'API Nominatim pour l'adresse: $address");
+        return null;
+    }
+
+    // Décoder la réponse JSON
     $data = json_decode($response, true);
 
     // Vérifier si des résultats ont été trouvés
-    if (!empty($data)) {
-        $latitude = $data[0]['lat'];
-        $longitude = $data[0]['lon'];
-        return array('latitude' => $latitude, 'longitude' => $longitude);
+    if (!empty($data) && isset($data[0]['lat'], $data[0]['lon'])) {
+        return [
+            'latitude' => (float) $data[0]['lat'],
+            'longitude' => (float) $data[0]['lon']
+        ];
     } else {
+        error_log("Erreur: Aucune donnée trouvée pour l'adresse: $address");
         return null;
     }
 }
+
 
 
 /**
@@ -55,8 +96,16 @@ final class InputAdresse extends Input
         );
 
         $latLong = geocode($addr->format());
-        $addr->__set('lat',$latLong[0]);
-        $addr->__set('long',$latLong[1]) ;
+        if (!$latLong || empty($latLong)) {
+            throw new Exception("Aucune donnée de géolocalisation trouvée.");
+        }else {
+            print_r($latLong);
+            $addr->lat=$latLong['latitude'];
+            $addr->long=$latLong['longitude'];
+
+            // $addr->__set('long',$latLong['longitude']) ;
+        }
+        
 
 
         return $addr;
