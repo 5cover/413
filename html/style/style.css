@@ -1326,3 +1326,20 @@ label > input {
     width: 100%;
     margin: 20px 0;
 }
+
+.map-section {
+    margin: 0 5vh;
+    margin-top: 5vh;
+    width: calc(100% - 10vh);
+}
+
+.header-carte {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; /* Prend toute la largeur du conteneur */
+}
+
+.droite {
+    margin-left: auto; /* Pousse le bouton à droite */
+}

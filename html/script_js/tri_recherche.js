@@ -194,6 +194,8 @@ let markersLayer = L.layerGroup().addTo(map);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
+toggleMap();
+
 
 
 function updateMap(offersToDisplay) {
@@ -212,6 +214,15 @@ function updateMap(offersToDisplay) {
                 .addTo(markersLayer);
         }
     });
+}
+
+function toggleMap() {
+    document.getElementById('map').classList.toggle('hidden');
+    if (document.getElementById('map').classList.contains('hidden')) {
+        document.getElementById('mapToggle').textContent = 'Afficher la carte';
+    }else{
+        document.getElementById('mapToggle').textContent = 'Cacher la carte'; 
+    }
 }
 
 
