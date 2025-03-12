@@ -222,12 +222,12 @@ function updateMapWithIcons(offersToDisplay) {
 
     // Définition des icônes personnalisées selon la catégorie principale
     const icons = {
-        restaurant: L.icon({ iconUrl: "../images/icons/restaurant.png", iconSize: [40, 40] }),
-        activité: L.icon({ iconUrl: "../images/icons/activite.png", iconSize: [40, 40] }),
-        visite: L.icon({ iconUrl: "../images/icons/visite.png", iconSize: [40, 40] }),
-        spectacle: L.icon({ iconUrl: "../images/icons/spectacle.png", iconSize: [40, 40] }),
-        parc_d_attraction: L.icon({ iconUrl: "../images/icons/parc-attraction.png", iconSize: [40, 40] }),
-        default: L.icon({ iconUrl: "..images/icons/place-marker.png", iconSize: [40, 40] }) // Icône par défaut
+        restaurant: L.icon({ iconUrl: "../images/restaurant.png", iconSize: [40, 40] }),
+        activité: L.icon({ iconUrl: "../images/activite.png", iconSize: [40, 40] }),
+        visite: L.icon({ iconUrl: "../images/visite.png", iconSize: [40, 40] }),
+        spectacle: L.icon({ iconUrl: "../images/spectacle.png", iconSize: [40, 40] }),
+        parc_d_attraction: L.icon({ iconUrl: "../images/parc-attraction.png", iconSize: [40, 40] }),
+        default: L.icon({ iconUrl: "..images/place-marker.png", iconSize: [40, 40] }) // Icône par défaut
     };
 
     offersToDisplay.forEach(offer => {
