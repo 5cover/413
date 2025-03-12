@@ -4,6 +4,7 @@ for (const e of document.getElementsByClassName('input-duration')) setup_input_d
 for (const e of document.getElementsByClassName('input-address')) setup_input_address(e);
 for (const e of document.getElementsByClassName('input-image')) setup_input_image(e);
 for (const e of document.getElementsByClassName('button-signaler')) setup_button_signaler(e);
+for (const e of document.getElementsByClassName('button-blacklist')) setup_button_signaler(e);
 
 /**
  * @param {HTMLElement} element
@@ -135,6 +136,23 @@ function preview_image(e_input_image, e_preview) {
  * @param {HTMLButtonElement} element
  */
 function setup_button_signaler(element) {
+    const img = element.children[0];
+    let is_signaled = img.src.endsWith('flag-filled.svg');
+    element.addEventListener('click', async () => {
+        let raison;
+        if (is_signaled || (raison = prompt('Raison de votre signalement'))) {
+            element.disabled = true;
+            if (await fetchDo(location_signaler(element.dataset.idcco, element.dataset.avisId, raison))) {
+                is_signaled ^= true;
+                img.src = '/images/' + (is_signaled ? 'flag-filled.svg' : 'flag.svg');
+            }
+            element.disabled = false;
+
+        }
+    });
+}
+
+function setup_button_blacklist(element) {
     const img = element.children[0];
     let is_signaled = img.src.endsWith('flag-filled.svg');
     element.addEventListener('click', async () => {

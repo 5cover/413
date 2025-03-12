@@ -4,7 +4,7 @@ require_once 'model/Offre.php';
 require_once 'model/Reponse.php';
 require_once 'redirect.php';
 require_once 'util.php';
-require_once 'Avis.php'
+require_once 'model/Avis.php';
 
 final class ReviewList
 {
@@ -54,14 +54,22 @@ final class ReviewList
                                 if (null !== $idcco = Auth\id_compte_connecte()) {
                                     $raison_signalement_actuel = Signalable::signalable_from_db($a->id)->get_signalement($idcco);
                                     ?>
-                                    <button class="button-signaler" data-idcco="<?= $idcco ?>" data-avis-id="<?= $a->id ?>" type="button"><img class="signalement-flag" src="/images/<?= $raison_signalement_actuel === null ? 'flag' : 'flag-filled' ?>.svg" title="<?= $raison_signalement_actuel === null ? 'Signaler' : 'Retirer le signalement (' . h14s($raison_signalement_actuel) . ')' ?>" width="24" height="29" alt="Drapeau"></button>
+                                    <button class="button-signaler"
+                                    data-idcco="<?= $idcco ?>"
+                                    data-avis-id="<?= $a->id ?>"
+                                    type="button"><img
+                                        class="signalement-flag"
+                                        src="/images/<?= $raison_signalement_actuel === null ? 'flag' : 'flag-filled' ?>.svg"
+                                        title="<?= $raison_signalement_actuel === null ? 'Signaler' : 'Retirer le signalement (' . h14s($raison_signalement_actuel) . ')' ?>" width="24" height="29" alt="Drapeau"></button>
                                 </p>
                             <?php } ?>
                             <p class="review-contexte">Contexte&nbsp;: <?= h14s($a->contexte) ?></p>
                             <p><?= h14s($a->commentaire) ?></p>
                             <p class="review-date"><?= h14s($a->date_experience) ?></p>
                             <?php
-                            
+                            if ($this->est_connecte_pro_proprio()) { ?>
+                                <button class="button-blacklist" data-idcco="<?= $idcco ?>" data-avis-id="<?= $a->id ?>" type="button"><img class="signalement-flag" src="/images/<?= $raison_signalement_actuel === null ? 'flag' : 'flag-filled' ?>.svg" title="<?= $raison_signalement_actuel === null ? 'Signaler' : 'Retirer le signalement (' . h14s($raison_signalement_actuel) . ')' ?>" width="24" height="29" alt="Drapeau"></button>
+                            <?php }
                             if ($a->membre_auteur !== null and $a->membre_auteur->id === Auth\id_membre_connecte()) {
                                 ?>
                                 <form method="post" action="<?= h14s(location_modifier_avis($this->offre->id, $a->id)) ?>">

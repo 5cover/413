@@ -17,9 +17,12 @@ require_once 'model/Restaurant.php';
 require_once 'model/Date.php';
 require_once 'util.php';
 require_once 'model/Membre.php';
+require_once 'cookie.php';
 
 $offre = Offre::from_db(getarg($_GET, 'id', arg_int()));
 if ($offre === false) fail_404();
+
+Cookie\RecentOffers::add($offre->id);
 
 $page = new Page($offre->titre, scripts: [
     'module/carousel.js'     => 'type="module"',
