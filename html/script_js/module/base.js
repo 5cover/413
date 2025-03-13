@@ -182,6 +182,9 @@ function promptBlacklistDuration() {
                 background: white; padding: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
                 border-radius: 8px; text-align: center; z-index: 1000;
             ">
+                <p style="color: red; font-weight: bold;">
+                    ⚠️ Attention : Ce blacklist est définitif et ne pourra pas être annulé.
+                </p>
                 <h2>Choisissez la durée du blacklist</h2>
                 <label>Années: <input type="number" id="years" min="0" max="100" value="1"></label><br>
                 <label>Mois: <input type="number" id="months" min="0" max="11" value="0"></label><br>
