@@ -72,6 +72,12 @@ with
                 '2024-07-13', -- Date d'experience
                 'Incroyable le jeu son et lumières est parfaitement maitrisé!' -- Commentaire
             )
+    ),
+    s3 as (
+        insert into
+            _changement_etat (id_offre, fait_le)
+        values
+            ((table id_offre), '2025-01-12 11:14:53') -- mise en ligne
     )
 insert into
     tarif (nom, id_offre, montant)

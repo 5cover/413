@@ -76,6 +76,12 @@ with
             _souscription_option (id_offre, nom_option, lancee_le, nb_semaines)
         values
             ((table id_offre), 'En Relief', localtimestamp, 4)
+    ),
+    s3 as (
+        insert into
+            _changement_etat (id_offre, fait_le)
+        values
+            ((table id_offre), '2025-02-10 01:14:53') -- mise en ligne
     )
 insert into
     _ouverture_hebdomadaire (id_offre, dow, horaires)

@@ -48,6 +48,12 @@ with
             avis (id_offre, id_membre_auteur, note, contexte, date_experience, commentaire)
         values
             ((table id_offre), id_membre ('rstallman'), 4, 'couple', '2024-12-20', 'Excellente expérience.')
+    ),
+    s2 as (
+        insert into
+            _changement_etat (id_offre, fait_le)
+        values
+            ((table id_offre), '2025-03-03 03:03:08') -- mise en ligne
     )
 insert into
     _tags (id_offre, tag)
