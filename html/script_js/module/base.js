@@ -222,6 +222,24 @@ function promptBlacklistDuration() {
 }
 
 /**
+ * Calculate blacklist end date (Now + User Chosen Duration)
+ * @param {{ years: number, months: number, weeks: number, days: number, hours: number, minutes: number }} duration
+ * @returns {string} - Formatted date (YYYY-MM-DD HH:MM:SS)
+ */
+function calculateBlacklistEndDate(duration) {
+    let now = new Date();
+
+    now.setFullYear(now.getFullYear() + duration.years);
+    now.setMonth(now.getMonth() + duration.months);
+    now.setDate(now.getDate() + (duration.weeks * 7) + duration.days);
+    now.setHours(now.getHours() + duration.hours);
+    now.setMinutes(now.getMinutes() + duration.minutes);
+
+    // Convert to YYYY-MM-DD HH:MM:SS format
+    return now.toISOString().slice(0, 19).replace("T", " ");
+}
+
+/**
  * Simulate sending blacklist request
  * @param {string} userId 
  * @param {string} duration 
