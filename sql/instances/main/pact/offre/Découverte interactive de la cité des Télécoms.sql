@@ -103,6 +103,12 @@ N''attendez plus et venez vivre une aventure technologique unique à la Cité de
         values
             ('adulte', (table id_offre), 10),
             ('enfant', (table id_offre), 5)
+    ),
+    s5 as (
+        insert into
+            _changement_etat (id_offre, fait_le)
+        values
+            ((table id_offre), '2025-01-02 06:54:53') -- mise en ligne
     )
 insert into
     _ouverture_hebdomadaire (id_offre, dow, horaires)

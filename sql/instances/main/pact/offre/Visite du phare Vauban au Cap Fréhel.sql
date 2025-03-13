@@ -135,6 +135,12 @@ Ne manquez pas cette opportunité unique de découvrir l''un des joyaux de la Br
             _souscription_option (id_offre, nom_option, lancee_le, nb_semaines)
         values
             ((table id_offre), 'À la Une', localtimestamp, 2)
+    ),
+    s12 as (
+        insert into
+            _changement_etat (id_offre, fait_le)
+        values
+            ((table id_offre), '2025-01-01 00:00:01') -- mise en ligne
     )
 insert into
     _ouverture_hebdomadaire (id_offre, dow, horaires)

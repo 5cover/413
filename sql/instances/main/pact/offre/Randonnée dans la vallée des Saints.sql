@@ -93,6 +93,12 @@ Rejoignez-nous pour une journée mémorable où nature, histoire et gastronomie 
             tarif (nom, id_offre, montant)
         values
             ('adulte', (table id_offre), 1.2)
+    ),
+    s5 as (
+        insert into
+            _changement_etat (id_offre, fait_le)
+        values
+            ((table id_offre), '2025-02-19 11:14:57') -- mise en ligne
     )
 insert into
     _ouverture_hebdomadaire (id_offre, dow, horaires)

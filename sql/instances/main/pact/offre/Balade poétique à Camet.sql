@@ -65,6 +65,12 @@ with
         values
             ((table id_offre), 'culturel'),
             ((table id_offre), 'nature')
+    ),
+    s3 as (
+        insert into
+            _changement_etat (id_offre, fait_le)
+        values
+            ((table id_offre), '2025-01-03 11:28:53') -- mise en ligne
     )
 insert into
     avis ( --

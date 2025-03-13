@@ -48,10 +48,7 @@ $page->put(function () {
         <h2>Nouveautés</h2>
         <div class="offer-list">
             <?php
-
-            $offres = Offre::from_db_nouveaute_ordered();
-
-            foreach ($offres as $offre) {
+            foreach (Offre::from_db_nouveautes() as $offre) {
                 (new CarteOffre($offre))->put();
             }
             ?>
