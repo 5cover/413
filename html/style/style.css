@@ -1343,3 +1343,9 @@ label > input {
 .droite {
     margin-left: auto; /* Pousse le bouton à droite */
 }
+
+/* Like stuff */
+
+.button-dislike img {
+    transform: rotate(180deg);
+}

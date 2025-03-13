@@ -54,7 +54,7 @@ $page->put(function () {
                             <option value="activité">Activité</option>
                             <option value="visite">Visite</option>
                             <option value="spectacle">Spectacle</option>
-                            <option value="parc_attractions">Parc d'attractions</option>
+                            <option value="parc d'attractions">Parc d'attractions</option>
                         </select>
                     </div>
                 </div>

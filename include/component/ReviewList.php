@@ -5,6 +5,7 @@ require_once 'model/Reponse.php';
 require_once 'redirect.php';
 require_once 'util.php';
 require_once 'model/Avis.php';
+require_once 'cookie.php';
 
 final class ReviewList
 {
@@ -44,6 +45,10 @@ final class ReviewList
                 <?php if (!empty($avis)) {
                     foreach ($avis as $a) { ?>
                         <div class="review">
+                            <p>
+                                <button class="button-like" data-avis-id="<?= $a->id ?>"><img src="/images/<?= Cookie\CommentLikes::likes($a->id) ? 'thumb-filled' : 'thumb' ?>.svg" alt="Like" title="Like"></button>
+                                <button class="button-dislike" data-avis-id="<?= $a->id ?>"><img src="/images/<?= Cookie\CommentLikes::likes($a->id) ? 'thumb-filled' : 'thumb' ?>.svg" alt="Dislike" title="Dislike"></button>
+                            </p>
                             <p><?php if (null === $a->membre_auteur) { ?>
                                     <span class="deleted-pseudo">Compte supprimé</span>
                                 <?php } else { ?>
@@ -67,14 +72,16 @@ final class ReviewList
                             <p><?= h14s($a->commentaire) ?></p>
                             <p class="review-date"><?= h14s($a->date_experience) ?></p>
                             <?php
-                            if ($this->est_connecte_pro_proprio()) { ?>
+                            if ($this->est_connecte_pro_proprio()) {
+                                ?>
                                 <button class="button-blacklist"
                                 data-user-id="<?= $user_id ?>"
                                 type="button"
                                 <?= $blacklist_duration !== null ? 'disabled' : '' ?>>
-                                <?= $blacklist_duration !== null ? "Blacklisté (" . h14s($blacklist_duration) . ")" : "Blacklist" ?>
+                                <?= $blacklist_duration !== null ? 'Blacklisté (' . h14s($blacklist_duration) . ')' : 'Blacklist' ?>
                                 </button>
-                            <?php }
+                            <?php
+                            }
                             if ($a->membre_auteur !== null and $a->membre_auteur->id === Auth\id_membre_connecte()) {
                                 ?>
                                 <form method="post" action="<?= h14s(location_modifier_avis($this->offre->id, $a->id)) ?>">
