@@ -182,6 +182,9 @@ function promptBlacklistDuration() {
                 background: white; padding: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
                 border-radius: 8px; text-align: center; z-index: 1000;
             ">
+                <p style="color: red; font-weight: bold;">
+                    ⚠️ Attention : Ce blacklist est définitif et ne pourra pas être annulé.
+                </p>
                 <h2>Choisissez la durée du blacklist</h2>
                 <label>Années: <input type="number" id="years" min="0" max="100" value="1"></label><br>
                 <label>Mois: <input type="number" id="months" min="0" max="11" value="0"></label><br>
@@ -216,6 +219,24 @@ function promptBlacklistDuration() {
             resolve(null); // Cancel blacklist
         });
     });
+}
+
+/**
+ * Calculate blacklist end date (Now + User Chosen Duration)
+ * @param {{ years: number, months: number, weeks: number, days: number, hours: number, minutes: number }} duration
+ * @returns {string} - Formatted date (YYYY-MM-DD HH:MM:SS)
+ */
+function calculateBlacklistEndDate(duration) {
+    let now = new Date();
+
+    now.setFullYear(now.getFullYear() + duration.years);
+    now.setMonth(now.getMonth() + duration.months);
+    now.setDate(now.getDate() + (duration.weeks * 7) + duration.days);
+    now.setHours(now.getHours() + duration.hours);
+    now.setMinutes(now.getMinutes() + duration.minutes);
+
+    // Convert to YYYY-MM-DD HH:MM:SS format
+    return now.toISOString().slice(0, 19).replace("T", " ");
 }
 
 /**
