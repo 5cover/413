@@ -167,19 +167,18 @@ abstract class Offre extends Signalable
         }
     }
 
-   /**
+    /**
      * Récupère les offres "À la Une" de la BDD.
      * @return Iterator<int, self> Les offres "À la Une" de la BDD, indexés par ID.
      */
-    static function from_db_nouveaute_ordered(): Iterator
+    static function from_db_nouveautes(): Iterator
     {
-        $stmt = notfalse(DB\connect()->prepare(self::make_select('nouveaute')));
+        $stmt = notfalse(DB\connect()->prepare(self::make_select() . ' where ' . static::TABLE . '.en_ligne order by creee_le desc limit 10'));
         notfalse($stmt->execute());
         while (false !== $row = $stmt->fetch()) {
-            yield $row['id'] => self::from_db_row($row);
+            yield self::from_db_row($row);
         }
     }
-
 
     /**
      * Récupère les offres "en ligne" de la BDD.
@@ -241,8 +240,10 @@ abstract class Offre extends Signalable
     private static function make_select(?string $table = null): string
     {
         // Todo: this is just a proof of concept for single-query inheritance.
-        /* vous comprenez l'enfer de travailler dans ce groupe quand je cherche 
-         * d'où es-ce qu'il tire une donnée et que je tombe sur ça? 
+
+        /*
+         * vous comprenez l'enfer de travailler dans ce groupe quand je cherche
+         * d'où es-ce qu'il tire une donnée et que je tombe sur ça?
          */
         return 'select
             ' . ($table ?? static::TABLE) . '.id,

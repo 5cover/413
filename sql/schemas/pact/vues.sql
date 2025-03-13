@@ -177,12 +177,3 @@ select
     *
 from
     _reponse;
-
-create view
-    nouveaute as 
-select 
-    *
-from
-    offres
-    ORDER BY creee_le DESC
-    LIMIT 10;
