@@ -1,10 +1,12 @@
-import { fetchDo, location_signaler, requireElementById } from './util.js';
+import { fetchDo, location_signaler, requireElementById, location_blacklist } from './util.js';
 
 for (const e of document.getElementsByClassName('input-duration')) setup_input_duration(e);
 for (const e of document.getElementsByClassName('input-address')) setup_input_address(e);
 for (const e of document.getElementsByClassName('input-image')) setup_input_image(e);
 for (const e of document.getElementsByClassName('button-signaler')) setup_button_signaler(e);
 for (const e of document.getElementsByClassName('button-blacklist')) setup_button_blacklist(e);
+for (const e of document.getElementsByClassName('button-like')) setup_button_like(e);
+for (const e of document.getElementsByClassName('button-dislike')) setup_button_dislike(e);
 
 /**
  * @param {HTMLElement} element
@@ -160,7 +162,7 @@ function setup_button_blacklist(element) {
         const duration = await promptBlacklistDuration();
         if (duration) {
             element.disabled = true; // Disable button to prevent unblacklisting
-            
+
             if (await fetchDo(location_blacklist(element.dataset.userId, duration))) {
                 element.textContent = `Blacklisted (${duration})`;
             }
@@ -240,22 +242,16 @@ function calculateBlacklistEndDate(duration) {
 }
 
 /**
- * Simulate sending blacklist request
- * @param {string} userId 
- * @param {string} duration 
- * @returns {Promise<boolean>} 
+ * @param {HTMLButtonElement} element 
  */
-async function fetchDo(url) {
-    return fetch(url, { method: 'POST' }).then(res => res.ok);
+function setup_button_like(element) {
+
 }
 
 /**
- * Generate API URL for blacklisting
- * @param {string} userId
- * @param {string} duration
- * @returns {string} API URL
+ * 
+ * @param {HTMLButtonElement} element 
  */
-function location_blacklist(userId, duration) {
-    return `/api/blacklist?user=${userId}&duration=${encodeURIComponent(duration)}`;
-}
+function setup_button_dislike(element) {
 
+}
