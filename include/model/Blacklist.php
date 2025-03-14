@@ -23,10 +23,10 @@ class Blacklist extends Model
         return new self($id_signalable);
     }
 
-    function get_blacklist(int $id_compte): ?string
+    function get_blacklist(int $id): ?string
     {
-        $stmt = DB\connect()->prepare('select fin_blacklist from ' . self::TABLE . ' where id_signalable=? and id_compte=?');
-        DB\bind_values($stmt, [1 => [$this->id, PDO::PARAM_INT], 2 => [$id_compte, PDO::PARAM_INT]]);
+        $stmt = DB\connect()->prepare('select fin_blacklist from ' . self::TABLE . ' where id=?');
+        DB\bind_values($stmt, [1 => [$this->id, PDO::PARAM_INT]]);
         notfalse($stmt->execute());
         $r = $stmt->fetchColumn();
         return $r === false ? null : $r;
