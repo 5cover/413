@@ -228,7 +228,7 @@ function updateMapWithIcons(offersToDisplay) {
         activité: L.icon({ iconUrl: "../images/activite.png", iconSize: [40, 40] }),
         visite: L.icon({ iconUrl: "../images/visite.png", iconSize: [40, 40] }),
         spectacle: L.icon({ iconUrl: "../images/spectacle.png", iconSize: [40, 40] }),
-        "parc d'attractions": L.icon({ iconUrl: "../images/parc-attractions.png", iconSize: [40, 40] }),
+        "parc_d'attractions": L.icon({ iconUrl: "../images/parc-attractions.png", iconSize: [40, 40] }),
         default: L.icon({ iconUrl: "../images/place-marker.png", iconSize: [40, 40] }) // Icône par défaut
     };
 
@@ -258,7 +258,7 @@ function updateMapWithIconsAndColors(offersToDisplay) {
         activité: { iconUrl:  "../images/activite.png", color: "blue" },
         visite: { iconUrl: "../images/visite.png", color: "green" },
         spectacle: { iconUrl: "../images/spectacle.png", color: "purple" },
-        "parc d'attractions": { iconUrl: "../images/parc-attractions.png", color: "orange" },
+        "parc_d'attractions": { iconUrl: "../images/parc-attractions.png", color: "orange" },
         default: { iconUrl: "../images/place-marker.png", color: "gray" } // Icône par défaut
     };
 
