@@ -5,9 +5,7 @@ with
         insert into
             _adresse (numero_departement, code_commune, nom_voie, lat, long)
         values
-            ('22', 360, 'Zone de loisirs Brezillet ouest',48.250427, -4.545741
-
-)
+            ('22', 360, 'Zone de loisirs Brezillet ouest',48.4909583,-2.7711403)
         returning
             id
     ),
