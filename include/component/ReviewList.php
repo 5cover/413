@@ -75,7 +75,7 @@ final class ReviewList
                             if ($this->est_connecte_pro_proprio()) {
                                 ?>
                                 <button class="button-blacklist"
-                                data-user-id="<?= $user_id ?>"
+                                data-avis-id="<?= $a->id ?>"
                                 type="button"
                                 <?= $blacklist_duration !== null ? 'disabled' : '' ?>>
                                 <?= $blacklist_duration !== null ? 'Blacklisté (' . h14s($blacklist_duration) . ')' : 'Blacklist' ?>

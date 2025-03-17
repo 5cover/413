@@ -16,6 +16,12 @@ async function initializeOffers() {
 }
 initializeOffers();
 
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById('max-price').addEventListener('input', filterOffers);
+    document.getElementById('min-price').addEventListener('input', filterOffers);
+    document.getElementById('min-rating').addEventListener('input', filterOffers);
+});
+
 const subcategories = {
     restaurant: ['Française', 'Fruits de mer', 'Asiatique', 'Indienne', 'Italienne', 'Gastronomique', 'Restauration rapide', 'Crêperie'],
     activité: ['Atelier', 'Cinéma', 'Cirque', 'Culturel', 'Famille', 'Histoire', 'Humour', 'Musée', 'Musique', 'Nature', 'Patrimoine', 'Son et lumière', 'Urbain', 'Sport',],
@@ -98,10 +104,18 @@ function filterOffers() {
     const mainCategory = document.getElementById('main-category').value;
     const subcategoryCheckboxes = document.querySelectorAll('input[name="subcategory"]:checked');
     const selectedSubcategories = Array.from(subcategoryCheckboxes).map(cb => cb.id);
+    
+    const maxPrice = parseFloat(document.getElementById('max-price').value) || Infinity;
+    const minPrice = parseFloat(document.getElementById('min-price').value) || 0;
+    const minRating = parseFloat(document.getElementById('min-rating').value) || 0;
+
     const filteredOffers = offers.filter(offer => {
+        // Vérifie la catégorie principale
         if (mainCategory && offer.categorie.toLowerCase() !== mainCategory.toLowerCase()) {
             return false;
         }
+
+        // Vérifie les sous-catégories
         if (selectedSubcategories.length > 0) {
             if (!offer.tags || offer.tags.length === 0) {
                 return false;
@@ -109,12 +123,24 @@ function filterOffers() {
             const lowerCaseTags = offer.tags.map(tag => tag.toLowerCase());
             return selectedSubcategories.some(selected => lowerCaseTags.includes(selected));
         }
+
+        if (maxPrice && offer.prix_min > maxPrice) {
+            return false;
+        }
+        if (minPrice && offer.prix_min < minPrice) {
+            return false;
+        }
+
+        if (offer.note_moyenne < minRating) {
+            return false;
+        }
         return true;
     });
+
     displayOffers(filteredOffers);
     updateMapWithIconsAndColors(filteredOffers);
-
 }
+
 
 
 function createOfferCardElement(offer) {
