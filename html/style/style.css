@@ -799,32 +799,10 @@ a:not(:hover, :focus, :focus-within) {
     width: 100%;
     max-width: 400px;
     margin: 0 auto;
-    padding: 10px;
-    border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: #f9f9f9;
     font-size: 1em;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.subcategory-list {
-    padding: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.subcategory-list div {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background-color: var(--color-accent);
-    color: #fff;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
 
 .subcategory-list div:hover {
     background-color: var(--color-secondary);
