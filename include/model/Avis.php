@@ -36,6 +36,8 @@ class Avis extends Model
             'contexte'         => [null, 'contexte', PDO::PARAM_STR],
             'id_membre_auteur' => [fn($x) => $x?->id, 'membre_auteur', PDO::PARAM_INT],
             'id_offre'         => [fn($x) => $x->id, 'offre', PDO::PARAM_INT],
+            'likes'            => [null, 'likes', PDO::PARAM_INT],
+            'dislikes'         => [null, 'dislikes', PDO::PARAM_INT],
         ];
     }
 
@@ -47,10 +49,13 @@ class Avis extends Model
         public string $contexte,
         public ?Membre $membre_auteur,
         public Offre $offre,
+        public int $likes,
+        public int $dislikes,
         //
-        protected ?bool $lu                   = null,
+        protected ?bool $lu = null,
         protected ?FiniteTimestamp $publie_le = null,
-    ) {}
+    ) {
+    }
 
     static function from_db(int $id_avis): self|false
     {
@@ -90,7 +95,7 @@ class Avis extends Model
             'id_offre'         => [$id_offre, PDO::PARAM_INT],
             'blackliste'       => [$blackliste, PDO::PARAM_BOOL]
         ]);
-        $stmt = notfalse(DB\connect()->prepare(self::make_select() . DB\where_clause(DB\BoolOperator::AND, array_keys($args), static::TABLE)));
+        $stmt = notfalse(DB\connect()->prepare(self::make_select() . DB\where_clause(DB\BoolOperator::AND , array_keys($args), static::TABLE)));
         DB\bind_values($stmt, $args);
         notfalse($stmt->execute());
         while (false !== $row = $stmt->fetch()) {
@@ -111,6 +116,8 @@ class Avis extends Model
             Offre::from_db($row['id_offre']),
             $row['lu'],
             FiniteTimestamp::parse($row['publie_le']),
+            $row['likes'],
+            $row['dislikes']
         ];
 
         $id_restaurant = $row['id_restaurant'] ?? null;
@@ -138,6 +145,8 @@ class Avis extends Model
             ' . static::TABLE . '.id_offre,
             ' . static::TABLE . '.lu,
             ' . static::TABLE . '.publie_le,
+            ' . static::TABLE . '.likes,
+            ' . static::TABLE . '.dislikes,
 
             v.id_restaurant,
             v.note_cuisine,
@@ -155,7 +164,7 @@ class Avis extends Model
 
     function blacklist(timestamp $duree_ban): void
     {
-        $stmt = notfalse(DB\insert_into("blacklist",["id"=>$this->id,"fin_blacklist"=>$duree_ban]));
+        $stmt = notfalse(DB\insert_into("blacklist", ["id" => $this->id, "fin_blacklist" => $duree_ban]));
         notfalse($stmt->execute());
     }
 

@@ -48,6 +48,15 @@ export function location_delete_offer(id_offre) {
 }
 
 /**
+ * @param {number} id_avis,
+ * @param {boolean|null=null} new_state,
+ * @returns {string}
+ */
+export function location_like(id_avis, new_state = null) {
+    return '/do/like.php?' + new URLSearchParams(new_state === null ? { id_avis } : { id_avis, new_state });
+}
+
+/**
  * Generate API URL for blacklisting
  * @param {string} userId
  * @param {string} duration
