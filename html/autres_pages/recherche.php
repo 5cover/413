@@ -65,6 +65,8 @@ $page->put(function () {
                         
                     </div>
                 </div>
+                <label for="min-price">Prix minimum :</label>
+                <input type="number" id="min-price" min="0" step="1">
                 <label for="max-price">Prix maximum :</label>
                 <input type="number" id="max-price" min="0" step="1">
             </section>

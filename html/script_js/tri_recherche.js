@@ -16,7 +16,10 @@ async function initializeOffers() {
 }
 initializeOffers();
 
-document.getElementById('max-price').addEventListener('input', filterOffers);
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById('max-price').addEventListener('input', filterOffers);
+    document.getElementById('min-price').addEventListener('input', filterOffers);
+});
 
 const subcategories = {
     restaurant: ['Française', 'Fruits de mer', 'Asiatique', 'Indienne', 'Italienne', 'Gastronomique', 'Restauration rapide', 'Crêperie'],
@@ -117,6 +120,9 @@ function filterOffers() {
 
         // Vérifie le filtre du prix max
         if (maxPrice && offer.prix_min > maxPrice) {
+            return false;
+        }
+        if (minPrice > offer.prix_min) {
             return false;
         }
 
