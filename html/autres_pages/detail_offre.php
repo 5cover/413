@@ -124,7 +124,7 @@ $page->put(function () use ($offre, $input_rating, $input_note_cuisine, $input_n
             <h3>Emplacement et coordonnées</h3>
             <!-- <div id="map" class="map"></div> -->
             <div class="contact-info">
-                <p><strong>Adresse&nbsp;:</strong> <a href="https://www.openstreetmap.org/directions?to=<?php echo($offre->adresse->lat.",".$offre->adresse->long) ?>"><?= h14s($offre->adresse->format()) ?></a></p>
+                <p><strong>Adresse&nbsp;:</strong> <a target=”_blank” href="https://www.openstreetmap.org/directions?to=<?php echo($offre->adresse->lat.",".$offre->adresse->long) ?>"><?= h14s($offre->adresse->format()) ?></a></p>
                 <?php if ($offre->url_site_web) { ?>
                     <p><strong>Site web&nbsp;:</strong> <a href="<?= h14s($offre->url_site_web) ?>"><?= h14s($offre->url_site_web) ?></a></p>
                 <?php } ?>
