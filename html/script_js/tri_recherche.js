@@ -42,19 +42,22 @@ function showSubcategories() {
             const wrapper = document.createElement('div');
             //wrapper.classList.add('');
 
-            const checkbox = document.createElement('input');
+            const checkbox = document.createElement('button');
             checkbox.type = 'checkbox';
-            checkbox.id = subcategory.toLowerCase().replace(/\s+/g, '-');
+            checkbox.id = 
             checkbox.name = 'subcategory';
             checkbox.value = subcategory;
+            checkbox.classList.add('btn-sort');
+            checkbox.innerText = subcategory.toLowerCase().replace(/\s+/g, '-');
             checkbox.addEventListener('change', filterOffers);
 
-            const label = document.createElement('label');
-            label.htmlFor = checkbox.id;
-            label.innerText = subcategory;
+            // const label = document.createElement('label');
+            // label.htmlFor = checkbox.id;
+            // label.innerText = subcategory;
 
             wrapper.appendChild(checkbox);
-            wrapper.appendChild(label);
+            //wrapper.appendChild(label);
+            wrapper.classList.add('tag');
             subcategoryContainer.appendChild(wrapper);
         });
 
@@ -172,9 +175,6 @@ function createOfferCardElement(offer) {
         card.dataset.lat = offer.lat;
         card.dataset.long = offer.long;
     }
-
-    console.log(offer.lat);
-    console.log(offer.long);
 
     return card;
 }
