@@ -32,10 +32,10 @@ class Blacklist extends Model
         return $r === false ? null : $r;
     }
 
-    function toggle_blacklist(int $id_compte, string $raison): bool
+    function toggle_blacklist(int $id, date $finblacklist): bool
     {
-        if ($this->get_blacklist($id_compte) === null) {
-            $stmt = DB\connect()->prepare('insert into ' . self::TABLE . ' (id_signalable,id_compte,raison) values (?,?,?)');
+        if ($this->get_blacklist($id) === null) {
+            $stmt = DB\connect()->prepare('insert into ' . self::TABLE . ' (id,fin_blacklist) values (?,?)');
             DB\bind_values($stmt, [1 => [$this->id, PDO::PARAM_INT], 2 => [$id_compte, PDO::PARAM_INT], 3 => [$raison, PDO::PARAM_STR]]);
         }
         return $stmt->execute();
