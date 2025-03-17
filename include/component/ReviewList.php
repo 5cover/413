@@ -46,8 +46,8 @@ final class ReviewList
                     foreach ($avis as $a) { ?>
                         <div class="review">
                             <p>
-                                <button class="button-like" data-avis-id="<?= $a->id ?>"><img src="/images/<?= Cookie\CommentLikes::likes($a->id) ? 'thumb-filled' : 'thumb' ?>.svg" alt="Like" title="Like"></button>
-                                <button class="button-dislike" data-avis-id="<?= $a->id ?>"><img src="/images/<?= Cookie\CommentLikes::likes($a->id) ? 'thumb-filled' : 'thumb' ?>.svg" alt="Dislike" title="Dislike"></button>
+                                <button data-comment-id="<?= $a->id ?>" class="button-like" data-avis-id="<?= $a->id ?>"><img src="/images/<?= Cookie\CommentLikes::likes($a->id) ? 'thumb-filled' : 'thumb' ?>.svg" alt="Like" title="Like"></button>
+                                <button data-comment-id="<?= $a->id ?>" class="button-dislike" data-avis-id="<?= $a->id ?>"><img src="/images/<?= Cookie\CommentLikes::likes($a->id) ? 'thumb-filled' : 'thumb' ?>.svg" alt="Dislike" title="Dislike"></button>
                             </p>
                             <p><?php if (null === $a->membre_auteur) { ?>
                                     <span class="deleted-pseudo">Compte supprimé</span>

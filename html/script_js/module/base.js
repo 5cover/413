@@ -1,4 +1,4 @@
-import { fetchDo, location_signaler, requireElementById, location_blacklist } from './util.js';
+import { fetchDo, location_signaler, requireElementById, location_blacklist, location_like } from './util.js';
 
 for (const e of document.getElementsByClassName('input-duration')) setup_input_duration(e);
 for (const e of document.getElementsByClassName('input-address')) setup_input_address(e);
@@ -139,14 +139,14 @@ function preview_image(e_input_image, e_preview) {
  */
 function setup_button_signaler(element) {
     const img = element.children[0];
-    let is_signaled = img.src.endsWith('flag-filled.svg');
+    let is_signaled = img.src.endsWith('filled.svg');
     element.addEventListener('click', async () => {
         let raison;
         if (is_signaled || (raison = prompt('Raison de votre signalement'))) {
             element.disabled = true;
             if (await fetchDo(location_signaler(element.dataset.idcco, element.dataset.avisId, raison))) {
                 is_signaled ^= true;
-                img.src = '/images/' + (is_signaled ? 'flag-filled.svg' : 'flag.svg');
+                img.src = '/images/flag' + (is_signaled ? '-filled.svg' : '.svg');
             }
             element.disabled = false;
 
@@ -245,7 +245,15 @@ function calculateBlacklistEndDate(duration) {
  * @param {HTMLButtonElement} element 
  */
 function setup_button_like(element) {
-
+    let is_liked = img.src.endsWith('filled.svg');
+    element.addEventListener('click', async () => {
+        element.disabled = true;
+        if (await fetchDo(location_like(element.dataset.commentId, is_liked ? true : null))) {
+            is_liked ^= true;
+            img.src = '/images/thumb' + (is_liked ? '-filled.svg' : '.svg');
+        }
+        element.disabled = false;
+    });
 }
 
 /**
@@ -253,5 +261,13 @@ function setup_button_like(element) {
  * @param {HTMLButtonElement} element 
  */
 function setup_button_dislike(element) {
-
+    let is_disliked = img.src.endsWith('filled.svg');
+    element.addEventListener('click', async () => {
+        element.disabled = true;
+        if (await fetchDo(location_like(element.dataset.commentId, is_disliked ? false : null))) {
+            is_disliked ^= true;
+            img.src = '/images/thumb' + (is_disliked ? '-filled.svg' : '.svg');
+        }
+        element.disabled = false;
+    });
 }

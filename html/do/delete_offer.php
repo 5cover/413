@@ -1,5 +1,4 @@
 <?php
-require_once 'util.php';
 require_once 'model/Offre.php';
 
 $id_offre = getarg($_GET, 'id_offre', arg_int());
