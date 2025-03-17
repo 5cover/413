@@ -102,8 +102,8 @@ function filterOffers() {
     const subcategoryCheckboxes = document.querySelectorAll('input[name="subcategory"]:checked');
     const selectedSubcategories = Array.from(subcategoryCheckboxes).map(cb => cb.id);
     
-    const maxPrice = document.getElementById('max-price').value;
-    const minPrice = document.getElementById('min-price').value;
+    const maxPrice = parseFloat(document.getElementById('max-price').value) || Infinity;
+    const minPrice = parseFloat(document.getElementById('min-price').value) || 0;
     const minRating = parseFloat(document.getElementById('min-rating').value) || 0;
 
     const filteredOffers = offers.filter(offer => {
