@@ -159,7 +159,7 @@ function setup_button_signaler(element) {
  */
 function setup_button_blacklist(element) {
     element.addEventListener('click', async () => {
-        const duration = await promptBlacklistDuration();
+        const duration = await promptBlacklist();
         if (duration) {
             element.disabled = true;
 
@@ -171,10 +171,10 @@ function setup_button_blacklist(element) {
 }
 
 /**
- * Affiche une fenêtre avec des éléments pour choisir la durée du blacklist
- * @returns {Promise<string|null>} Renvoie la durée sélectionnée ou null si annulé
+ * Affiche une fenêtre pour avertir qu'un blacklist est définitif
+ * @returns {Promise<string|null>}
  */
-function promptBlacklistDuration() {
+function promptBlacklist() {
     return new Promise((resolve) => {
         // Créé la fenêtre
         let modal = document.createElement('div');
