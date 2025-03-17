@@ -5,7 +5,7 @@ with
         insert into
             _adresse (numero_departement, code_commune, localite, lat, long)
         values
-            ('22', 164, 'Menez Bré',47.372729, -2.241563)
+            ('22', 164, 'Menez Bré',48.576445,-3.3179027)
         returning
             id
     ),

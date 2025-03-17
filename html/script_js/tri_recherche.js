@@ -16,7 +16,11 @@ async function initializeOffers() {
 }
 initializeOffers();
 
-document.getElementById('max-price').addEventListener('input', filterOffers);
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById('max-price').addEventListener('input', filterOffers);
+    document.getElementById('min-price').addEventListener('input', filterOffers);
+    document.getElementById('min-rating').addEventListener('input', filterOffers);
+});
 
 const subcategories = {
     restaurant: ['Française', 'Fruits de mer', 'Asiatique', 'Indienne', 'Italienne', 'Gastronomique', 'Restauration rapide', 'Crêperie'],
@@ -38,19 +42,22 @@ function showSubcategories() {
             const wrapper = document.createElement('div');
             //wrapper.classList.add('');
 
-            const checkbox = document.createElement('input');
+            const checkbox = document.createElement('button');
             checkbox.type = 'checkbox';
-            checkbox.id = subcategory.toLowerCase().replace(/\s+/g, '-');
+            checkbox.id = 
             checkbox.name = 'subcategory';
             checkbox.value = subcategory;
+            checkbox.classList.add('btn-sort');
+            checkbox.innerText = subcategory.toLowerCase().replace(/\s+/g, '-');
             checkbox.addEventListener('change', filterOffers);
 
-            const label = document.createElement('label');
-            label.htmlFor = checkbox.id;
-            label.innerText = subcategory;
+            // const label = document.createElement('label');
+            // label.htmlFor = checkbox.id;
+            // label.innerText = subcategory;
 
             wrapper.appendChild(checkbox);
-            wrapper.appendChild(label);
+            //wrapper.appendChild(label);
+            wrapper.classList.add('tag');
             subcategoryContainer.appendChild(wrapper);
         });
 
@@ -98,7 +105,9 @@ function filterOffers() {
     const subcategoryCheckboxes = document.querySelectorAll('input[name="subcategory"]:checked');
     const selectedSubcategories = Array.from(subcategoryCheckboxes).map(cb => cb.id);
     
-    const maxPrice = document.getElementById('max-price').value; // Récupérer la valeur du filtre prix
+    const maxPrice = parseFloat(document.getElementById('max-price').value) || Infinity;
+    const minPrice = parseFloat(document.getElementById('min-price').value) || 0;
+    const minRating = parseFloat(document.getElementById('min-rating').value) || 0;
 
     const filteredOffers = offers.filter(offer => {
         // Vérifie la catégorie principale
@@ -115,11 +124,16 @@ function filterOffers() {
             return selectedSubcategories.some(selected => lowerCaseTags.includes(selected));
         }
 
-        // Vérifie le filtre du prix max
         if (maxPrice && offer.prix_min > maxPrice) {
             return false;
         }
+        if (minPrice && offer.prix_min < minPrice) {
+            return false;
+        }
 
+        if (offer.note_moyenne < minRating) {
+            return false;
+        }
         return true;
     });
 
@@ -161,9 +175,6 @@ function createOfferCardElement(offer) {
         card.dataset.lat = offer.lat;
         card.dataset.long = offer.long;
     }
-
-    console.log(offer.lat);
-    console.log(offer.long);
 
     return card;
 }

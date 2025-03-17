@@ -159,24 +159,24 @@ function setup_button_signaler(element) {
  */
 function setup_button_blacklist(element) {
     element.addEventListener('click', async () => {
-        const duration = await promptBlacklistDuration();
+        const duration = await promptBlacklist();
         if (duration) {
-            element.disabled = true; // Disable button to prevent unblacklisting
+            element.disabled = true;
 
             if (await fetchDo(location_blacklist(element.dataset.userId, duration))) {
-                element.textContent = `Blacklisted (${duration})`;
+                element.textContent = `Blacklisté (${duration})`;
             }
         }
     });
 }
 
 /**
- * Displays a modal with number pickers for blacklist duration.
- * @returns {Promise<string|null>} Selected duration or null if canceled.
+ * Affiche une fenêtre pour avertir qu'un blacklist est définitif
+ * @returns {Promise<string|null>}
  */
-function promptBlacklistDuration() {
+function promptBlacklist() {
     return new Promise((resolve) => {
-        // Create the modal
+        // Créé la fenêtre
         let modal = document.createElement('div');
         modal.innerHTML = `
             <div style="
@@ -185,7 +185,7 @@ function promptBlacklistDuration() {
                 border-radius: 8px; text-align: center; z-index: 1000;
             ">
                 <p style="color: red; font-weight: bold;">
-                    ⚠️ Attention : Ce blacklist est définitif et ne pourra pas être annulé.
+                    ⚠️ Attention : un blacklist est définitif et ne pourra pas être annulé.
                 </p>
                 <h2>Choisissez la durée du blacklist</h2>
                 <label>Années: <input type="number" id="years" min="0" max="100" value="1"></label><br>
@@ -201,7 +201,7 @@ function promptBlacklistDuration() {
 
         document.body.appendChild(modal);
 
-        // Handle confirmation
+        // Gère la confirmation
         modal.querySelector('#confirm').addEventListener('click', () => {
             let years = parseInt(document.getElementById('years').value, 10);
             let months = parseInt(document.getElementById('months').value, 10);
@@ -212,23 +212,23 @@ function promptBlacklistDuration() {
 
             let duration = `${years}Y ${months}M ${weeks}W ${days}D ${hours}H ${minutes}M`;
             modal.remove();
-            resolve(duration); // Send selected duration
+            resolve(duration); // Renvoie la durée sélectionnée
         });
 
-        // Handle cancel
+        // Gère l'annulation
         modal.querySelector('#cancel').addEventListener('click', () => {
             modal.remove();
-            resolve(null); // Cancel blacklist
+            resolve(null); // Annule blacklist
         });
     });
 }
 
 /**
- * Calculate blacklist end date (Now + User Chosen Duration)
+ * Calcule la fin du blacklist
  * @param {{ years: number, months: number, weeks: number, days: number, hours: number, minutes: number }} duration
- * @returns {string} - Formatted date (YYYY-MM-DD HH:MM:SS)
+ * @returns {string} - Date au bon format (YYYY-MM-DD HH:MM:SS)
  */
-function calculateBlacklistEndDate(duration) {
+function calculeBlacklistEndDate(duration) {
     let now = new Date();
 
     now.setFullYear(now.getFullYear() + duration.years);
@@ -237,7 +237,7 @@ function calculateBlacklistEndDate(duration) {
     now.setHours(now.getHours() + duration.hours);
     now.setMinutes(now.getMinutes() + duration.minutes);
 
-    // Convert to YYYY-MM-DD HH:MM:SS format
+    // Converti au format YYYY-MM-DD HH:MM:SS
     return now.toISOString().slice(0, 19).replace("T", " ");
 }
 

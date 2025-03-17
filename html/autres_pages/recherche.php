@@ -61,12 +61,18 @@ $page->put(function () {
                 <input type="hidden" id="selected-category" name="category" value="">
                 <div id="subcategories" class="hidden">
                     <h3>Tags</h3>
-                    <div class="subcategory-list" id="subcategory-list">
+                    <div class="subcategory-list class="sorting-buttons"" id="subcategory-list">
                         
                     </div>
                 </div>
+                <label for="min-price">Prix minimum :</label>
+                <input type="number" id="min-price" min="0" step="1">
+                </br>
                 <label for="max-price">Prix maximum :</label>
                 <input type="number" id="max-price" min="0" step="1">
+                </br>
+                <label for="min-rating">Note minimale :</label>
+                <input type="number" id="min-rating" min="0" max="5" step="0.1" value="0">
             </section>
 
             <section class="sorting-section">
