@@ -76,6 +76,12 @@ La visite de la Galerie d''Art du Dragon Noir est bien plus qu''une simple expos
             _souscription_option (id_offre, nom_option, lancee_le, nb_semaines)
         values
             ((table id_offre), 'À la Une', localtimestamp, 4)
+    ),
+    s5 as (
+        insert into
+            _changement_etat (id_offre, fait_le)
+        values
+            ((table id_offre), '2025-01-19 11:51:53') -- mise en ligne
     )
 insert into
     _ouverture_hebdomadaire (id_offre, dow, horaires)

@@ -46,3 +46,13 @@ export function location_signaler(id_compte, id_signalable, raison) {
 export function location_delete_offer(id_offre) {
     return '/do/delete_offer.php?' + new URLSearchParams({ id_offre, });
 }
+
+/**
+ * Generate API URL for blacklisting
+ * @param {string} userId
+ * @param {string} duration
+ * @returns {string} API URL
+ */
+export function location_blacklist(userId, duration) {
+    return `/api/blacklist?user=${userId}&duration=${encodeURIComponent(duration)}`;
+}

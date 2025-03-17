@@ -59,6 +59,12 @@ L''initiation au char à voile peut être incluse dans le cadre d''une activité
             _souscription_option (id_offre, nom_option, lancee_le, nb_semaines)
         values
             ((table id_offre), 'En Relief', localtimestamp, 3)
+    ),
+    s3 as (
+        insert into
+            _changement_etat (id_offre, fait_le)
+        values
+            ((table id_offre), '2025-01-13 11:14:53') -- mise en ligne
     )
 insert into
     _tags (id_offre, tag)

@@ -21,7 +21,7 @@ const subcategories = {
     activité: ['Atelier', 'Cinéma', 'Cirque', 'Culturel', 'Famille', 'Histoire', 'Humour', 'Musée', 'Musique', 'Nature', 'Patrimoine', 'Son et lumière', 'Urbain', 'Sport',],
     spectacle: ['Atelier', 'Cinéma', 'Cirque', 'Culturel', 'Famille', 'Histoire', 'Humour', 'Musée', 'Musique', 'Nature', 'Patrimoine', 'Son et lumière', 'Urbain', 'Sport',],
     visite: ['Atelier', 'Cinéma', 'Cirque', 'Culturel', 'Famille', 'Histoire', 'Humour', 'Musée', 'Musique', 'Nature', 'Patrimoine', 'Son et lumière', 'Urbain', 'Sport',],
-    parc_d_attraction: ['Atelier', 'Cinéma', 'Cirque', 'Culturel', 'Famille', 'Histoire', 'Humour', 'Musée', 'Musique', 'Nature', 'Patrimoine', 'Son et lumière', 'Urbain', 'Sport',]
+    "parc d'attractions": ['Atelier', 'Cinéma', 'Cirque', 'Culturel', 'Famille', 'Histoire', 'Humour', 'Musée', 'Musique', 'Nature', 'Patrimoine', 'Son et lumière', 'Urbain', 'Sport',]
 };
 
 function showSubcategories() {
@@ -109,8 +109,6 @@ function filterOffers() {
         return true;
     });
     displayOffers(filteredOffers);
-    // updateMap(filteredOffers);
-    // updateMapWithIcons(filteredOffers); // Utilisation de la nouvelle fonction
     updateMapWithIconsAndColors(filteredOffers);
 
 }
@@ -127,7 +125,7 @@ function createOfferCardElement(offer) {
     imagePrincipale.src = getImageFilename(offer.id_image_principale);
 
     const titre = get('titre');
-    titre.href = '/autres_pages/detail_offre.php?id' + offer.id;
+    titre.href = '/autres_pages/detail_offre.php?id=' + offer.id;
     titre.textContent = offer.titre;
 
     get('location').textContent = offer.formatted_address;
@@ -200,55 +198,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 toggleMap();
 
 
-
-function updateMap(offersToDisplay) {
-    markersLayer.clearLayers(); // Efface les anciens marqueurs
-
-    offersToDisplay.forEach(offer => {
-        if (offer.lat && offer.long) {
-            let popupContent = `
-                <b>${offer.titre}</b><br>
-                ${offer.formatted_address}<br>
-                <a href="/autres_pages/detail_offre.php?id=${offer.id}" target="_blank">Voir l'offre</a>
-            `;
-
-            let marker = L.marker([offer.lat, offer.long])
-                .bindPopup(popupContent)
-                .addTo(markersLayer);
-        }
-    });
-}
-
-function updateMapWithIcons(offersToDisplay) {
-    markersLayer.clearLayers(); // Efface les anciens marqueurs
-
-    // Définition des icônes personnalisées selon la catégorie principale
-    const icons = {
-        restaurant: L.icon({ iconUrl: "../images/restaurant.png", iconSize: [40, 40] }),
-        activité: L.icon({ iconUrl: "../images/activite.png", iconSize: [40, 40] }),
-        visite: L.icon({ iconUrl: "../images/visite.png", iconSize: [40, 40] }),
-        spectacle: L.icon({ iconUrl: "../images/spectacle.png", iconSize: [40, 40] }),
-        parc_d_attraction: L.icon({ iconUrl: "../images/parc-attraction.png", iconSize: [40, 40] }),
-        default: L.icon({ iconUrl: "../images/place-marker.png", iconSize: [40, 40] }) // Icône par défaut
-    };
-
-    offersToDisplay.forEach(offer => {
-        if (offer.lat && offer.long) {
-            let category = offer.categorie.toLowerCase().replace(/\s+/g, '_'); // Normaliser le nom
-            let icon = icons[category] || icons.default; // Utilise l'icône correspondante ou celle par défaut
-
-            let popupContent = `
-                <b>${offer.titre}</b><br>
-                ${offer.formatted_address}<br>
-                <a href="/autres_pages/detail_offre.php?id=${offer.id}" target="_blank">Voir l'offre</a>
-            `;
-
-            L.marker([offer.lat, offer.long], { icon: icon })
-                .bindPopup(popupContent)
-                .addTo(markersLayer);
-        }
-    });
-}
 function updateMapWithIconsAndColors(offersToDisplay) {
     markersLayer.clearLayers(); // Efface les anciens marqueurs
 
@@ -258,7 +207,7 @@ function updateMapWithIconsAndColors(offersToDisplay) {
         activité: { iconUrl:  "../images/activite.png", color: "blue" },
         visite: { iconUrl: "../images/visite.png", color: "green" },
         spectacle: { iconUrl: "../images/spectacle.png", color: "purple" },
-        parc_d_attraction: { iconUrl: "../images/parc-attraction.png", color: "orange" },
+        "parc_d'attractions": { iconUrl: "../images/parc-attractions.png", color: "orange" },
         default: { iconUrl: "../images/place-marker.png", color: "gray" } // Icône par défaut
     };
 

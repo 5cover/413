@@ -1,7 +1,7 @@
 spectacle.png             
 activite.png      
 restaurant.png          
-parc-attraction.png         
+parc-attractions.png         
 visite.png
 
 Toutes les images doivent etre attribuer au graphiste Freepik
