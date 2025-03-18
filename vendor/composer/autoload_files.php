@@ -6,5 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    '6e3fae29631ef280660b3cdad06f25a8' => $vendorDir . '/symfony/deprecation-contracts/function.php',
     '16eed290c5592c18dc3f16802ad3d0e4' => $vendorDir . '/ivopetkov/html5-dom-document-php/autoload.php',
 );
