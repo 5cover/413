@@ -26,7 +26,7 @@ class Blacklist extends Model
     static function get_blacklist(int $id): ?string
     {
         $stmt = DB\connect()->prepare('select fin_blacklist from ' . self::TABLE . ' where id=?');
-        DB\bind_values($stmt, [1 => [$this->id, PDO::PARAM_INT]]);
+        DB\bind_values($stmt, [1 => [$id, PDO::PARAM_INT]]);
         notfalse($stmt->execute());
         $r = $stmt->fetchColumn();
         return $r === false ? null : $r;
