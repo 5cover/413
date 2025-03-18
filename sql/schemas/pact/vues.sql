@@ -177,3 +177,11 @@ select
     *
 from
     _reponse;
+
+
+create view
+    notifications as
+select
+    *
+from
+    _avis WHERE lu = false;
