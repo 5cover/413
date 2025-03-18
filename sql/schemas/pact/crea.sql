@@ -333,3 +333,13 @@ create table _souscription_option (
     nb_semaines int not null check (nb_semaines between 1 and 4),
     actif bool not null default true
 );
+
+CREATE TABLE _notification (
+    id SERIAL PRIMARY KEY,
+    id_pro INT NOT NULL
+        CONSTRAINT notification_fk_pro REFERENCES _professionnel(id) ON DELETE CASCADE,
+    message TEXT NOT NULL
+        CONSTRAINT notification_fk_commentaire REFERENCES _avis(commentaire) ON DELETE CASCADE,
+    date TIMESTAMP NOT NULL DEFAULT localtimestamp,
+    lu BOOLEAN NOT NULL DEFAULT FALSE
+);
