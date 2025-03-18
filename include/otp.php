@@ -2,7 +2,7 @@
 namespace OTP;
 
 require_once 'db.php';
-require_once '../vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 use OTPHP\TOTP;
 use PDO;
