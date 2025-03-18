@@ -79,7 +79,8 @@ create table _compte (
     prenom ligne not null,
     telephone numero_telephone not null,
     adresse text, -- adresse libre facultative
-    api_key uuid unique
+    api_key uuid unique,
+    otp_secret varchar(255)
 );
 
 create table _professionnel (
