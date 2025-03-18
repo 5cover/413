@@ -113,7 +113,6 @@ final class Page
             </div>
             <?php
             if (Auth\est_connecte()) {
-                // Vérification du statut de la session
                 ?>
                 <a href="<?= h14s(location_logout()) ?>">
                     <div class="auth-button">
@@ -123,6 +122,10 @@ final class Page
                 </a>
                 <div id="header_pro">
                     <a href="/autres_pages/detail_compte.php">
+                        <div class="auth-button">
+                            <img src="/images/Notification.png" alt="Notification">
+                            <span>Notification</span>
+                        </div>
                         <div class="auth-button">
                             <img src="/images/profile-icon.png" alt="Compte">
                             <span>Compte</span>
