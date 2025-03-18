@@ -18,11 +18,6 @@ class Blacklist extends Model
     ) {
     }
 
-    static function signalable_from_db(int $id_signalable): self
-    {
-        return new self($id_signalable);
-    }
-
     static function get_blacklist(int $id): ?string
     {
         $stmt = DB\connect()->prepare('select fin_blacklist from ' . self::TABLE . ' where id=?');
@@ -41,5 +36,5 @@ class Blacklist extends Model
         return $stmt->execute();
     }
 
-    const TABLE = '_signalement';
+    const TABLE = '_blacklist';
 }
