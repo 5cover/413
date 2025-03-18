@@ -23,7 +23,7 @@ class Blacklist extends Model
         return new self($id_signalable);
     }
 
-    function get_blacklist(int $id): ?string
+    static function get_blacklist(int $id): ?string
     {
         $stmt = DB\connect()->prepare('select fin_blacklist from ' . self::TABLE . ' where id=?');
         DB\bind_values($stmt, [1 => [$this->id, PDO::PARAM_INT]]);
