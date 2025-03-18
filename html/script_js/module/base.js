@@ -153,73 +153,38 @@ function setup_button_signaler(element) {
     });
 }
 
+const BLACKLIST_DURATION = {
+    years: 0,
+    months: 0,
+    weeks: 0,
+    days: 0,
+    hours: 0,
+    minutes: 5
+};
+
 /**
  * @param {HTMLButtonElement} element
  */
 function setup_button_blacklist(element) {
     element.addEventListener('click', async () => {
-        const duration = await promptBlacklist();
-        if (duration) {
+        if (confirm("⚠️ Attention : un blacklist est définitif et ne pourra pas être annulé.\n\nVoulez-vous vraiment continuer ?")) {
             element.disabled = true;
+            const durationStr = formatDuration(BLACKLIST_DURATION);
 
-            if (await fetchDo(location_blacklist(element.dataset.userId, duration))) {
-                element.textContent = `Blacklisté (${duration})`;
+            if (await fetchDo(location_blacklist(element.dataset.userId, durationStr))) {
+                element.textContent = `Blacklisté (${durationStr})`;
             }
         }
     });
 }
 
 /**
- * Affiche une fenêtre pour avertir qu'un blacklist est définitif
- * @returns {Promise<string|null>}
+ * Formate la durée du blacklist en chaîne de caractères
+ * @param {{ years: number, months: number, weeks: number, days: number, hours: number, minutes: number }} duration
+ * @returns {string}
  */
-function promptBlacklist() {
-    return new Promise((resolve) => {
-        // Créé la fenêtre
-        let modal = document.createElement('div');
-        modal.innerHTML = `
-            <div style="
-                position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-                background: white; padding: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
-                border-radius: 8px; text-align: center; z-index: 1000;
-            ">
-                <p style="color: red; font-weight: bold;">
-                    ⚠️ Attention : un blacklist est définitif et ne pourra pas être annulé.
-                </p>
-                <h2>Choisissez la durée du blacklist</h2>
-                <label>Années: <input type="number" id="years" min="0" max="100" value="1"></label><br>
-                <label>Mois: <input type="number" id="months" min="0" max="11" value="0"></label><br>
-                <label>Semaines: <input type="number" id="weeks" min="0" max="4" value="0"></label><br>
-                <label>Jours: <input type="number" id="days" min="0" max="6" value="0"></label><br>
-                <label>Heures: <input type="number" id="hours" min="0" max="23" value="0"></label><br>
-                <label>Minutes: <input type="number" id="minutes" min="0" max="59" value="0"></label><br>
-                <button id="confirm">Confirmer</button>
-                <button id="cancel">Annuler</button>
-            </div>
-        `;
-
-        document.body.appendChild(modal);
-
-        // Gère la confirmation
-        modal.querySelector('#confirm').addEventListener('click', () => {
-            let years = parseInt(document.getElementById('years').value, 10);
-            let months = parseInt(document.getElementById('months').value, 10);
-            let weeks = parseInt(document.getElementById('weeks').value, 10);
-            let days = parseInt(document.getElementById('days').value, 10);
-            let hours = parseInt(document.getElementById('hours').value, 10);
-            let minutes = parseInt(document.getElementById('minutes').value, 10);
-
-            let duration = `${years}Y ${months}M ${weeks}W ${days}D ${hours}H ${minutes}M`;
-            modal.remove();
-            resolve(duration); // Renvoie la durée sélectionnée
-        });
-
-        // Gère l'annulation
-        modal.querySelector('#cancel').addEventListener('click', () => {
-            modal.remove();
-            resolve(null); // Annule blacklist
-        });
-    });
+function formatDuration(duration) {
+    return `${duration.years}Y ${duration.months}M ${duration.weeks}W ${duration.days}D ${duration.hours}H ${duration.minutes}M`;
 }
 
 /**
