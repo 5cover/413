@@ -342,5 +342,5 @@ CREATE TABLE _notification (
         CONSTRAINT notification_fk_commentaire REFERENCES _avis(commentaire) ON DELETE CASCADE,
     date TIMESTAMP NOT NULL DEFAULT localtimestamp
         CONSTRAINT notification_fk_date REFERENCES _avis(publie_le) ON DELETE CASCADE,
-    lu BOOLEAN NOT NULL DEFAULT FALSElocaltimestamp
+    lu BOOLEAN NOT NULL DEFAULT FALSE
 );
