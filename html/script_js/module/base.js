@@ -145,7 +145,7 @@ function setup_button_signaler(element) {
             element.disabled = true;
             if (await fetchDo(location_signaler(element.dataset.idcco, element.dataset.avisId, raison))) {
                 is_signaled ^= true;
-                img.src = '/images/flag' + (is_signaled ? '-filled.svg' : '.svg');
+                img.src = fill_src('flag', is_signaled);
             }
             element.disabled = false;
 
