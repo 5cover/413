@@ -87,8 +87,8 @@ final class ReviewList
                                 <button class="button-blacklist"
                                 data-avis-id="<?= $a->id ?>"
                                 type="button"
-                                <?= get_blacklist($a->id) !== null ? 'disabled' : '' ?>>
-                                <?= get_blacklist($a->id) !== null ? 'Blacklisté (' . h14s($blacklist_duration) . ')' : 'Blacklist' ?>
+                                <?= Blacklist::get_blacklist($a->id) !== null ? 'disabled' : '' ?>>
+                                <?= Blacklist::get_blacklist($a->id) !== null ? 'Blacklisté (' . h14s($blacklist_duration) . ')' : 'Blacklist' ?>
                                 </button>
                             <?php
                             }
