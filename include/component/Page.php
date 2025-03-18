@@ -122,7 +122,7 @@ final class Page
                 </a>
                 <div id="header_pro">
                     <div class="auth-button">
-                        <img src="/images/Notification.jpeg" alt="Notification">
+                        <img src="/images/Notification.png" alt="Notification">
                         <span>Notification</span>
                     </div>
                     <a href="/autres_pages/detail_compte.php">
