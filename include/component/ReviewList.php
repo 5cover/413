@@ -42,12 +42,21 @@ final class ReviewList
                     <p>2 étoiles&nbsp;: <?= $avis_count_by_note[2] ?> avis.</p>
                     <p>1 étoile&nbsp;: <?= $avis_count_by_note[1] ?> avis.</p>
                 </div>
-                <?php if (!empty($avis)) {
-                    foreach ($avis as $a) { ?>
+                <?php
+                if (!empty($avis)) {
+                    foreach ($avis as $a) {
+                        $likes = Cookie\CommentLikes::likes($a->id);
+                        ?>
                         <div class="review">
-                            <p>
-                                <button data-comment-id="<?= $a->id ?>" class="button-like" data-avis-id="<?= $a->id ?>"><img src="/images/<?= Cookie\CommentLikes::likes($a->id) ? 'thumb-filled' : 'thumb' ?>.svg" alt="Like" title="Like"></button>
-                                <button data-comment-id="<?= $a->id ?>" class="button-dislike" data-avis-id="<?= $a->id ?>"><img src="/images/<?= Cookie\CommentLikes::likes($a->id) ? 'thumb-filled' : 'thumb' ?>.svg" alt="Dislike" title="Dislike"></button>
+                            <p class="liker" data-comment-id="<?= $a->id ?>">
+                                <button type="button" <?= $likes === true ? 'checked' : '' ?>>
+                                    <img src="/images/thumb<?= $likes === true ? '-filled' : '' ?>.svg" alt="Like" title="Like">
+                                </button>
+                                <span class="likes"><?= $a->likes ?></span>
+                                <button type="button" <?= $likes === false ? 'checked' : '' ?>>
+                                    <img src="/images/thumb<?= $likes === false ? '-filled' : '' ?>.svg" alt="Dislike" title="Dislike">
+                                </button>
+                                <span class="dislikes"><?= $a->dislikes ?></span>
                             </p>
                             <p><?php if (null === $a->membre_auteur) { ?>
                                     <span class="deleted-pseudo">Compte supprimé</span>

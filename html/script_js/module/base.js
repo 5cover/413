@@ -5,8 +5,7 @@ for (const e of document.getElementsByClassName('input-address')) setup_input_ad
 for (const e of document.getElementsByClassName('input-image')) setup_input_image(e);
 for (const e of document.getElementsByClassName('button-signaler')) setup_button_signaler(e);
 for (const e of document.getElementsByClassName('button-blacklist')) setup_button_blacklist(e);
-for (const e of document.getElementsByClassName('button-like')) setup_button_like(e);
-for (const e of document.getElementsByClassName('button-dislike')) setup_button_dislike(e);
+for (const e of document.getElementsByClassName('liker')) setup_liker(e);
 
 /**
  * @param {HTMLElement} element
@@ -242,32 +241,72 @@ function calculeBlacklistEndDate(duration) {
 }
 
 /**
- * @param {HTMLButtonElement} element 
+ * @param {HTMLElement} element 
  */
-function setup_button_like(element) {
-    let is_liked = img.src.endsWith('filled.svg');
-    element.addEventListener('click', async () => {
-        element.disabled = true;
-        if (await fetchDo(location_like(element.dataset.commentId, is_liked ? true : null))) {
-            is_liked ^= true;
-            img.src = '/images/thumb' + (is_liked ? '-filled.svg' : '.svg');
-        }
-        element.disabled = false;
+function setup_liker(element) {
+    const [button_like, button_dislike] = element.getElementsByTagName('button');
+    const [span_like_count, span_dislike_count] = element.getElementsByTagName('span');
+
+    const button_like_img = button_like.children[0];
+    const button_dislike_img = button_dislike.children[0];
+
+    let state = button_like_img.src.endsWith('filled.svg') ? true : button_dislike_img.src.endsWith('filled.svg') ? false : null;
+
+    button_like.addEventListener('click', async () => {
+        disabled(true);
+        const dec = state === false;
+        state = state !== true ? true : null;
+        if (!(await update())) return;
+        update_likes();
+        update_dislikes();
+        change_value(span_like_count, state === true ? 1 : -1);
+        if (dec) change_value(span_dislike_count, -1);
+        disabled(false);
     });
+
+    button_dislike.addEventListener('click', async () => {
+        disabled(true);
+        const dec = state === true;
+        state = state !== false ? false : null;
+        if (!(await update())) return;
+        update_likes();
+        update_dislikes();
+        change_value(span_dislike_count, state === false ? 1 : -1);
+        if (dec) change_value(span_like_count, -1);
+        disabled(false);
+    });
+
+    function disabled(value)
+    {
+        button_like.disabled = value;
+        button_dislike.disabled = value;
+    }
+
+    function update_likes() {
+        button_like_img.src = fill_src('thumb', state === true);
+    }
+
+    function update_dislikes() {
+        button_dislike_img.src = fill_src('thumb', state === false);
+    }
+
+    function change_value(span, delta)
+    {
+        span.textContent = parseInt(span.textContent) + delta;
+    }
+
+    function update() {
+        return fetchDo(location_like(element.dataset.commentId, state));
+    }
+
 }
 
 /**
  * 
- * @param {HTMLButtonElement} element 
+ * @param {string} name 
+ * @param {boolean} filled 
+ * @returns {string}
  */
-function setup_button_dislike(element) {
-    let is_disliked = img.src.endsWith('filled.svg');
-    element.addEventListener('click', async () => {
-        element.disabled = true;
-        if (await fetchDo(location_like(element.dataset.commentId, is_disliked ? false : null))) {
-            is_disliked ^= true;
-            img.src = '/images/thumb' + (is_disliked ? '-filled.svg' : '.svg');
-        }
-        element.disabled = false;
-    });
+function fill_src(name, filled) {
+    return '/images/' + name + (filled ? '-filled.svg' : '.svg');
 }
