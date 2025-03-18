@@ -16,7 +16,8 @@
     font-family: "Tw Cen MT", Arial, sans-serif;
 }
 
-textarea, input {
+textarea,
+input {
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -755,16 +756,17 @@ a:not(:hover, :focus, :focus-within) {
     display: block;
 }
 
-
 /* Section des catégories et sous-catégories */
-.cote{
+.cote {
     display: flex;
     flex-direction: row;
 }
-.resultat{
+
+.resultat {
     width: 100%;
 }
-.criteres{
+
+.criteres {
     width: 30vh;
     margin-left: 5vh;
     display: flex;
@@ -803,7 +805,6 @@ a:not(:hover, :focus, :focus-within) {
     font-size: 1em;
 }
 
-
 .subcategory-list div:hover {
     background-color: var(--color-secondary);
 }
@@ -812,10 +813,9 @@ a:not(:hover, :focus, :focus-within) {
     display: none;
 }
 
-.subcategory-list label {
+/* .subcategory-list label {
     cursor: pointer;
-}
-
+} */
 .sorting-section {
     text-align: center;
     margin: 20px auto;
@@ -1132,7 +1132,8 @@ section#info_compte div span {
     justify-content: center;
 }
 
-#facturation td,thead th {
+#facturation td,
+thead th {
     border: 1px solid;
     padding: 8px 10px;
 }
@@ -1268,13 +1269,13 @@ label > input {
     transition: filter .1s;
 }
 
-.report-form{
+.report-form {
     margin: 20px auto;
     max-width: 80%;
     text-align: center;
 }
 
-.centrer-enfants{
+.centrer-enfants {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -1291,15 +1292,16 @@ label > input {
     font-style: italic;
 }
 
-.prix-ht{
+.prix-ht {
     text-align: right;
 }
 
-#facturation th{
+#facturation th {
     text-align: left;
 }
 
-#map,.map {
+#map,
+.map {
     height: 400px;
     width: 100%;
     margin: 20px 0;
@@ -1315,15 +1317,16 @@ label > input {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%; /* Prend toute la largeur du conteneur */
+    width: 100%;
+    /* Prend toute la largeur du conteneur */
 }
 
 .droite {
-    margin-left: auto; /* Pousse le bouton à droite */
+    margin-left: auto;
+    /* Pousse le bouton à droite */
 }
 
-/* Like stuff */
-
-.button-dislike img {
+/* Liker stuff */
+.liker :nth-child(3) img {
     transform: rotate(180deg);
 }

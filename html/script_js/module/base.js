@@ -1,12 +1,11 @@
-import { fetchDo, location_signaler, requireElementById, location_blacklist } from './util.js';
+import { fetchDo, location_signaler, requireElementById, location_blacklist, location_like } from './util.js';
 
 for (const e of document.getElementsByClassName('input-duration')) setup_input_duration(e);
 for (const e of document.getElementsByClassName('input-address')) setup_input_address(e);
 for (const e of document.getElementsByClassName('input-image')) setup_input_image(e);
 for (const e of document.getElementsByClassName('button-signaler')) setup_button_signaler(e);
 for (const e of document.getElementsByClassName('button-blacklist')) setup_button_blacklist(e);
-for (const e of document.getElementsByClassName('button-like')) setup_button_like(e);
-for (const e of document.getElementsByClassName('button-dislike')) setup_button_dislike(e);
+for (const e of document.getElementsByClassName('liker')) setup_liker(e);
 
 /**
  * @param {HTMLElement} element
@@ -139,14 +138,14 @@ function preview_image(e_input_image, e_preview) {
  */
 function setup_button_signaler(element) {
     const img = element.children[0];
-    let is_signaled = img.src.endsWith('flag-filled.svg');
+    let is_signaled = img.src.endsWith('filled.svg');
     element.addEventListener('click', async () => {
         let raison;
         if (is_signaled || (raison = prompt('Raison de votre signalement'))) {
             element.disabled = true;
             if (await fetchDo(location_signaler(element.dataset.idcco, element.dataset.avisId, raison))) {
                 is_signaled ^= true;
-                img.src = '/images/' + (is_signaled ? 'flag-filled.svg' : 'flag.svg');
+                img.src = fill_src('flag', is_signaled);
             }
             element.disabled = false;
 
@@ -154,73 +153,38 @@ function setup_button_signaler(element) {
     });
 }
 
+const BLACKLIST_DURATION = {
+    years: 0,
+    months: 0,
+    weeks: 0,
+    days: 0,
+    hours: 0,
+    minutes: 5
+};
+
 /**
  * @param {HTMLButtonElement} element
  */
 function setup_button_blacklist(element) {
     element.addEventListener('click', async () => {
-        const duration = await promptBlacklistDuration();
-        if (duration) {
+        if (confirm("⚠️ Attention : un blacklist est définitif et ne pourra pas être annulé.\n\nVoulez-vous vraiment continuer ?")) {
             element.disabled = true;
+            const durationStr = formatDuration(BLACKLIST_DURATION);
 
-            if (await fetchDo(location_blacklist(element.dataset.userId, duration))) {
-                element.textContent = `Blacklisté (${duration})`;
+            if (await fetchDo(location_blacklist(element.dataset.userId, durationStr))) {
+                element.textContent = `Blacklisté (${durationStr})`;
             }
         }
     });
 }
 
 /**
- * Affiche une fenêtre avec des éléments pour choisir la durée du blacklist
- * @returns {Promise<string|null>} Renvoie la durée sélectionnée ou null si annulé
+ * Formate la durée du blacklist en chaîne de caractères
+ * @param {{ years: number, months: number, weeks: number, days: number, hours: number, minutes: number }} duration
+ * @returns {string}
  */
-function promptBlacklistDuration() {
-    return new Promise((resolve) => {
-        // Créé la fenêtre
-        let modal = document.createElement('div');
-        modal.innerHTML = `
-            <div style="
-                position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-                background: white; padding: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
-                border-radius: 8px; text-align: center; z-index: 1000;
-            ">
-                <p style="color: red; font-weight: bold;">
-                    ⚠️ Attention : Ce blacklist est définitif et ne pourra pas être annulé.
-                </p>
-                <h2>Choisissez la durée du blacklist</h2>
-                <label>Années: <input type="number" id="years" min="0" max="100" value="1"></label><br>
-                <label>Mois: <input type="number" id="months" min="0" max="11" value="0"></label><br>
-                <label>Semaines: <input type="number" id="weeks" min="0" max="4" value="0"></label><br>
-                <label>Jours: <input type="number" id="days" min="0" max="6" value="0"></label><br>
-                <label>Heures: <input type="number" id="hours" min="0" max="23" value="0"></label><br>
-                <label>Minutes: <input type="number" id="minutes" min="0" max="59" value="0"></label><br>
-                <button id="confirm">Confirmer</button>
-                <button id="cancel">Annuler</button>
-            </div>
-        `;
-
-        document.body.appendChild(modal);
-
-        // Gère la confirmation
-        modal.querySelector('#confirm').addEventListener('click', () => {
-            let years = parseInt(document.getElementById('years').value, 10);
-            let months = parseInt(document.getElementById('months').value, 10);
-            let weeks = parseInt(document.getElementById('weeks').value, 10);
-            let days = parseInt(document.getElementById('days').value, 10);
-            let hours = parseInt(document.getElementById('hours').value, 10);
-            let minutes = parseInt(document.getElementById('minutes').value, 10);
-
-            let duration = `${years}Y ${months}M ${weeks}W ${days}D ${hours}H ${minutes}M`;
-            modal.remove();
-            resolve(duration); // Renvoie la durée sélectionnée
-        });
-
-        // Gère l'annulation
-        modal.querySelector('#cancel').addEventListener('click', () => {
-            modal.remove();
-            resolve(null); // Annule blacklist
-        });
-    });
+function formatDuration(duration) {
+    return `${duration.years}Y ${duration.months}M ${duration.weeks}W ${duration.days}D ${duration.hours}H ${duration.minutes}M`;
 }
 
 /**
@@ -242,16 +206,72 @@ function calculeBlacklistEndDate(duration) {
 }
 
 /**
- * @param {HTMLButtonElement} element 
+ * @param {HTMLElement} element 
  */
-function setup_button_like(element) {
+function setup_liker(element) {
+    const [button_like, button_dislike] = element.getElementsByTagName('button');
+    const [span_like_count, span_dislike_count] = element.getElementsByTagName('span');
+
+    const button_like_img = button_like.children[0];
+    const button_dislike_img = button_dislike.children[0];
+
+    let state = button_like_img.src.endsWith('filled.svg') ? true : button_dislike_img.src.endsWith('filled.svg') ? false : null;
+
+    button_like.addEventListener('click', async () => {
+        disabled(true);
+        const dec = state === false;
+        state = state !== true ? true : null;
+        if (!(await update())) return;
+        update_likes();
+        update_dislikes();
+        change_value(span_like_count, state === true ? 1 : -1);
+        if (dec) change_value(span_dislike_count, -1);
+        disabled(false);
+    });
+
+    button_dislike.addEventListener('click', async () => {
+        disabled(true);
+        const dec = state === true;
+        state = state !== false ? false : null;
+        if (!(await update())) return;
+        update_likes();
+        update_dislikes();
+        change_value(span_dislike_count, state === false ? 1 : -1);
+        if (dec) change_value(span_like_count, -1);
+        disabled(false);
+    });
+
+    function disabled(value)
+    {
+        button_like.disabled = value;
+        button_dislike.disabled = value;
+    }
+
+    function update_likes() {
+        button_like_img.src = fill_src('thumb', state === true);
+    }
+
+    function update_dislikes() {
+        button_dislike_img.src = fill_src('thumb', state === false);
+    }
+
+    function change_value(span, delta)
+    {
+        span.textContent = parseInt(span.textContent) + delta;
+    }
+
+    function update() {
+        return fetchDo(location_like(element.dataset.commentId, state));
+    }
 
 }
 
 /**
  * 
- * @param {HTMLButtonElement} element 
+ * @param {string} name 
+ * @param {boolean} filled 
+ * @returns {string}
  */
-function setup_button_dislike(element) {
-
+function fill_src(name, filled) {
+    return '/images/' + name + (filled ? '-filled.svg' : '.svg');
 }

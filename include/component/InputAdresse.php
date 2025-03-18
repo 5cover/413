@@ -7,25 +7,7 @@ require_once 'component/Input.php';
 require_once 'model/Adresse.php';
 
 
-// function geocode($address) {
-//     // Encoder l'adresse pour l'URL
-//     $address = urlencode($address);
-//     // URL de l'API Nominatim
-//     $url = "https://nominatim.openstreetmap.org/search?q={$address}&format=json&limit=1";
 
-//     // Envoyer la requête et récupérer la réponse
-//     $response = file_get_contents($url);
-//     $data = json_decode($response, true);
-
-//     // Vérifier si des résultats ont été trouvés
-//     if (!empty($data)) {
-//         $latitude = $data[0]['lat'];
-//         $longitude = $data[0]['lon'];
-//         return array('latitude' => $latitude, 'longitude' => $longitude);
-//     } else {
-//         return null;
-//     }
-// }
 function geocode($address) {
     // Encoder l'adresse pour l'URL
     $address = urlencode($address);

@@ -5,7 +5,7 @@ with
         insert into
             _adresse (numero_departement, code_commune, localite, lat, long)
         values
-            ('22', 201, 'Cap Fréhel',48.166349, -3.853528)
+            ('22', 201, 'Cap Fréhel',48.684655,-2.3300938)
         returning
             id
     ),

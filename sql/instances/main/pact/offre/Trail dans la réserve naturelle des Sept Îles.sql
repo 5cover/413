@@ -5,7 +5,7 @@ with
         insert into
             _adresse (numero_departement, code_commune, nom_voie, precision_ext, lat, long)
         values
-            ('22', 168, 'Chem. du Squevel', 'Parking du Sémaphore - Sentier des Douaniers',48.638253, -4.370134)
+            ('22', 168, 'Chem. du Squevel', 'Parking du Sémaphore - Sentier des Douaniers',48.8209995,-3.5552554)
         returning
             id
     ),

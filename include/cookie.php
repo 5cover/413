@@ -52,7 +52,7 @@ final readonly class CommentLikes
     static function set(int $comment_id, bool $like): void
     {
         $value = self::get_value();
-        if ($value[$comment_id] ?? null === $like) return;
+        if (($value[$comment_id] ?? null) === $like) return;
         $value[$comment_id] = $like;
         self::set_value($value);
     }

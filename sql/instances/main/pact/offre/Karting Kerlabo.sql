@@ -5,7 +5,7 @@ with
         insert into
             _adresse (numero_departement, code_commune, nom_voie, lat, long)
         values
-            ('22', 045, 'Axe Chatelaudren-Quintin',48.560549, -3.115520)
+            ('22', 045, 'Axe Chatelaudren-Quintin',48.4358108,-4.1093945)
         returning
             id
     ),

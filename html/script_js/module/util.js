@@ -24,8 +24,11 @@ export function requireElementById(id) {
  * @return {bool}
  */
 export async function fetchDo(url) {
-    const ok = (await fetch(url)).status == 200;
-    if (!ok) console.error(`failed: fetch ${url}`);
+    const status = (await fetch(url, {
+        credentials: 'include',
+    })).status;
+    const ok = status == 200;
+    if (!ok) console.error(`failed: fetch ${url} (${status})`);
     return ok;
 }
 
@@ -45,6 +48,15 @@ export function location_signaler(id_compte, id_signalable, raison) {
  */
 export function location_delete_offer(id_offre) {
     return '/do/delete_offer.php?' + new URLSearchParams({ id_offre, });
+}
+
+/**
+ * @param {number} id_avis,
+ * @param {boolean|null=null} new_state,
+ * @returns {string}
+ */
+export function location_like(id_avis, new_state = null) {
+    return '/do/like.php?' + new URLSearchParams({ id_avis, new_state });
 }
 
 /**

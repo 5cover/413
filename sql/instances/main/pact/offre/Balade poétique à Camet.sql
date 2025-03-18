@@ -5,7 +5,7 @@ with
         insert into
             _adresse (numero_departement, code_commune, localite,lat,long)
         values
-            ('22', 203, 'Route de Camet',48.543317, -3.576528)
+            ('22', 203, 'Route de Camet',48.6338376,-3.0731569)
         returning
             id
     ),

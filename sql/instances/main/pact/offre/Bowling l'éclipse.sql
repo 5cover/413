@@ -5,7 +5,7 @@ with
         insert into
             _adresse (numero_departement, code_commune, nom_voie, localite,lat,long)
         values
-            ('22', 070, 'Rte de Tréguier', 'ZAC le Lion de Saint-Marc',48.398132, -3.460627)
+            ('22', 070, 'Rte de Tréguier', 'ZAC le Lion de Saint-Marc',48.7363458,-3.4392933)
         returning
             id
     ),
