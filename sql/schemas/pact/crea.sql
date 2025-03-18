@@ -340,6 +340,7 @@ CREATE TABLE _notification (
         CONSTRAINT notification_fk_pro REFERENCES _professionnel(id) ON DELETE CASCADE,
     message TEXT NOT NULL
         CONSTRAINT notification_fk_commentaire REFERENCES _avis(commentaire) ON DELETE CASCADE,
-    date TIMESTAMP NOT NULL DEFAULT localtimestamp,
-    lu BOOLEAN NOT NULL DEFAULT FALSE
+    date TIMESTAMP NOT NULL DEFAULT localtimestamp
+        CONSTRAINT notification_fk_date REFERENCES _avis(publie_le) ON DELETE CASCADE,
+    lu BOOLEAN NOT NULL DEFAULT FALSElocaltimestamp
 );
