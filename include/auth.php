@@ -119,6 +119,15 @@ function exiger_connecte_membre(): int
     exit;
 }
 
+function exiger_connecte(): int
+{
+    if (($id = id_compte_connecte()) !== null) {
+        return $id;
+    }
+    redirect_to(location_connexion(return_url: $_SERVER['REQUEST_URI']));
+    exit;
+}
+
 /**
  * Retourne l'ID du membre actuellement connecté.
  * @return ?int L'ID du membre actuellement connecté, ou `null` si la session actuelle n'est pas connectée en tant que professionnel.

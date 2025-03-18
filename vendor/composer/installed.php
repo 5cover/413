@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '2b6338571f577115b5a2d1eddc3b43d69f373af8',
+        'reference' => 'e3a52f80de210a071df8ad4ecbfa603dcfb55830',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '2b6338571f577115b5a2d1eddc3b43d69f373af8',
+            'reference' => 'e3a52f80de210a071df8ad4ecbfa603dcfb55830',
             'dev_requirement' => false,
         ),
         'ivopetkov/html5-dom-document-php' => array(
