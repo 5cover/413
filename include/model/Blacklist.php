@@ -18,6 +18,11 @@ class Blacklist extends Model
     ) {
     }
 
+    static function blacklistable_from_db(int $id_blacklistable): self
+    {
+        return new self($id_blacklistable);
+    }
+
     static function get_blacklist(int $id): ?string
     {
         $stmt = DB\connect()->prepare('select fin_blacklist from ' . self::TABLE . ' where id=?');
