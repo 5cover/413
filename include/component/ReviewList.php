@@ -6,7 +6,7 @@ require_once 'redirect.php';
 require_once 'util.php';
 require_once 'model/Avis.php';
 require_once 'cookie.php';
-require_once 'Blacklist.php';
+require_once 'model/Blacklist.php';
 
 final class ReviewList
 {
