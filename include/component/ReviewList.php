@@ -6,6 +6,7 @@ require_once 'redirect.php';
 require_once 'util.php';
 require_once 'model/Avis.php';
 require_once 'cookie.php';
+require_once 'Blacklist.php';
 
 final class ReviewList
 {
@@ -86,8 +87,8 @@ final class ReviewList
                                 <button class="button-blacklist"
                                 data-avis-id="<?= $a->id ?>"
                                 type="button"
-                                <?= $blacklist_duration !== null ? 'disabled' : '' ?>>
-                                <?= $blacklist_duration !== null ? 'Blacklisté (' . h14s($blacklist_duration) . ')' : 'Blacklist' ?>
+                                <?= get_blacklist($a->id) !== null ? 'disabled' : '' ?>>
+                                <?= get_blacklist($a->id) !== null ? 'Blacklisté (' . h14s($blacklist_duration) . ')' : 'Blacklist' ?>
                                 </button>
                             <?php
                             }
