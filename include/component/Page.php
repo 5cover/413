@@ -121,11 +121,11 @@ final class Page
                     </div>
                 </a>
                 <div id="header_pro">
+                    <div class="auth-button">
+                        <img src="/images/Notification.jpeg" alt="Notification">
+                        <span>Notification</span>
+                    </div>
                     <a href="/autres_pages/detail_compte.php">
-                        <div>
-                            <img src="/images/Notification.jpeg" alt="Notification">
-                            <span>Notification</span>
-                        </div>
                         <div class="auth-button">
                             <img src="/images/profile-icon.png" alt="Compte">
                             <span>Compte</span>
