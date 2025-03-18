@@ -22,6 +22,7 @@ services:
          - ./html:/var/www/html
          - ./.env:/var/www/.env
          - ./include:/var/www/include
+         - ./vendor:/var/www/include/vendor
          - ./cfg/php.ini:/usr/local/etc/php/php.ini
       environment:
          VIRTUAL_HOST: ${EQUIPE}.ventsdouest.dev
