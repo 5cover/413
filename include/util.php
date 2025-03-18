@@ -251,11 +251,11 @@ function parse_float(?string $output, ?float $min_range = null): float|null|fals
  * @param array|int $options Les options du filtre. Voir la documentation PHP pour les valeurs possibles.
  * @return callable(string, mixed): mixed Un filtre utilisable par la fonction `getarg`.
  */
-function arg_filter(int $filter, array|int $options = 0): callable
+function arg_filter(int $filter, array|int $options = 0, bool $error_on_false = true): callable
 {
-    return function (string $name, mixed $value) use ($filter, $options) {
+    return function (string $name, mixed $value) use ($filter, $options, $error_on_false) {
         $result = filter_var($value, $filter, $options);
-        if ($result === false) {
+        if ($error_on_false and false === $result) {
             html_error("argument $name invalide: " . var_export($value, true));
         }
         return $result;

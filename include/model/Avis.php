@@ -114,10 +114,10 @@ class Avis extends Model
             $row['contexte'],
             mapnull($row['id_membre_auteur'], Membre::from_db(...)),
             Offre::from_db($row['id_offre']),
+            $row['likes'],
+            $row['dislikes'],
             $row['lu'],
             FiniteTimestamp::parse($row['publie_le']),
-            $row['likes'],
-            $row['dislikes']
         ];
 
         $id_restaurant = $row['id_restaurant'] ?? null;
