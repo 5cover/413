@@ -135,7 +135,7 @@
                             <ul>
                                 <?php foreach ($avis_non_lus as $avis) { ?>
                                     <li>
-                                        <a href="detail_offre_pro.php?id=<?= $avis['id_offre']?>">
+                                        <a href="detail_offre_pro.php?id=<?= $avis['id']?>">
                                             <strong><?= htmlspecialchars($avis['auteur']) ?></strong> : 
                                             <?= htmlspecialchars(substr($avis['commentaire'], 0, 50)) ?>...
                                         </a>
