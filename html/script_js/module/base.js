@@ -7,6 +7,12 @@ for (const e of document.getElementsByClassName('button-signaler')) setup_button
 for (const e of document.getElementsByClassName('button-blacklist')) setup_button_blacklist(e);
 for (const e of document.getElementsByClassName('liker')) setup_liker(e);
 
+function toggleNotifications() {
+    alert("Bouton cliqué!");
+    var notifList = document.getElementById("notif-list");
+    notifList.style.display = notifList.style.display === "none" ? "block" : "none";
+}
+
 /**
  * @param {HTMLElement} element
  */
@@ -274,10 +280,4 @@ function setup_liker(element) {
  */
 function fill_src(name, filled) {
     return '/images/' + name + (filled ? '-filled.svg' : '.svg');
-}
-
-function toggleNotifications() {
-    alert("Bouton cliqué!");
-    var notifList = document.getElementById("notif-list");
-    notifList.style.display = notifList.style.display === "none" ? "block" : "none";
 }
