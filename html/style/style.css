@@ -1330,3 +1330,7 @@ label > input {
 .liker :nth-child(3) img {
     transform: rotate(180deg);
 }
+
+.leaflet-marker-icon img {
+    filter: invert(1);
+}
