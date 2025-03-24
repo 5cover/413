@@ -130,12 +130,12 @@
                         <span id="notif-count"><?= $nb_avis_non_lus ?></span>
                     </button>
 
-                    <div id="notif-list";">
+                    <div id="notif-list">
                         <?php if ($nb_avis_non_lus > 0) { ?>
                             <ul>
                                 <?php foreach ($avis_non_lus as $avis) { ?>
                                     <li>
-                                        <a href="detail_offre_pro.php?id=<?=$avis['id_offre']?>">
+                                        <a href="detail_offre_pro.php?id=<?= $avis['id_offre']?>">
                                             <strong><?= htmlspecialchars($avis['auteur']) ?></strong> : 
                                             <?= htmlspecialchars(substr($avis['commentaire'], 0, 50)) ?>...
                                         </a>
