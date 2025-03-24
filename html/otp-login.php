@@ -24,7 +24,8 @@
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: new URLSearchParams({ otp: otp })
             });
-            document.getElementById("result").innerText = (await response.text()) === '1' ? 'OTP Valid' : 'OTP Invalid';
+
+            document.getElementById("result").innerText = response.status + " " + (await response.text());
         });
     </script>
 </body>
