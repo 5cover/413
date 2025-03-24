@@ -112,7 +112,7 @@
                     <a href="<?= h14s(Auth\location_home()) ?>"><img src="/images/logo.png" alt="Logo pact"></a>
                 </div>
                 <?php
-                if (Auth\est_connecte()) {
+                if (null !== ($id_pro = Auth\id_pro_connecte()) ) {
                     ?>
                     <a href="<?= h14s(location_logout()) ?>">
                         <div class="auth-button">
@@ -123,7 +123,7 @@
                     <div id="header_pro">
                     <?php
                     $nb_avis_non_lus = 0;
-                    $avis_non_lus = Avis::getAvisNonLus($_SESSION['id_pro']);
+                    $avis_non_lus = Avis::getAvisNonLus($id_pro);
                     $nb_avis_non_lus = count($avis_non_lus);
                     ?>
                     <button id="btn-notifications" onclick="toggleNotifications()">
