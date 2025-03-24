@@ -185,18 +185,20 @@ class Avis extends Model
 
     static function getAvisNonLus(int $id_pro): array
     {
-    $stmt = notfalse(DB\connect()->prepare("
+    $stmt = DB\connect()->prepare("
         SELECT a.id, a.commentaire, a.publie_le, m.nom AS auteur
-        FROM notifications a
+        FROM _avis a
         JOIN _offre o ON a.id_offre = o.id
-        JOIN membre m ON a.id_membre_auteur = m.id
-        WHERE o.id_membre = ? AND a.lu = FALSE
+        JOIN _membre m ON a.id_membre_auteur = m.id
+        WHERE o.id_professionnel = :id_pro AND a.lu = FALSE
         ORDER BY a.publie_le DESC
-    "));
-    DB\bind_values($stmt, [1 => [$id_pro, PDO::PARAM_INT]]);
-    notfalse($stmt->execute());
+    ");
+
+    $stmt->bindValue(':id_pro', $id_pro, PDO::PARAM_INT);
+    $stmt->execute();
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
 
 }
