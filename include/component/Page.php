@@ -123,10 +123,8 @@ final class Page
                 <div id="header_pro">
                 <?php
                 $nb_avis_non_lus = 0;
-                if ($id_pro) {
-                    $avis_non_lus = Avis::getAvisNonLus($id_pro);
-                    $nb_avis_non_lus = count($avis_non_lus);
-                }
+                $avis_non_lus = Avis::getAvisNonLus($_SESSION['id_pro']);
+                $nb_avis_non_lus = count($avis_non_lus);
                 ?>
 
                 <button id="btn-notifications" onclick="toggleNotifications()">
