@@ -39,5 +39,6 @@ function generate_secret(int $id_compte): string
 function verify(int $id_compte, string $otp_secret, string $otp): bool
 {
     $totp = TOTP::create($otp_secret);
+    $totp->setPeriod(30); // Définit la durée de validité des OTP à 30 secondes
     return $totp->verify($otp);
 }
