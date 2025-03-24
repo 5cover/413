@@ -187,8 +187,8 @@ class Avis extends Model
     {
     $stmt = notfalse(DB\connect()->prepare("
         SELECT a.id, a.commentaire, a.publie_le, m.nom AS auteur
-        FROM avis a
-        JOIN offre o ON a.id_offre = o.id
+        FROM notifications a
+        JOIN _offre o ON a.id_offre = o.id
         JOIN membre m ON a.id_membre_auteur = m.id
         WHERE o.id_membre = ? AND a.lu = FALSE
         ORDER BY a.publie_le DESC
