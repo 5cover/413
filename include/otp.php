@@ -2,10 +2,12 @@
 namespace OTP;
 
 require_once 'db.php';
-require_once 'vendor/autoload.php';
+require_once 'vendor/autriesenoload.php';
+
 
 use OTPHP\TOTP;
 use PDO;
+
 
 @session_start();
 
@@ -17,6 +19,7 @@ function generate_secret(int $id_compte): string
 {
     // Generate OTP secret
     $totp   = TOTP::create();
+    $totp->setPeriod(30); // Définit la durée de validité des OTP à 30 secondes
     $secret = $totp->getSecret();
 
     // Store in database
