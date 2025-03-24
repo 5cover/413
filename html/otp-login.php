@@ -16,8 +16,8 @@
     <script>
         document.getElementById("otpForm").addEventListener("submit", async function(event) {
             event.preventDefault();
+            document.getElementById("result").innerText = '';
             let otp = document.getElementById("otp").value;
-            
             const response = await fetch('/do/otp_verify.php', {
                 method: 'POST',
                 credentials: 'include',
