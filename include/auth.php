@@ -10,7 +10,7 @@ namespace Auth;
 require_once 'util.php';
 require_once 'redirect.php';
 
-notfalse(session_start());
+notfalse(@session_start());
 
 function location_home(): string
 {

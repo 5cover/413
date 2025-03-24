@@ -8,7 +8,6 @@ require_once 'vendor/autoload.php';
 use OTPHP\TOTP;
 use PDO;
 
-
 @session_start();
 
 /**
