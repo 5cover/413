@@ -130,7 +130,7 @@
                         <span id="notif-count"><?= $nb_avis_non_lus ?></span>
                     </button>
 
-                    <div id="notif-list" style="display: none;">
+                    <div id="notif-list">
                         <?php if ($nb_avis_non_lus > 0) { ?>
                             <ul>
                                 <?php foreach ($avis_non_lus as $avis) { ?>
