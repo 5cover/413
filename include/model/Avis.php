@@ -186,7 +186,7 @@ class Avis extends Model
     static function getAvisNonLus(int $id_pro): array
     {
     $stmt = DB\connect()->prepare("
-        SELECT a.id, a.commentaire, a.publie_le, m.nom AS auteur
+        SELECT a.id, a.commentaire, a.publie_le, m.pseudo AS auteur
         FROM _avis a
         JOIN _offre o ON a.id_offre = o.id
         JOIN _membre m ON a.id_membre_auteur = m.id
