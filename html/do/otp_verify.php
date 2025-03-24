@@ -9,7 +9,7 @@ $id_compte = Auth\exiger_connecte();
 $otp       = getarg($_POST, 'otp');
 
 // Get user secret from database
-$stmt = DB\connect()->prepare('SELECT otp_secret FROM compte WHERE id = ?');
+$stmt = DB\connect()->prepare('SELECT otp_secret FROM _compte WHERE id = ?');
 DB\bind_values($stmt, [1 => [$id_compte, PDO::PARAM_INT]]);
 if (false === $stmt->execute()) http_exit(500);
 $secret = $stmt->fetchColumn();
