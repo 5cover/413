@@ -169,4 +169,34 @@ class Avis extends Model
     }
 
     const TABLE = 'avis';
+
+    function marquerCommeLu(): void
+    {
+    if ($this->id === null) {
+        throw new RuntimeException("Impossible de marquer un avis non enregistré comme lu.");
+    }
+
+    $stmt = notfalse(DB\connect()->prepare("UPDATE " . static::TABLE . " SET lu = TRUE WHERE id = ?"));
+    DB\bind_values($stmt, [1 => [$this->id, PDO::PARAM_INT]]);
+    notfalse($stmt->execute());
+
+    $this->lu = true; 
+    }
+
+    static function getAvisNonLus(int $id_pro): array
+    {
+    $stmt = notfalse(DB\connect()->prepare("
+        SELECT a.id, a.commentaire, a.publie_le, m.nom AS auteur
+        FROM avis a
+        JOIN offre o ON a.id_offre = o.id
+        JOIN membre m ON a.id_membre_auteur = m.id
+        WHERE o.id_membre = ? AND a.lu = FALSE
+        ORDER BY a.publie_le DESC
+    "));
+    DB\bind_values($stmt, [1 => [$id_pro, PDO::PARAM_INT]]);
+    notfalse($stmt->execute());
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }

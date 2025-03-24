@@ -121,10 +121,34 @@ final class Page
                     </div>
                 </a>
                 <div id="header_pro">
-                    <div class="auth-button">
-                        <img src="/images/Notification.png" alt="Notification">
-                        <span>Notification</span>
-                    </div>
+                <?php
+                $nb_avis_non_lus = 0;
+                if ($id_pro) {
+                    $avis_non_lus = Avis::getAvisNonLus($id_pro);
+                    $nb_avis_non_lus = count($avis_non_lus);
+                }
+                ?>
+
+                <button id="btn-notifications" onclick="toggleNotifications()">
+                    <span id="notif-count"><?= $nb_avis_non_lus ?></span>
+                </button>
+
+                <div id="notif-list" style="display: none;">
+                    <?php if ($nb_avis_non_lus > 0) { ?>
+                        <ul>
+                            <?php foreach ($avis_non_lus as $avis) { ?>
+                                <li>
+                                    <a href="avis.php?id_avis=<?= $avis['id'] ?>">
+                                        <strong><?= htmlspecialchars($avis['auteur']) ?></strong> : 
+                                        <?= htmlspecialchars(substr($avis['commentaire'], 0, 50)) ?>...
+                                    </a>
+                                </li>
+                            <?php } ?>
+                        </ul>
+                    <?php } else { ?>
+                        <p>Aucune nouvelle notification.</p>
+                    <?php } ?>
+                </div>
                     <a href="/autres_pages/detail_compte.php">
                         <div class="auth-button">
                             <img src="/images/profile-icon.png" alt="Compte">
