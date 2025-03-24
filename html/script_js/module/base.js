@@ -277,6 +277,7 @@ function fill_src(name, filled) {
 }
 
 function toggleNotifications() {
+    alert("Bouton cliqué!");
     var notifList = document.getElementById("notif-list");
     notifList.style.display = notifList.style.display === "none" ? "block" : "none";
 }
