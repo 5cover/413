@@ -275,3 +275,9 @@ function setup_liker(element) {
 function fill_src(name, filled) {
     return '/images/' + name + (filled ? '-filled.svg' : '.svg');
 }
+
+function toggleNotifications() {
+    alert("Bouton cliqué!");
+    var notifList = document.getElementById("notif-list");
+    notifList.style.display = notifList.style.display === "none" ? "block" : "none";
+}

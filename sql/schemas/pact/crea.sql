@@ -79,7 +79,8 @@ create table _compte (
     prenom ligne not null,
     telephone numero_telephone not null,
     adresse text, -- adresse libre facultative
-    api_key uuid unique
+    api_key uuid unique,
+    otp_secret varchar(255)
 );
 
 create table _professionnel (
@@ -334,13 +335,3 @@ create table _souscription_option (
     actif bool not null default true
 );
 
-CREATE TABLE _notification (
-    id SERIAL PRIMARY KEY,
-    id_pro INT NOT NULL
-        CONSTRAINT notification_fk_pro REFERENCES _professionnel(id) ON DELETE CASCADE,
-    message TEXT NOT NULL
-        CONSTRAINT notification_fk_commentaire REFERENCES _avis(commentaire) ON DELETE CASCADE,
-    date TIMESTAMP NOT NULL DEFAULT localtimestamp
-        CONSTRAINT notification_fk_date REFERENCES _avis(publie_le) ON DELETE CASCADE,
-    lu BOOLEAN NOT NULL DEFAULT FALSE
-);

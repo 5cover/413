@@ -36,16 +36,8 @@ function generate_secret(int $id_compte): string
     return $totp->getProvisioningUri();
 }
 
-function verify(int $id_compte, string $otp): bool
+function verify(int $id_compte, string $otp_secret, string $otp): bool
 {
-    // Get user secret from database
-    $stmt = \DB\connect()->prepare('SELECT otp_secret FROM _compte WHERE id=?');
-    \DB\bind_values($stmt, [
-        1 => [$id_compte, PDO::PARAM_INT],
-    ]);
-    notfalse($stmt->execute());
-    $secret = notfalse($stmt->fetchColumn());
-
-    $totp = TOTP::create($secret);
+    $totp = TOTP::create($otp_secret);
     return $totp->verify($otp);
 }

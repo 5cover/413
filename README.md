@@ -1,5 +1,7 @@
 # PACT - Équipe 413
 
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/5cover/413?utm_source=oss&utm_medium=github&utm_campaign=5cover%2F413&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
+
 SAÉ 3&4 BUT2 2025
 
 ## Liens utiles
