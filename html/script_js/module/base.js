@@ -20,7 +20,7 @@ function toggleMenu() {
 }
 
 function fetchNotifications() {
-    fetch('html/auto/fetch_notifications.php') 
+    fetch('/json/fetch_notifications.php') 
         .then(response => response.json())
         .then(data => {
             const notifCount = document.getElementById("notif-count");
