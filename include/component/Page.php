@@ -190,17 +190,18 @@ final class Page
                     <li><a href="https://www.x.com" target="_blank" rel="noopener noreferrer"><img src="/images/social/x.png" alt="X" width="90" height="90" loading="lazy" title="X"></a></li>
                     <li><a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer"><img src="/images/social/youtube.png" alt="YouTube" width="90" height="90" loading="lazy" title="YouTube"></a></li>
                 </ul>
-                <article>
+                <div>
                     <p><a href="https://github.com/5cover/413/issues/new" target="_blank" rel="noopener noreferrer">Nous contacter</a></p>
                     <p><a href="<?= h14s(location_mentions_legales()) ?>">Mentions légales</a></p>
                     <p><a href="<?= h14s(location_cgu()) ?>"><abbr title="Conditions Générales d'Utilisation">CGU</abbr></a></p>
                     <p><a href="<?= h14s(location_cgv()) ?>"><abbr title="Conditions Générales de Vente">CGV</abbr></a></p>
-                </article>
+                </div>
             </div>
             <div class="footer-bottom">
                 <p>413 &ndash; SAÉ 3.02</p>
                 <p>&copy; 2024 TripEnArvor</p>
                 <p>IUT de Lannion &ndash; BUT Informatique</p>
+                <p><em><?= DB\connect()->query_no - 1 ?> requêtes SQL</em></p>
             </div>
         </footer>
         <?php

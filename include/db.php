@@ -11,9 +11,9 @@ $_pdo = null;
  * Se connecter à la base de données.
  *
  * La valeur retournée par cette fonction est cachée : l'appeler plusieurs fois n'a aucun effet. Il n'y a donc pas besoin de conserber son résultat dans une variable.
- * @return PDO L'objet PDO connecté à la base de données.
+ * @return LogPDO L'objet PDO connecté à la base de données.
  */
-function connect(): PDO
+function connect(): LogPDO
 {
     global $_pdo;
     if ($_pdo !== null) {
@@ -23,7 +23,7 @@ function connect(): PDO
     // Connect to the database
     $driver = 'pgsql';
 
-    /// Load .env
+    // / Load .env
     $env   = file_get_contents(__DIR__ . '/../.env');
     $lines = explode("\n", $env);
 
@@ -45,7 +45,8 @@ function connect(): PDO
         $password,
     ];
 
-    $_pdo = is_localhost() ? new LogPDO(...$args) : new PDO(...$args);
+    $_pdo = new LogPDO(...$args);
+    $_pdo->log = is_localhost();
 
     notfalse($_pdo->exec("set schema 'pact'"));
 
@@ -225,18 +226,19 @@ function filter_null_args(array $array): array
 
 final class LogPDO extends PDO
 {
-    private int $query_no = 1;
+    public bool $log;
+    public int $query_no       = 1;
 
     function query(string $query, ?int $fetchMode = null, mixed ...$fetchModeArgs): PDOStatement|false
     {
-        error_log("LogPDO ({$this->query_no}) query: '$query'");
+        if ($this->log) error_log("LogPDO ({$this->query_no}) query: '$query'");
         ++$this->query_no;
         return parent::query($query, $fetchMode, $fetchModeArgs);
     }
 
     function prepare(string $query, array $options = []): PDOStatement|false
     {
-        error_log("LogPDO ({$this->query_no}) prepare: '$query'");
+        if ($this->log) error_log("LogPDO ({$this->query_no}) prepare: '$query'");
         ++$this->query_no;
         return parent::prepare($query, $options);
     }
