@@ -27,9 +27,9 @@ class Blacklist extends Model
         return $r === false ? null : $r;
     }
 
-    function toggle_blacklist(int $id, date $finblacklist): bool
+    static function toggle_blacklist(int $id, date $finblacklist): bool
     {
-        if ($this->get_blacklist($id) === null) {
+        if (self::get_blacklist($id) === null) {
             $stmt = DB\connect()->prepare('insert into ' . self::TABLE . ' (id,fin_blacklist) values (?,?)');
             DB\bind_values($stmt, [1 => [$id, PDO::PARAM_INT], 2 => [$finblacklist, PDO::PARAM_STR]]);
         }
