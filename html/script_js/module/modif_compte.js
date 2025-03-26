@@ -21,5 +21,4 @@ function closeModal() {
     document.getElementById("otpModal").style.display = "none";
 }
 
-// Attacher l'événement au bouton
-document.getElementById("button_generate_otp").addEventListener("click", openModal);
+

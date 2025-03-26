@@ -1,5 +1,6 @@
 <?php
 require_once 'const.php';
+require_once 'otp.php';
 require_once 'model/Uuid.php';
 require_once 'util.php';
 require_once 'auth.php';
@@ -7,7 +8,7 @@ require_once 'redirect.php';
 require_once 'component/Page.php';
 require_once 'model/Compte.php';
 
-$page        = new Page('Modification compte', body_id: 'detail_compte', scripts: ['module/modif_compte.js' => 'type="module"']);
+$page        = new Page('Modification compte', body_id: 'detail_compte', scripts: ['module/modif_compte.js' => 'type="module"',"https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"=> 'defer']);
 $error_mdp   = null;
 $error_tel   = null;
 $error_email = null;
@@ -208,13 +209,16 @@ $page->put(function () use ($compte, $error_email, $error_mdp, $error_siren, $er
             <?php
             } 
             else{
+                $id_compte = Auth\exiger_connecte();
+                $otp_url = OTP\generate_secret($id_compte);
             ?>
             <button type="button" id="button-generate_otp" class="btn-publish" onclick="" openModal()>Générer votre code</button>
             <div id="otpModal" class="modal">
                 <div class="modal-content">
                     <h2>Scan ce QR Code</h2>
                     <div id="qrcode"></div>
-                    
+                    <script>new QRCode(document.getElementById("qrcode"), '<?= $otp_url ?>')</script>
+
                     <h2>Entrez votre OTP</h2>
                     <input type="text" id="otp" placeholder="Saisir OTP">
                     <button onclick="closeModal()">Valider</button>
