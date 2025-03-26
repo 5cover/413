@@ -75,7 +75,14 @@ with
         insert into _changement_etat (id_offre, fait_le)
         values
         ((table id_offre), '2024-11-15 12:00:00') -- mise en ligne
-    )
+    ),
+    s3 as (
+        insert into
+            _tags (id_offre, tag)
+        values
+            ((table id_offre), 'crêperie'),
+            ((table id_offre), 'française')
+    ),
 insert into
     _ouverture_hebdomadaire (id_offre, dow, horaires)
 values
