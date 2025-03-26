@@ -18,6 +18,7 @@ final class Page
 
     private const BASE_SCRIPTS = [
         'module/base.js' => 'type="module"',
+        'module/accPro.js' => 'type="module"',
     ];
 
     /**
