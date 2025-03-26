@@ -15,8 +15,7 @@ class Blacklist extends Model
 
     protected function __construct(
         protected ?int $id
-    ) {
-    }
+    ) {}
 
     static function get_blacklist(int $id): ?string
     {
@@ -34,6 +33,21 @@ class Blacklist extends Model
             DB\bind_values($stmt, [1 => [$id, PDO::PARAM_INT], 2 => [$finblacklist, PDO::PARAM_STR]]);
         }
         return $stmt->execute();
+    }
+
+    static function nb_blacklist_restantes(int $id_pro): int
+    {
+        $stmt = DB\connect()->prepare('select
+    count(*)
+from
+    blacklists_effectives
+    join _avis using (id)
+    join _offre on _avis.id_offre = _offre.id
+where
+    id_professionnel = ?');
+        DB\bind_values($stmt, [1 => [$id_pro, PDO::PARAM_INT]]);
+        $stmt->execute();
+        return 3 - $stmt->fetchColumn();
     }
 
     const TABLE = '_blacklist';

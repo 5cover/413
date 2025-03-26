@@ -185,3 +185,12 @@ select
     *
 from
     _avis WHERE lu = false;
+
+create view
+    blacklists_effectives as
+select
+    *
+from
+    _blacklist
+where
+    localtimestamp between date_blacklist and fin_blacklist;
