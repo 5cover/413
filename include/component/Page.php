@@ -137,7 +137,7 @@ final class Page
 
                     <div id="notif-list">
                         <?php if ($nb_avis_non_lus > 0) { ?>
-                            <ul>
+                            <ul  id="notif-items">
                                 <?php foreach ($avis_non_lus as $avis) { ?>
                                     <li id="notif-li">
                                         <a id="notif_lien" href="detail_offre_pro.php?id=<?= $avis['auteur'] ?>#1">
