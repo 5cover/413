@@ -32,7 +32,7 @@ function fetchNotifications() {
             data.avis.forEach(notif => {
                 const li = document.createElement("li");
                 li.innerHTML = `
-                    <a href="detail_offre_pro.php?id=${notif.auteur}#avis-${notif.id}">
+                    <a href="detail_offre_pro.php?id=${notif.auteur}#${notif.id}">
                         <strong>${notif.titre_offre}</strong> : 
                         ${notif.commentaire.length > 25 ? notif.commentaire.substring(0, 25) + "…" : notif.commentaire}
                     </a>
