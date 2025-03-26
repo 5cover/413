@@ -7,14 +7,17 @@ for (const e of document.getElementsByClassName('button-signaler')) setup_button
 for (const e of document.getElementsByClassName('button-blacklist')) setup_button_blacklist(e);
 for (const e of document.getElementsByClassName('liker')) setup_liker(e);
 
+const notif = requireElementById('btn-notifications');
+notif.addEventListener('click', toggleMenu);
 
-const menu = requireElementById('btn-notifications');
-if (menu.style.display === "none" || menu.style.display === "") {
-    menu.style.display = "block";
-} else {
-    menu.style.display = "none";
+function toggleMenu() {
+    var menu = document.getElementById("notif-list");
+    if (menu.style.display === "none" || menu.style.display === "") {
+        menu.style.display = "block";
+    } else {
+        menu.style.display = "none";
+    }
 }
-
 
 /**
  * @param {HTMLElement} element
