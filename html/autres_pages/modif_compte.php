@@ -8,7 +8,7 @@ require_once 'redirect.php';
 require_once 'component/Page.php';
 require_once 'model/Compte.php';
 
-$page        = new Page('Modification compte', body_id: 'detail_compte', scripts: ['module/modif_compte.js' => 'type="module"',"https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"=> 'defer']);
+$page        = new Page('Modification compte', body_id: 'detail_compte', scripts: ['module/modif_compte.js' => 'type="module"',"https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"=> '']);
 $error_mdp   = null;
 $error_tel   = null;
 $error_email = null;
