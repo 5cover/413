@@ -14,7 +14,7 @@ $avis_non_lus = Avis::getAvisNonLus($id_pro);
 $nb_avis_non_lus = count($avis_non_lus);
 
 foreach ($avis_non_lus as &$avis) {
-    $offre = Offre::from_db($avis['id_offre']);
+    $offre = Offre::from_db($avis['auteur']);
     $avis['titre_offre'] = $offre->titre ?? "Offre inconnue";
 }
 
