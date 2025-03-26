@@ -69,6 +69,8 @@ if (null !== $commentaire = getarg($_POST, 'commentaire', required: false)) {
             getarg($_POST, 'contexte'),
             Membre::from_db($id_membre_co),
             $offre,
+            0,
+            0,
         ];
         $avis      = $offre instanceof Restaurant
             ? new AvisRestaurant(
