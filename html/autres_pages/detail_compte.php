@@ -74,8 +74,8 @@ $page->put(function () use ($compte) {
             <?php
             }            
             ?>
-            <span><?= h14s($compte->adresse) ?></span>
-        </div>
+                <span>Désactivé</span>
+            </div>
 
         <a class="btn-publish" href="<?= h14s(location_modifier_compte($compte->id)) ?>">Modifier</a>
     </section>
