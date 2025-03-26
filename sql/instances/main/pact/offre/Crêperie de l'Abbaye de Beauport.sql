@@ -82,7 +82,7 @@ with
         values
             ((table id_offre), 'crêperie'),
             ((table id_offre), 'française')
-    ),
+    )
 insert into
     _ouverture_hebdomadaire (id_offre, dow, horaires)
 values
