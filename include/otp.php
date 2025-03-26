@@ -45,9 +45,9 @@ function save_otp(int $id_compte,string $secret)
     notfalse($stmt->execute());
 
 }
-function verify(int $id_compte, string $otp_secret, string $otp): bool
+function verify( string $otp_secret, string $otp_reponse): bool
 {
     $totp = TOTP::create($otp_secret);
     $totp->setPeriod(30); // Définit la durée de validité des OTP à 30 secondes
-    return $totp->verify($otp);
+    return $totp->verify($otp_reponse);
 }

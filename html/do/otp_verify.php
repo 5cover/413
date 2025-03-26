@@ -6,7 +6,7 @@ require_once 'db.php';
 header('Content-Type: text/plain; charset=utf-8');
 
 $id_compte = Auth\exiger_connecte();
-$otp       = getarg($_POST, 'otp');
+$otp_reponse       = getarg($_POST, 'otp');
 
 // Get user secret from database
 $stmt = DB\connect()->prepare('SELECT otp_secret FROM _compte WHERE id = ?');
@@ -15,5 +15,5 @@ if (false === $stmt->execute()) http_exit(500);
 $secret = $stmt->fetchColumn();
 if (false === $secret) http_exit(500);
 
-echo OTP\verify($id_compte, $secret, $otp) ? 1 : 0;
+echo OTP\verify( otp_secret: $secret, otp_reponse: $otp_reponse) ? 1 : 0;
 http_exit(200);
