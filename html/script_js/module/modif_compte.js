@@ -28,3 +28,19 @@ function openModal() {
 function closeModal() {
     document.getElementById("otpModal").style.display = "none";
 }
+
+function otp_verify_js(){
+
+}
+    let otp = document.getElementById("button_validate_otp").value;
+    const response = await fetch('/do/otp_verify.php', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ otp: otp })
+    })
+    
+    
+    
+    ;
+

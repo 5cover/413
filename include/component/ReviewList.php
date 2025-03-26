@@ -44,8 +44,9 @@ final class ReviewList
                     <p>1 étoile&nbsp;: <?= $avis_count_by_note[1] ?> avis.</p>
                 </div>
                 <?php if($this->est_connecte_pro_proprio()) { ?>
-                <p>Nombre de blacklistages restants&nbsp;: <?= Blacklist::nb_blacklist_restantes(Auth\id_pro_connecte()) ?></p>
+                    <p>Nombre de blacklistages restants&nbsp;: <?= Blacklist::nb_blacklist_restantes(Auth\id_pro_connecte()) ?></p>
                 <?php } ?>
+
                 <?php
                 if (!empty($avis)) {
                     foreach ($avis as $a) {
@@ -56,15 +57,18 @@ final class ReviewList
                         ?>
                         <div class="review">
                             <p class="liker" data-comment-id="<?= $a->id ?>">
-                                <button type="button" <?= $likes === true ? 'checked' : '' ?>>
+                                <span class="likes"><?= $a->likes ?></span>
+                                <button type="button" <?= $likes === true ? 'checked' : '' ?> class="like-buttons">
                                     <img src="/images/thumb<?= $likes === true ? '-filled' : '' ?>.svg" alt="Like" title="Like">
                                 </button>
-                                <span class="likes"><?= $a->likes ?></span>
-                                <button type="button" <?= $likes === false ? 'checked' : '' ?>>
-                                    <img src="/images/thumb<?= $likes === false ? '-filled' : '' ?>.svg" alt="Dislike" title="Dislike">
-                                </button>
+                                
                                 <span class="dislikes"><?= $a->dislikes ?></span>
+                                <button type="button" <?= $likes === false ? 'checked' : '' ?> class="like-buttons">
+                                    <img id="btn-dislike" src="/images/thumb<?= $likes === false ? '-filled' : '' ?>.svg" alt="Dislike" title="Dislike">
+                                </button>
+                                
                             </p>
+
                             <p><?php if (null === $a->membre_auteur) { ?>
                                     <span class="deleted-pseudo">Compte supprimé</span>
                                 <?php } else { ?>
