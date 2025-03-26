@@ -185,6 +185,7 @@ function setup_button_blacklist(element) {
 
             if (await fetchDo(location_blacklist(element.dataset.avisId, durationStr))) {
                 element.textContent = `Blacklisté`;
+                Location.reload();
             }
         }
     });
