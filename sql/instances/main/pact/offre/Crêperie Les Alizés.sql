@@ -82,6 +82,13 @@ with
             _changement_etat (id_offre, fait_le)
         values
             ((table id_offre), '2025-02-10 01:14:53') -- mise en ligne
+    ),
+    s4 as (
+        insert into
+            _tags (id_offre, tag)
+        values
+            ((table id_offre), 'crêperie'),
+            ((table id_offre), 'française')
     )
 insert into
     _ouverture_hebdomadaire (id_offre, dow, horaires)
