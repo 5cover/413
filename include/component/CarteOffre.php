@@ -1,7 +1,9 @@
 <?php
 require_once 'util.php';
 require_once 'redirect.php';
-require_once 'model/Offre.php';
+require_once 'model/OffreFast.php';
+require_once 'model/ImageFast.php';
+require_once 'model/AdresseFast.php';
 require_once 'component/ImageView.php';
 
 final class CarteOffre
@@ -9,9 +11,9 @@ final class CarteOffre
     readonly ImageView $image_principale;
 
     function __construct(
-        readonly Offre $offre,
+        readonly OffreFast $offre,
     ) {
-        $this->image_principale = new ImageView($offre->image_principale);
+        $this->image_principale = new ImageView(ImageFast::get($offre->id_image_principale));
     }
 
     /**
@@ -24,7 +26,7 @@ final class CarteOffre
 <div class="offer-card">
     <?php $this->image_principale->put_img() ?>
     <h3><a class="titre" href="<?= h14s(location_detail_offre($this->offre->id)) ?>"><?= h14s($this->offre->titre) ?></a></h3>
-    <p class="location"><?= h14s($this->offre->adresse->format()) ?></p>
+    <p class="location"><?= h14s(AdresseFast::get($this->offre->id_adresse)->format()) ?></p>
     <p><?= h14s($this->offre->resume) ?></p>
     <p class="category"><?= h14s(ucfirst($this->offre->categorie)) ?></p>
     <?php if ($this->offre->prix_min) { ?>
@@ -36,7 +38,8 @@ final class CarteOffre
 <?php
     }
 
-    static function put_template(): void {
+    static function put_template(): void
+    {
 ?>
 <div class="offer-card">
     <?php ImageView::put_template('offer-image-principale') ?>
@@ -48,6 +51,6 @@ final class CarteOffre
     <p>Note&nbsp; <span class="offer-note"></span>&nbsp;/&nbsp;5</p>
     <p>Crée le&nbsp; <span class="offer-creee-le"></span></p>
 </div>
-<?php   
+<?php
     }
 }

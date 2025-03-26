@@ -10,7 +10,7 @@ final class Lazy
 
     function __get(string $name)
     {
-        match ($name) {
+        return match ($name) {
             'value' => $this->value ??= ($this->get_value)(),
         };
     }

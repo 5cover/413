@@ -2,13 +2,13 @@
 
 require_once 'const.php';
 require_once 'util.php';
-require_once 'model/Image.php';
+require_once 'model/ImageFast.php';
 require_once 'util.php';
 
 final class ImageView
 {
     function __construct(
-        readonly Image $image,
+        readonly ImageFast $image,
     ) {}
 
     /**
@@ -40,7 +40,8 @@ final class ImageView
 <?php
     }
 
-    static function put_template(?string $class = null): void {
+    static function put_template(?string $class = null): void
+    {
 ?>
 <img <?= mapnull($class, fn(string $c) => "class=\"$c\"") ?> src=""
     alt=""

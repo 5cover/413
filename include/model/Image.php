@@ -18,9 +18,9 @@ final class Image extends Model
     protected static function fields()
     {
         return [
-            'taille'       => [null, 'taille',       PDO::PARAM_INT],
+            'taille'       => [null, 'taille', PDO::PARAM_INT],
             'mime_subtype' => [null, 'mime_subtype', PDO::PARAM_STR],
-            'legende'      => [null, 'legende',      PDO::PARAM_STR],
+            'legende'      => [null, 'legende', PDO::PARAM_STR],
         ];
     }
 
@@ -99,11 +99,11 @@ final class Image extends Model
 
         // Correction du type MIME dans certains cas
         if ($mime == 'image/svg') $mime = 'image/svg+xml';
-        if ($mime == 'text/xml') $mime  = 'image/svg+xml';
+        if ($mime == 'text/xml') $mime = 'image/svg+xml';
 
         // Correction du code SVG si nécessaire
         if ($mime == 'image/svg+xml') {
-            if ('<svg' != substr($data, 0, 4)) $data                         = substr($data, strpos($data, '<svg'));
+            if ('<svg' != substr($data, 0, 4)) $data = substr($data, strpos($data, '<svg'));
             if (strpos($data, 'http://www.w3.org/2000/svg') === false) $data = str_replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"', $data);
         }
 
