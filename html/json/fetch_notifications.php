@@ -1,7 +1,6 @@
 <?php
-require_once "../../config.php";
-require_once "../../include/model/Avis.php";
-require_once "../../include/model/Offre.php";
+require_once "model/Avis.php";
+require_once "model/Offre.php";
 
 session_start();
 $id_pro = $_SESSION['id_pro'] ?? null;
