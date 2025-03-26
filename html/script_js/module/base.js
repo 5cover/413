@@ -7,14 +7,17 @@ for (const e of document.getElementsByClassName('button-signaler')) setup_button
 for (const e of document.getElementsByClassName('button-blacklist')) setup_button_blacklist(e);
 for (const e of document.getElementsByClassName('liker')) setup_liker(e);
 
+const notif = requireElementById('btn-notifications');
+notif.addEventListener('click', toggleMenu);
 
-const menu = requireElementById('notif-list');
-if (menu.style.display === "none" || menu.style.display === "") {
-    menu.style.display = "block";
-} else {
-    menu.style.display = "none";
+function toggleMenu() {
+    var menu = document.getElementById("notif-list");
+    if (menu.style.display === "none" || menu.style.display === "") {
+        menu.style.display = "block";
+    } else {
+        menu.style.display = "none";
+    }
 }
-
 
 /**
  * @param {HTMLElement} element
@@ -180,7 +183,7 @@ function setup_button_blacklist(element) {
             element.disabled = true;
             const durationStr = formatDuration(BLACKLIST_DURATION);
 
-            if (await fetchDo(location_blacklist(element.dataset.avisId, durationStr))) {
+            if (await fetchDo(location_blacklist(element.dataset.userId, durationStr))) {
                 element.textContent = `Blacklisté (${durationStr})`;
             }
         }
