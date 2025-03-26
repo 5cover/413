@@ -56,18 +56,20 @@ final class ReviewList
                         }
                         ?>
                         <div class="review">
-                            <p class="liker" data-comment-id="<?= $a->id ?>">
-                                <span class="likes"><?= $a->likes ?></span>
-                                <button type="button" <?= $likes === true ? 'checked' : '' ?> class="like-buttons">
-                                    <img src="/images/thumb<?= $likes === true ? '-filled' : '' ?>.svg" alt="Like" title="Like">
-                                </button>
-                                
-                                <span class="dislikes"><?= $a->dislikes ?></span>
-                                <button type="button" <?= $likes === false ? 'checked' : '' ?> class="like-buttons">
-                                    <img id="btn-dislike" src="/images/thumb<?= $likes === false ? '-filled' : '' ?>.svg" alt="Dislike" title="Dislike">
-                                </button>
-                                
-                            </p>
+                            <div class="liker" data-comment-id="<?= $a->id ?>">
+                                <div class="compteur">
+                                    <span class="likes"><?= $a->likes ?></span>
+                                    <button type="button" <?= $likes === true ? 'checked' : '' ?> class="like-buttons">
+                                        <img id="btn-like" src="/images/thumb<?= $likes === true ? '-filled' : '' ?>.svg" alt="Like" title="Like">
+                                    </button>
+                                </div>
+                                <div class="compteur">
+                                    <span class="dislikes"><?= $a->dislikes ?></span>
+                                    <button type="button" <?= $likes === false ? 'checked' : '' ?> class="like-buttons">
+                                        <img id="btn-dislike" src="/images/thumb<?= $likes === false ? '-filled' : '' ?>.svg" alt="Dislike" title="Dislike">
+                                    </button>
+                                </div>
+                            </div>
 
                             <p><?php if (null === $a->membre_auteur) { ?>
                                     <span class="deleted-pseudo">Compte supprimé</span>

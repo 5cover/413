@@ -1342,6 +1342,14 @@ label > input {
     background-color: white;
 }
 
+.liker{
+    display: flex;
+    flex-direction: row;
+}
+
+.liker :nth-child(1){
+    margin-right: 1vh;
+}
 
 #otpModal {
     display: none;
@@ -1393,14 +1401,17 @@ label > input {
 }
 
 .compteur{
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.5);
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     max-width: auto ;
+    border-radius: 5px;
 }
 
 .like-buttons img{
     height: 1em;
     vertical-align: middle;
+    margin: 0%;
+    padding: 0%;
 }
