@@ -213,7 +213,7 @@ $page->put(function () use ($compte, $error_email, $error_mdp, $error_siren, $er
                 $totp = OTP\generate_totp();
                 $otp_url = OTP\get_url_otp($id_compte,$totp);
             ?>
-                <button type="button" id="button-generate_otp" class="btn-publish" onclick="openModal()">Générer votre code</button>
+                <button type="button" id="button_generate_otp" class="btn-publish" onclick="openModal()">Générer votre code</button>
                 <div id="otpModal" class="modal">
                 <div class="modal-content">
                     <h2>Scan ce QR Code</h2>
@@ -222,9 +222,9 @@ $page->put(function () use ($compte, $error_email, $error_mdp, $error_siren, $er
 
                     <h2>Entrez votre OTP</h2>
                     <input type="text" id="otp" placeholder="Saisir OTP">
-                    <button type="button" onclick="closeModal()">Valider</button>
+                    <button id="button_validate_otp" type="button" onclick="closeModal()">Valider</button>
 
-                    <button type="button" onclick="closeModal()">Fermer</button>
+                    <button id="button_abandon_otp" type="button" onclick="closeModal()">Fermer</button>
                     <!-- <button type="button">Fermer</button> -->
 
                 </div>
