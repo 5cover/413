@@ -17,7 +17,7 @@ final class ReviewList
     function put(): void
     {
         ?>
-        <div class="review-list" id=1>
+        <div class="review-list" id="1">
             <h4>Avis de la communauté</h4>
             <div class="review-summary">
                 <h4>Résumé des notes</h4>
