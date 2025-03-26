@@ -29,11 +29,6 @@ if ($_POST) {
 
 $review_list = new ReviewList($offre);
 
-/**$avis = Avis::from_db($id_avis);
- if ($avis !== false) {
-     $avis->marquerCommeLu();
- }
-**/
 $page->put(function () use ($offre, $review_list) {
     ?>
     <section class="bandeau-etat <?= $offre->en_ligne ? 'vert' : 'rouge' ?>">

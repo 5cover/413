@@ -47,6 +47,9 @@ final class ReviewList
                 if (!empty($avis)) {
                     foreach ($avis as $a) {
                         $likes = Cookie\CommentLikes::likes($a->id);
+                        if ($this->est_connecte_pro_proprio()) {
+                            $a->marquerCommeLu();
+                        }
                         ?>
                         <div class="review">
                             <p class="liker" data-comment-id="<?= $a->id ?>">
