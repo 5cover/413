@@ -31,9 +31,13 @@ function fetchNotifications() {
             notifList.innerHTML = ""; 
             data.notifications.forEach(notif => {
                 const li = document.createElement("li");
-                li.innerHTML = `<a href="detail_offre_pro.php?id=${notif.id_offre}&id_avis=${notif.id}">
-                                    <strong>${notif.auteur}</strong> : 
-                                    ${notif.commentaire.substring(0, 50)}...
+                li.innerHTML = `<a href="detail_offre_pro.php?id=<?= $avis['auteur'] ?>#1">
+                                    <?php 
+                                        $offre = Offre::from_db($avis['auteur'])
+                                    ?>
+                                    <strong><?= h14s($offre->titre) ?></strong> :
+                                    <?= h14s(substr($avis['commentaire'], 0, 25)) ?><?php
+                                            if (strlen($avis['commentaire']) > 25) { echo '&hellip;'; } ?>
                                 </a>`;
                 notifList.appendChild(li);
             });
