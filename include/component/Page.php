@@ -104,7 +104,7 @@ final class Page
                 ?>
                 <script <?= $attrs ?> src="<?= str_contains($src, ':') ? $src : "/script_js/$src" ?>"></script><?php
             }
-            if (null !== ($id_pro = Auth\id_pro_connecte())) {
+            if (Auth\est_connecte_pro()) {
                 foreach (self::BASE_PRO_SCRIPTS as $src => $attrs) {
                     ?>
                     <script <?= $attrs ?> src="<?= str_contains($src, ':') ? $src : "/script_js/$src" ?>"></script><?php
