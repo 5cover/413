@@ -19,6 +19,33 @@ function toggleMenu() {
     }
 }
 
+function fetchNotifications() {
+    fetch('fetch_notifications.php') 
+        .then(response => response.json())
+        .then(data => {
+            const notifCount = document.getElementById("notif-count");
+            const notifList = document.getElementById("notif-items");
+
+            notifCount.textContent = data.count;
+
+            notifList.innerHTML = ""; 
+            data.notifications.forEach(notif => {
+                const li = document.createElement("li");
+                li.innerHTML = `<a href="detail_offre_pro.php?id=${notif.id_offre}&id_avis=${notif.id}">
+                                    <strong>${notif.auteur}</strong> : 
+                                    ${notif.commentaire.substring(0, 50)}...
+                                </a>`;
+                notifList.appendChild(li);
+            });
+        })
+        .catch(error => console.error("Erreur lors de la récupération des notifications:", error));
+}
+
+setInterval(fetchNotifications, 10000);
+
+fetchNotifications();
+
+
 /**
  * @param {HTMLElement} element
  */
