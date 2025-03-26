@@ -7,10 +7,10 @@
 <body>
     <h2>Enter OTP</h2>
     <p>ID compte: <?= Auth\exiger_connecte() ?> </p>
-    <div id="otpForm">
+    <form id="otpForm">
         <input type="text" id="otp" placeholder="Enter OTP" required>
-        <button type="button">Verify</button>
-    </div>
+        <button type="submit">Verify</button>
+    </form>
     <p id="result"></p>
 
     <script>
