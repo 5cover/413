@@ -7,14 +7,11 @@ for (const e of document.getElementsByClassName('button-signaler')) setup_button
 for (const e of document.getElementsByClassName('button-blacklist')) setup_button_blacklist(e);
 for (const e of document.getElementsByClassName('liker')) setup_liker(e);
 
-
-const menu = requireElementById('notif-list');
-if (menu.style.display === "none" || menu.style.display === "") {
-    menu.style.display = "block";
-} else {
-    menu.style.display = "none";
+function toggleNotifications() {
+    alert("Bouton cliqué!");
+    var notifList = document.getElementById("notif-list");
+    notifList.style.display = notifList.style.display === "none" ? "block" : "none";
 }
-
 
 /**
  * @param {HTMLElement} element
@@ -178,10 +175,9 @@ function setup_button_blacklist(element) {
     element.addEventListener('click', async () => {
         if (confirm("⚠️ Attention : un blacklist est définitif et ne pourra pas être annulé.\n\nVoulez-vous vraiment continuer ?")) {
             element.disabled = true;
-            const duration = formatDuration(BLACKLIST_DURATION);
-            duration = calculeBlacklistEndDate(duration)
+            const durationStr = formatDuration(BLACKLIST_DURATION);
 
-            if (await fetchDo(location_blacklist(element.dataset.avisId, duration))) {
+            if (await fetchDo(location_blacklist(element.dataset.avisId, durationStr))) {
                 element.textContent = `Blacklisté`;
             }
         }
