@@ -141,7 +141,10 @@ final class Page
                                 <?php foreach ($avis_non_lus as $avis) { ?>
                                     <li id="notif-li">
                                         <a href="detail_offre_pro.php?id=<?= $avis['auteur'] ?>#1">
-                                            <strong><?= h14s($avis['pseudo']) ?></strong> :
+                                            <?php 
+                                            $offre = Offre::from_db($avis['auteur'])
+                                            ?>
+                                            <strong><?= h14s($offre['titre']) ?></strong> :
                                             <?= h14s(substr($avis['commentaire'], 0, 50)) ?><?php
                                                  if (strlen($avis['commentaire']) > 50) { echo '&hellip;'; } ?>
                                         </a>
