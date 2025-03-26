@@ -1359,13 +1359,19 @@ label > input {
 }
 #notif-list{
     position: absolute;
-    background-color: #f9f9f9;
     top: 5em;
     display: none;
+    list-style: none;
+    background-color: var(--color-background);
 }
-#notif-li{
+#notif-items{
     list-style: none;
     margin-bottom: 0.5em;
+}
+
+#notif-items a{
+    text-decoration: none;
+    color: black;
 }
 
 #notif_lien:visited,#notif_lien:hover,#notif_lien,#notif_lien:active{
