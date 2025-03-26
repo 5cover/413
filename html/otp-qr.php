@@ -3,8 +3,10 @@ require_once 'auth.php';
 require_once 'otp.php';
 
 $id_compte = Auth\exiger_connecte();
+$totp = OTP\generate_totp();
+OTP\save_otp($id_compte,OTP\generate_secret($totp));
+$otp_url = OTP\get_url_otp($id_compte,$totp);
 
-$otp_url = OTP\generate_secret($id_compte);
 ?>
 
 <!DOCTYPE html>
