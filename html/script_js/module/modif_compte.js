@@ -20,5 +20,3 @@ function openModal() {
 function closeModal() {
     document.getElementById("otpModal").style.display = "none";
 }
-
-

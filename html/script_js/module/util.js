@@ -24,11 +24,11 @@ export function requireElementById(id) {
  * @return {bool}
  */
 export async function fetchDo(url) {
-    const status = (await fetch(url, {
+    const resp = (await fetch(url, {
         credentials: 'include',
-    })).status;
-    const ok = status == 200;
-    if (!ok) console.error(`failed: fetch ${url} (${status})`);
+    }));
+    const ok = resp.status == 200;
+    if (!ok) console.error(`failed: fetch ${url} (${resp.status}): ${await resp.text()}`);
     return ok;
 }
 
@@ -66,5 +66,5 @@ export function location_like(id_avis, new_state = null) {
  * @returns {string} API URL
  */
 export function location_blacklist(avisId, duration) {
-    return `/do/blacklister.php?review=${avisId}&duration=${encodeURIComponent(duration)}`;
+    return `/do/blacklister.php?id=${avisId}&finblacklist=${encodeURIComponent(duration)}`;
 }

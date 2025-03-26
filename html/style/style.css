@@ -1338,7 +1338,7 @@ label > input {
 }
 
 
-.modal {
+#otpModal {
     display: none;
     position: fixed;
     z-index: 1000;

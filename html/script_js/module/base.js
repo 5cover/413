@@ -19,6 +19,34 @@ function toggleMenu() {
     }
 }
 
+function fetchNotifications() {
+    fetch('../../json/fetch_notifications.php') 
+        .then(response => response.json())
+        .then(data => {
+            const notifCount = document.getElementById("notif-count");
+            const notifList = document.getElementById("notif-items");
+
+            notifCount.textContent = data.nb_avis_non_lus; 
+
+            notifList.innerHTML = ""; 
+            data.avis.forEach(notif => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <a href="detail_offre_pro.php?id=${notif.id_offre}#avis-${notif.id}">
+                        <strong>${notif.titre_offre}</strong> : 
+                        ${notif.commentaire.length > 25 ? notif.commentaire.substring(0, 25) + "…" : notif.commentaire}
+                    </a>
+                `;
+                notifList.appendChild(li);
+            });
+        })
+        .catch(error => console.error("Erreur lors de la récupération des notifications:", error));
+}
+
+setInterval(fetchNotifications, 10000);
+fetchNotifications();
+
+
 /**
  * @param {HTMLElement} element
  */
@@ -183,8 +211,9 @@ function setup_button_blacklist(element) {
             element.disabled = true;
             const durationStr = calculeBlacklistEndDate(BLACKLIST_DURATION);
 
-            if (await fetchDo(location_blacklist(element.dataset.avisId, durationStr))) {
+            if (await fetchDo(location_blacklist(element.dataset.data_avis_id, durationStr))) {
                 element.textContent = `Blacklisté`;
+                /*location.reload();*/
             }
         }
     });
