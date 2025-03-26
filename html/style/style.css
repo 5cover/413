@@ -1337,6 +1337,8 @@ label > input {
 
 #notif-list{
     position: absolute;
-    list-style: none;
     background-color: #d3d3d3;
+}
+#notif-li{
+    list-style: none;
 }

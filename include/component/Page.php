@@ -139,7 +139,7 @@ final class Page
                         <?php if ($nb_avis_non_lus > 0) { ?>
                             <ul>
                                 <?php foreach ($avis_non_lus as $avis) { ?>
-                                    <li>
+                                    <li id="notif-li">
                                         <a href="detail_offre_pro.php?id=<?= $avis['auteur'] ?>#1">
                                             <strong><?= h14s($avis['pseudo']) ?></strong> :
                                             <?= h14s(substr($avis['commentaire'], 0, 50)) ?><?php
