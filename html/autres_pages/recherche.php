@@ -26,7 +26,7 @@ $page->put(function () {
     <section class="map-section">
         <div class="header-carte">
             <h2>Carte des offres :</h2>
-            <button class="droite btn-creer" onclick="toggleMap()" id="mapToggle">Afficher la arte</button>
+            <button class="droite btn-creer" id="mapToggle">Afficher la arte</button>
         </div>
         <div id="map" class=""></div>
     </section>

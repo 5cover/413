@@ -1,5 +1,7 @@
 'use strict';
 
+document.getElementById('mapToggle').addEventListener('click', toggleMap);
+
 async function getDataJson(url) {
     return await (await fetch(url)).json();
 }
