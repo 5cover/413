@@ -72,9 +72,13 @@ $page->put(function () use ($compte) {
             if ($compte->otp_secret) {?>
                 <span>Activé</span>
             <?php
-            }            
+            }       
+            else{     
             ?>
                 <span>Désactivé</span>
+            <?php
+            }
+            ?>
             </div>
 
         <a class="btn-publish" href="<?= h14s(location_modifier_compte($compte->id)) ?>">Modifier</a>

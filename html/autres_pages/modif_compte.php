@@ -198,6 +198,36 @@ $page->put(function () use ($compte, $error_email, $error_mdp, $error_siren, $er
                 <button type="button" id="button-regenerate-api-key" class="btn-publish">Regénérer</button>
                 <button type="button" id="button-delete-api-key" class="btn-publish">Supprimer</button>
             </div>
+
+            
+            <div id="otp">
+            <p>Connection sécurisé&nbsp;:</p>
+            <?php
+            if ($compte->otp_secret) {?>
+            <p>Vous avez un code et vous ne pouvez pas le changer</p>
+            <?php
+            } 
+            else{
+            ?>
+            <button type="button" id="button-generate_otp" class="btn-publish" onclick="" openModal()>Générer votre code</button>
+            <div id="otpModal" class="modal">
+                <div class="modal-content">
+                    <h2>Scan ce QR Code</h2>
+                    <div id="qrcode"></div>
+                    
+                    <h2>Entrez votre OTP</h2>
+                    <input type="text" id="otp" placeholder="Saisir OTP">
+                    <button onclick="closeModal()">Valider</button>
+
+                    <button onclick="closeModal()">Fermer</button>
+                </div>
+             </div>
+            <?php
+            }
+            ?>
+            </div>
+
+
             <button type="submit" class="btn-publish">Valider</button>
             <a class="btn-publish" href="<?= h14s(location_detail_compte()) ?>">Retour</a>
             <?php if ($compte instanceof Membre) { ?>
