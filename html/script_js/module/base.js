@@ -20,7 +20,7 @@ function toggleMenu() {
 }
 
 function fetchNotifications() {
-    fetch('html/auto/fetch_notifications.php') 
+    fetch('/json/fetch_notifications.php') 
         .then(response => response.json())
         .then(data => {
             const notifCount = document.getElementById("notif-count");
@@ -211,7 +211,7 @@ function setup_button_blacklist(element) {
             element.disabled = true;
             const durationStr = calculeBlacklistEndDate(BLACKLIST_DURATION);
 
-            if (await fetchDo(location_blacklist(element.dataset.avisId, durationStr))) {
+            if (await fetchDo(location_blacklist(element.dataset.data-avis-id, durationStr))) {
                 element.textContent = `Blacklisté`;
                 /*location.reload();*/
             }
