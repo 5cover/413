@@ -61,11 +61,12 @@ final class ReviewList
                                 <button type="button" <?= $likes === true ? 'checked' : '' ?> class="like-buttons">
                                     <img src="/images/thumb<?= $likes === true ? '-filled' : '' ?>.svg" alt="Like" title="Like">
                                 </button>
-
+                                
                                 <span class="dislikes"><?= $a->dislikes ?></span>
                                 <button type="button" <?= $likes === false ? 'checked' : '' ?> class="like-buttons">
-                                    <img src="/images/thumb<?= $likes === false ? '-filled' : '' ?>.svg" alt="Dislike" title="Dislike">
+                                    <img id="btn-dislike" src="/images/thumb<?= $likes === false ? '-filled' : '' ?>.svg" alt="Dislike" title="Dislike">
                                 </button>
+                                
                             </p>
 
                             <p><?php if (null === $a->membre_auteur) { ?>

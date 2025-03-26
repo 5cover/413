@@ -1329,7 +1329,7 @@ label > input {
 }
 
 /* Liker stuff */
-.liker :nth-child(4) img {
+#btn-dislike{
     transform: rotate(180deg);
 }
 
@@ -1390,4 +1390,12 @@ label > input {
     color: red;
     border: none;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.compteur{
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: auto ;
 }
