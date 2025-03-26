@@ -21,6 +21,7 @@ abstract class Compte extends Signalable
             'telephone' => [null, 'telephone', PDO::PARAM_STR],
             'adresse' => [null, 'adresse', PDO::PARAM_STR],
             'api_key' => [Uuid::parse(...), 'api_key', PDO::PARAM_STR],
+            'odp_secret'=> [Uuid::parse(...), 'odp_secret', PDO::PARAM_STR],
         ];
     }
 
@@ -33,6 +34,8 @@ abstract class Compte extends Signalable
         public string $telephone,
         public ?string $adresse,
         public ?Uuid $api_key = null,
+        public ?Uuid $odp_secret = null,
+
     ) {
         parent::__construct($id);
     }
@@ -65,6 +68,7 @@ abstract class Compte extends Signalable
         ' . static::TABLE . '.telephone,
         ' . static::TABLE . '.adresse,
         ' . static::TABLE . '.api_key,
+        ' . static::TABLE . '.otp_secret,
 
         professionnel.denomination professionnel_denomination,
         professionnel.secteur professionnel_secteur,
@@ -91,6 +95,8 @@ abstract class Compte extends Signalable
             $row['telephone'],
             $row['adresse'],
             Uuid::parse($row['api_key'] ?? null),
+            Uuid::parse($row['otp_secret'] ?? null),
+
         ];
         if ($denomination = $row['professionnel_denomination'] ?? null) {
             $secteur = $row['professionnel_secteur'];

@@ -132,11 +132,11 @@ final class Page
                     $avis_non_lus = Avis::getAvisNonLus($id_pro);
                     $nb_avis_non_lus = count($avis_non_lus);
                     ?>
-                    <button id="btn-notifications" onclick="toggleNotifications()">
+                    <button id="btn-notifications">
                         <span id="notif-count"><?= $nb_avis_non_lus ?></span>
                     </button>
 
-                    <div id="notif-list" style="display: none;">
+                    <div id="notif-list">
                         <?php if ($nb_avis_non_lus > 0) { ?>
                             <ul>
                                 <?php foreach ($avis_non_lus as $avis) { ?>
