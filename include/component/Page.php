@@ -131,9 +131,11 @@ final class Page
                     $avis_non_lus    = Avis::getAvisNonLus($id_pro);
                     $nb_avis_non_lus = count($avis_non_lus);
                     ?>
-                    <button id="btn-notifications">
+                    <div class="auth-button" id="btn-notifications">
+                        <img src="/images/Notification.png" alt="Notifications">
                         <span id="notif-count"><?= $nb_avis_non_lus ?></span>
-                    </button>
+                    </div>
+                    
 
                     <div id="notif-list">
                         <?php if ($nb_avis_non_lus > 0) { ?>
