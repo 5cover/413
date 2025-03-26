@@ -1103,7 +1103,7 @@ section#info_compte div span {
 }
 
 .review {
-    border: 2px solid black;
+    border: none;
     border-radius: 8px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     padding: 15px;
@@ -1398,4 +1398,9 @@ label > input {
     justify-content: center;
     align-items: center;
     max-width: auto ;
+}
+
+.like-buttons img{
+    height: 1em;
+    vertical-align: middle;
 }
