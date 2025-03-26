@@ -27,12 +27,11 @@ final class Page
      */
     function __construct(
         readonly string $title,
-        readonly array $stylesheets = [],
-        readonly array $scripts = [],
-        readonly ?string $body_id = null,
+        readonly array $stylesheets  = [],
+        readonly array $scripts      = [],
+        readonly ?string $body_id    = null,
         readonly ?string $main_class = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Affiche la page.
@@ -129,7 +128,7 @@ final class Page
                 <div id="header_pro">
                     <?php
                     $nb_avis_non_lus = 0;
-                    $avis_non_lus = Avis::getAvisNonLus($id_pro);
+                    $avis_non_lus    = Avis::getAvisNonLus($id_pro);
                     $nb_avis_non_lus = count($avis_non_lus);
                     ?>
                     <button id="btn-notifications">
@@ -143,7 +142,8 @@ final class Page
                                     <li>
                                         <a href="detail_offre_pro.php?id=<?= $avis['auteur'] ?>#1">
                                             <strong><?= h14s($avis['pseudo']) ?></strong> :
-                                            <?= h14s(substr($avis['commentaire'], 0, 50)) ?>...
+                                            <?= h14s(substr($avis['commentaire'], 0, 50)) ?><?php
+                                                 if (strlen($avis['commentaire']) > 50) { echo '&hellip;'; } ?>
                                         </a>
                                     </li>
                                 <?php } ?>
