@@ -1345,7 +1345,7 @@ label > input {
 }
 #notif-li{
     list-style: none;
-    margin-bottom: 5em;
+    margin-bottom: 0.5em;
 }
 
 #notif_lien:visited,#notif_lien:hover,#notif_lien,#notif_lien:active{
