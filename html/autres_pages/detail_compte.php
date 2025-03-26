@@ -4,7 +4,7 @@ require_once 'redirect.php';
 require_once 'component/Page.php';
 require_once 'model/Compte.php';
 
-$compte = Compte::from_db(Auth\id_compte_connecte());
+$compte = Compte::from_db(id_compte: Auth\id_compte_connecte());
 if ($compte === false) fail_404();
 
 $page = new Page("$compte->prenom $compte->nom", body_id: 'detail_compte');
@@ -65,6 +65,16 @@ $page->put(function () use ($compte) {
             &ndash;
             <?php } ?>
             </span>
+        </div>
+        <div id="otp">
+            <p>Connection sécurisé&nbsp;:</p>
+            <?php
+            if ($compte->otp_secret) {?>
+                <span>Activé</span>
+            <?php
+            }            
+            ?>
+            <span><?= h14s($compte->adresse) ?></span>
         </div>
 
         <a class="btn-publish" href="<?= h14s(location_modifier_compte($compte->id)) ?>">Modifier</a>
