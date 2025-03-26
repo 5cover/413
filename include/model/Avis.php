@@ -190,11 +190,10 @@ class Avis extends Model
         FROM _avis a
         JOIN _offre o ON a.id_offre = o.id
         JOIN _membre m ON a.id_membre_auteur = m.id
-        WHERE o.id_professionnel = :id_pro AND a.lu = FALSE
+        WHERE o.id_professionnel = ? AND a.lu = FALSE
         ORDER BY a.publie_le DESC
     ");
-
-    $stmt->bindValue(':id_pro', $id_pro, PDO::PARAM_INT);
+    DB\bind_values($stmt, [1 => [$id_pro, PDO::PARAM_INT]]);
     $stmt->execute();
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
