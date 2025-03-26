@@ -210,10 +210,11 @@ $page->put(function () use ($compte, $error_email, $error_mdp, $error_siren, $er
             } 
             else{
                 $id_compte = Auth\exiger_connecte();
-                $otp_url = OTP\generate_secret($id_compte);
+                $totp = OTP\generate_totp();
+                $otp_url = OTP\get_url_otp($id_compte,$totp);
             ?>
-            <button type="button" id="button-generate_otp" class="btn-publish" onclick="" openModal()>Générer votre code</button>
-            <div id="otpModal" class="modal">
+                <button type="button" id="button-generate_otp" class="btn-publish" onclick="openModal()">Générer votre code</button>
+                <div id="otpModal" class="modal">
                 <div class="modal-content">
                     <h2>Scan ce QR Code</h2>
                     <div id="qrcode"></div>
