@@ -145,8 +145,8 @@ final class Page
                                             $offre = Offre::from_db($avis['auteur'])
                                             ?>
                                             <strong><?= h14s($offre->titre) ?></strong> :
-                                            <?= h14s(substr($avis['commentaire'], 0, 50)) ?><?php
-                                                 if (strlen($avis['commentaire']) > 50) { echo '&hellip;'; } ?>
+                                            <?= h14s(substr($avis['commentaire'], 0, 25)) ?><?php
+                                                 if (strlen($avis['commentaire']) > 25) { echo '&hellip;'; } ?>
                                         </a>
                                     </li>
                                 <?php } ?>
