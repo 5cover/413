@@ -9,7 +9,7 @@ const button_generate_otp = requireElementById('button-generate_otp');
 button_regenerate_api_key.addEventListener('click', () => input_api_key.value = crypto.randomUUID());
 button_delete_api_key.addEventListener('click', () => input_api_key.value = '');
 button_generate_otp.addEventListener("click", openModal);
-
+document.getElementById("otpModal").style.display = "none";
 
 // Fonction pour afficher le popup
 function openModal() {
