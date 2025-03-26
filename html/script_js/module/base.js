@@ -7,11 +7,14 @@ for (const e of document.getElementsByClassName('button-signaler')) setup_button
 for (const e of document.getElementsByClassName('button-blacklist')) setup_button_blacklist(e);
 for (const e of document.getElementsByClassName('liker')) setup_liker(e);
 
-function toggleNotifications() {
-    alert("Bouton cliqué!");
-    var notifList = document.getElementById("notif-list");
-    notifList.style.display = notifList.style.display === "none" ? "block" : "none";
+
+const menu = requireElementById('btn-notifications');
+if (menu.style.display === "none" || menu.style.display === "") {
+    menu.style.display = "block";
+} else {
+    menu.style.display = "none";
 }
+
 
 /**
  * @param {HTMLElement} element
