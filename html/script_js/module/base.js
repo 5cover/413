@@ -7,8 +7,10 @@ for (const e of document.getElementsByClassName('button-signaler')) setup_button
 for (const e of document.getElementsByClassName('button-blacklist')) setup_button_blacklist(e);
 for (const e of document.getElementsByClassName('liker')) setup_liker(e);
 
-const notif = requireElementById('btn-notifications');
-notif.addEventListener('click', toggleMenu);
+{
+    const notif = document.getElementById('btn-notifications');
+    notif?.addEventListener('click', toggleMenu);
+}
 
 function toggleMenu() {
     var menu = document.getElementById("notif-list");
