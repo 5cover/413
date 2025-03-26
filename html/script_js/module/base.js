@@ -8,7 +8,7 @@ for (const e of document.getElementsByClassName('button-blacklist')) setup_butto
 for (const e of document.getElementsByClassName('liker')) setup_liker(e);
 
 
-const menu = requireElementById('btn-notifications');
+const menu = requireElementById('notif-list');
 if (menu.style.display === "none" || menu.style.display === "") {
     menu.style.display = "block";
 } else {
