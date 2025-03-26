@@ -20,6 +20,10 @@ final class Page
         'module/base.js' => 'type="module"',
     ];
 
+    private const BASE_PRO_SCRIPTS = [
+        'module/base.pro.js' => 'type="module"',
+    ];
+
     /**
      * @param string $title Le titre du document.
      * @param array<string> $stylesheets Un liste de chemins relatifs dans au dossier `/style` des feuilles de style CSS à inclure.
@@ -100,6 +104,12 @@ final class Page
                 ?>
                 <script <?= $attrs ?> src="<?= str_contains($src, ':') ? $src : "/script_js/$src" ?>"></script><?php
             }
+            if (Auth\est_connecte_pro()) {
+                foreach (self::BASE_PRO_SCRIPTS as $src => $attrs) {
+                    ?>
+                    <script <?= $attrs ?> src="<?= str_contains($src, ':') ? $src : "/script_js/$src" ?>"></script><?php
+                }
+            }
             ?>
         </head>
         <?php
@@ -143,12 +153,13 @@ final class Page
                                 <?php foreach ($avis_non_lus as $avis) { ?>
                                     <li id="notif-li">
                                         <a id="notif_lien" href="detail_offre_pro.php?id=<?= $avis['auteur'] ?>#1">
-                                            <?php 
+                                            <?php
                                             $offre = Offre::from_db($avis['auteur'])
                                             ?>
                                             <strong><?= h14s($offre->titre) ?></strong> :
                                             <?= h14s(substr($avis['commentaire'], 0, 25)) ?><?php
-                                                 if (strlen($avis['commentaire']) > 25) { echo '&hellip;'; } ?>
+                        if (strlen($avis['commentaire']) > 25) { echo '&hellip;'; }
+                        ?>
                                         </a>
                                     </li>
                                 <?php } ?>

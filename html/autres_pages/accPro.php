@@ -8,7 +8,7 @@ require_once 'model/ProfessionnelPrive.php';
 require_once 'model/Offre.php';
 require_once 'util.php';
 
-$page = new Page('Accueil Professionnel', scripts: ['module/accPro.js' => 'type="module"']);
+$page = new Page('Accueil Professionnel');
 
 $page->put(function () {
     $id_professionnel = Auth\exiger_connecte_pro();
