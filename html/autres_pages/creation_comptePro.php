@@ -100,10 +100,10 @@ $page->put(function () {
                 </p>
                 <p class="radio_entr">
                     <label for="prive">Privé</label>
-                    <input type="radio" id="prive" name="type" value="prive" onclick="gererAffichage()" checked>
+                    <input type="radio" id="prive" name="type" value="prive" checked>
 
                     <label for="public">Public</label>
-                    <input type="radio" id="public" name="type" value="public" onclick="gererAffichage()">
+                    <input type="radio" id="public" name="type" value="public">
                 </p>
                 <p class="champ" id="champ-siren">
                     <label for="siren">SIREN</label>
