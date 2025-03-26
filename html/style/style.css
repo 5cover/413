@@ -672,6 +672,8 @@ textarea {
 
 .rating-distribution {
     margin-top: 10px;
+    display: flex;
+    justify-content: center;
 }
 
 .offer-location {
@@ -1354,4 +1356,19 @@ label > input {
     border-radius: 10px;
     text-align: center;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+#notif-list{
+    position: absolute;
+    background-color: #f9f9f9;
+    top: 5em;
+    display: none;
+}
+#notif-li{
+    list-style: none;
+    margin-bottom: 0.5em;
+}
+
+#notif_lien:visited,#notif_lien:hover,#notif_lien,#notif_lien:active{
+    color:#0d0d0f;
+>>>>>>> 4ee08e09547b8ace1c2ddf6f6cf16ad41c670b30
 }

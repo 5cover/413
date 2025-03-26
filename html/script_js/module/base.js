@@ -181,10 +181,10 @@ function setup_button_blacklist(element) {
     element.addEventListener('click', async () => {
         if (confirm("⚠️ Attention : un blacklist est définitif et ne pourra pas être annulé.\n\nVoulez-vous vraiment continuer ?")) {
             element.disabled = true;
-            const durationStr = formatDuration(BLACKLIST_DURATION);
+            const durationStr = calculeBlacklistEndDate(BLACKLIST_DURATION);
 
             if (await fetchDo(location_blacklist(element.dataset.avisId, durationStr))) {
-                element.textContent = `Blacklisté (${durationStr})`;
+                element.textContent = `Blacklisté`;
             }
         }
     });
