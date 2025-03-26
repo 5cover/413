@@ -162,7 +162,7 @@ class Avis extends Model
         require_once 'model/AvisRestaurant.php';
     }
 
-    function blacklist(timestamp $duree_ban): void
+    function blacklist(FiniteTimestamp $duree_ban): void
     {
         $stmt = notfalse(DB\insert_into("blacklist", ["id" => $this->id, "fin_blacklist" => $duree_ban]));
         notfalse($stmt->execute());

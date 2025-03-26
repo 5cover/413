@@ -5,6 +5,7 @@
 
     require_once 'auth.php';
     require_once 'redirect.php';
+    require_once 'model/Avis.php';
 
     final class Page
     {
