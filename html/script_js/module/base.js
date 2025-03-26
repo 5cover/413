@@ -22,7 +22,7 @@ function toggleMenu() {
 }
 
 function fetchNotifications() {
-    fetch('../../json/fetch_notifications.php') 
+    fetch('../../json/fetch_notifications.php', { 'credentials': 'include', }) 
         .then(response => response.json())
         .then(data => {
             const notifCount = document.getElementById("notif-count");
