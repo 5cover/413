@@ -225,7 +225,7 @@ $page->put(function () use ($compte, $error_email, $error_mdp, $error_siren, $er
                     <button onclick="closeModal()">Valider</button>
 
                     <!-- <button  onclick="closeModal()">Fermer</button> -->
-                    <button  onclick="console.log(1)">Fermer</button>
+                    <button >Fermer</button>
 
                 </div>
              </div>
