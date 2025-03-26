@@ -140,7 +140,7 @@ final class Page
                             <ul>
                                 <?php foreach ($avis_non_lus as $avis) { ?>
                                     <li id="notif-li">
-                                        <a href="detail_offre_pro.php?id=<?= $avis['auteur'] ?>#1">
+                                        <a id="notif_lien" href="detail_offre_pro.php?id=<?= $avis['auteur'] ?>#1">
                                             <?php 
                                             $offre = Offre::from_db($avis['auteur'])
                                             ?>

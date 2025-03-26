@@ -1346,3 +1346,7 @@ label > input {
 #notif-li{
     list-style: none;
 }
+
+#notif_lien:visited,#notif_lien:hover,#notif_lien,#notif_lien:active{
+    color:#0d0d0f;
+}
