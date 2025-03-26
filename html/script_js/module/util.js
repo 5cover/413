@@ -43,15 +43,6 @@ export function location_signaler(id_compte, id_signalable, raison) {
 }
 
 /**
- * @param {number} id
- * @param {date} fin_blacklist
- * @returns {string}
- */
-export function location_blacklist(id, fin_blacklist) {
-    return '/do/blacklister.php?' + new URLSearchParams({ id, fin_blacklist, });
-}
-
-/**
  * @param {number} id_offre 
  * @returns {string}
  */
@@ -70,10 +61,10 @@ export function location_like(id_avis, new_state = null) {
 
 /**
  * Generate API URL for blacklisting
- * @param {string} userId
+ * @param {number} avisId
  * @param {string} duration
  * @returns {string} API URL
  */
-export function location_blacklist(userId, duration) {
-    return `/do/blacklister.php?user=${userId}&duration=${encodeURIComponent(duration)}`;
+export function location_blacklist(avisId, duration) {
+    return `/do/blacklister.php?review=${avisId}&duration=${encodeURIComponent(duration)}`;
 }
