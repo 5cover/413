@@ -1,4 +1,4 @@
-import { requireElementById } from './util';
+import { requireElementById } from './util.js';
 
 
 const notif = requireElementById('btn-notifications');
