@@ -11,10 +11,8 @@ $page = new Page('Recherche',stylesheets: ["https://unpkg.com/leaflet/dist/leafl
 $page->put(function () {
     $valider = getarg($_GET, "valider", required: false);
     $search = getarg($_GET, "search", required: false);
-    $modif_affichage = false;
 
     if ($valider && !empty($search)) {
-        $modif_affichage = true;
         $search = getarg($_GET, "search");
     }
 
