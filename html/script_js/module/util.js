@@ -66,5 +66,5 @@ export function location_like(id_avis, new_state = null) {
  * @returns {string} API URL
  */
 export function location_blacklist(avisId, duration) {
-    return `/do/blacklister.php?review=${avisId}&duration=${encodeURIComponent(duration)}`;
+    return `/do/blacklister.php?id=${avisId}&finblacklist=${encodeURIComponent(duration)}`;
 }
