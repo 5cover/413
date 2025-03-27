@@ -781,6 +781,10 @@ a:not(:hover, :focus, :focus-within) {
     width: 100%;
 }
 
+.tag-selection input{
+    width: inherit;
+}
+
 .categories,
 #subcategories {
     margin-bottom: 20px;

@@ -59,7 +59,7 @@ $page->put(function () {
                 <input type="hidden" id="selected-category" name="category" value="">
                 <div id="subcategories" class="hidden">
                     <h3>Tags</h3>
-                    <div class="subcategory-list class="sorting-buttons"" id="subcategory-list">
+                    <div class="subcategory-list sorting-buttons" id="subcategory-list">
                         
                     </div>
                 </div>
