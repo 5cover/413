@@ -227,7 +227,7 @@ $page->put(function () use ($compte, $error_email, $error_mdp, $error_siren, $er
                     <button id="button_abandon_otp" type="button" >Fermer</button>
                 </div>
              </div> -->
-             <button onclick="openPhpWindow()">Ouvrir Page PHP</button>
+             <button onclick="openPhpWindow()">Générer votre code sécurisé</button>
 
             <script>
                 function openPhpWindow() {

@@ -25,6 +25,7 @@ $otp_url = OTP\get_url_otp($id_compte,$totp);
     <form id="otpForm">
         <input type="text" id="otp" placeholder="Enter OTP" required>
         <button type="submit">Verify</button>
+        <button type="button" onclick="window.close()">Abandoner</button>
     </form>
     <p id="result"></p>
 
@@ -39,9 +40,16 @@ $otp_url = OTP\get_url_otp($id_compte,$totp);
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: new URLSearchParams({ otp: otp })
             });
+            if ((await response.text()) == "1") {
+                OTP\save_otp($id_compte,$secret);
+                window.close();
 
+            }
             document.getElementById("result").innerText = response.status + " " + (await response.text());
         });
+
+
+
     </script>
 </body>
 </html>
