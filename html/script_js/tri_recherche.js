@@ -46,7 +46,6 @@ function showSubcategories() {
 
             const checkbox = document.createElement('button');
             checkbox.type = 'checkbox';
-            checkbox.id = 
             checkbox.name = 'subcategory';
             checkbox.value = subcategory;
             checkbox.classList.add('btn-sort');

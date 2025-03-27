@@ -785,6 +785,10 @@ a:not(:hover, :focus, :focus-within) {
     width: inherit;
 }
 
+.tag{
+    width: 100%;
+}
+
 .categories,
 #subcategories {
     margin-bottom: 20px;
@@ -805,6 +809,7 @@ a:not(:hover, :focus, :focus-within) {
     margin: 0 auto;
     border-radius: 5px;
     font-size: 1em;
+    padding: 0px;
 }
 
 .subcategory-list div:hover {
@@ -858,6 +863,7 @@ a:not(:hover, :focus, :focus-within) {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
 .btn-sort:hover {
