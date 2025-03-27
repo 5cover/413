@@ -196,3 +196,4 @@ comment on function offre_en_ligne_pendant (int, timestamp, timestamp) is
 @param p_debut début de la période d''observation
 @param p_fin fin de la période d''observation
 @returns La valeur de retour est inférieure ou égale à @p p_fin - @p p_debut';
+
