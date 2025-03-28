@@ -50,7 +50,10 @@ function showSubcategories() {
             checkbox.value = subcategory;
             checkbox.classList.add('btn-sort');
             checkbox.innerText = subcategory.toLowerCase().replace(/\s+/g, '-');
-            checkbox.addEventListener('change', filterOffers);
+            checkbox.addEventListener('click', () => {
+                checkbox.classList.toggle('active');
+                filterOffers();
+            });
 
             // const label = document.createElement('label');
             // label.htmlFor = checkbox.id;
@@ -103,9 +106,11 @@ function sortOffers(criteria, ascending = true) {
 
 function filterOffers() {
     const mainCategory = document.getElementById('main-category').value;
-    const subcategoryCheckboxes = document.querySelectorAll('input[name="subcategory"]:checked');
+    const divSubcategories = document.getElementById('subcategory-list');
+    const subcategoryCheckboxes = divSubcategories.querySelectorAll('.active');//todo te démerder a fix ca
     const selectedSubcategories = Array.from(subcategoryCheckboxes).map(cb => cb.id);
-    
+    console.log(subcategoryCheckboxes);
+    //
     const maxPrice = parseFloat(document.getElementById('max-price').value) || Infinity;
     const minPrice = parseFloat(document.getElementById('min-price').value) || 0;
     const minRating = parseFloat(document.getElementById('min-rating').value) || 0;
@@ -141,7 +146,6 @@ function filterOffers() {
     displayOffers(filteredOffers);
     updateMapWithIconsAndColors(filteredOffers);
 }
-
 
 
 function createOfferCardElement(offer) {
