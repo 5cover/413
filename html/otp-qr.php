@@ -11,7 +11,7 @@ $otp_url = OTP\get_url_otp($id_compte,$totp);
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <title>OTP Setup</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -33,6 +33,7 @@ $otp_url = OTP\get_url_otp($id_compte,$totp);
         document.getElementById("otpForm").addEventListener("submit", async function(event) {
             event.preventDefault();
             document.getElementById("result").innerText = '';
+    
             let otp = document.getElementById("otp").value;
             const response = await fetch('/do/otp_verify.php', {
                 method: 'POST',
@@ -40,22 +41,19 @@ $otp_url = OTP\get_url_otp($id_compte,$totp);
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: new URLSearchParams({ otp: otp })
             });
-            if ((response.text()) == 1) {
+
+            let text = await response.text();
+
+            if (text == "1") {
                 document.getElementById("result").innerText = "Réussite : code bon";
-                OTP\save_otp($id_compte,$secret);
+                // OTP\save_otp($id_compte,$secret); ❌ (Ne fonctionne pas en JS)
                 window.close();
+            } else if (text == "0") {
+                document.getElementById("result").innerText = "Échec : code incorrect";
+            } else {
+                document.getElementById("result").innerText = "Échec : erreur inconnue";
             }
-            elseif ((response.text()) == 0){
-                document.getElementById("result").innerText = "echec : code incorrecte";
-            }
-            else{
-                document.getElementById("result").innerText = "echec : erreur inconnue";
-            }
-            
-            
         });
-
-
 
     </script>
 </body>
