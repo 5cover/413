@@ -3,7 +3,7 @@ require_once 'component/Page.php';
 require_once 'redirect.php';
 require_once 'util.php';
 
-$page = new Page('Connexion');
+$page = new Page('Connexion',scripts: ['module/modif_compte.js' => 'type="module"']);
 
 $page->put(function () {
     $return_url = getarg($_GET, 'return_url', required: false);
@@ -33,25 +33,7 @@ $page->put(function () {
                     <label for="otp_login">Code OTP</label>
                     <input id="otp_login" name="otp_login" type="text" >
                 </div>
-                <script>
-                    import { requireElementById } from '/script_js/util.js';
-
-                    const button_otp_connection = requireElementById('button_otp_connection');
-                    const champ_otp_connection = requireElementById('champ_otp_connection');
-
-                    function affiche_otp(){
-                        if(getComputedStyle(champ_otp_connection).display != "none"){
-                            champ_otp_connection.style.display = "none";
-                        } else {
-                            champ_otp_connection.style.display = "block";
-                        }
-                        
-                    }
-                    
-
-                    button_otp_connection.addEventListener("click", affiche_otp);
-
-                </script>
+        
 
                 <?php    
                 
