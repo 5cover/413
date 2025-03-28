@@ -171,7 +171,7 @@ function setup_button_blacklist(element) {
             element.disabled = true;
             const durationStr = calculeBlacklistEndDate(BLACKLIST_DURATION);
 
-            if (await fetchDo(location_blacklist(element.dataset.data_avis_id, durationStr))) {
+            if (await fetchDo(location_blacklist(element.dataset.avisid, durationStr))) {
                 element.textContent = `Blacklisté`;
                 /*location.reload();*/
             }
