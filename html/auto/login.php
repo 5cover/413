@@ -25,8 +25,8 @@ function connection_membre($args )  {
         if (!password_verify($args['mdp'], $user->mdp_hash)) {
             fail();
         }
-        elseif ($user->otp_secret && OTP\verify($user->otp_secret,$args['otp_secret'])  ) {
-            fail();
+        elseif ($user->otp_secret && !OTP\verify($user->otp_secret,$args['otp_secret'])  ) {
+            fail_otp();
         }
         session_regenerate_id(true);
         Auth\se_connecter_membre($user->id);
@@ -40,7 +40,7 @@ function connection_pro($args )  {
         if (!password_verify($args['mdp'], $user->mdp_hash)) {
             fail();
         }
-        elseif ($user->otp_secret && OTP\verify($user->otp_secret,$args['otp_secret'])  ) {
+        elseif ($user->otp_secret && !OTP\verify($user->otp_secret,$args['otp_secret'])  ) {
             fail_otp();
         }
         session_regenerate_id(true);
