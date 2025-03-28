@@ -3,7 +3,7 @@ require_once 'component/Page.php';
 require_once 'redirect.php';
 require_once 'util.php';
 
-$page = new Page('Connexion',scripts: ['module/modif_compte.js' => 'type="module"']);
+$page = new Page('Connexion',scripts: ['module/connection.js' => 'type="module"']);
 
 $page->put(function () {
     $return_url = getarg($_GET, 'return_url', required: false);
