@@ -23,24 +23,29 @@ $otp_url = OTP\get_url_otp($id_compte,$totp);
     <script>new QRCode(document.getElementById("qrcode"), '<?= $otp_url ?>')</script>
     <h2>Enter OTP</h2>
     <form id="otpForm">
-        <input type="text" id="otp" placeholder="Enter OTP" required>
+        <input type="text" id="otp" placeholder="Entrer OTP" required>
         <button type="submit">Verify</button>
         <button type="button" onclick="window.close()">Abandoner</button>
     </form>
     <p id="result"></p>
 
     <script>
-        document.getElementById("otpForm").addEventListener("submit", async function(event) {
+        const secret = "<?= $secret ?>"; // Récupération de PHP vers JS
+
+
+       document.getElementById("otpForm").addEventListener("submit", async function(event) {
             event.preventDefault();
             document.getElementById("result").innerText = '';
-    
             let otp = document.getElementById("otp").value;
+
             const response = await fetch('/do/otp_verify.php', {
                 method: 'POST',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams({ otp: otp })
+                body: new URLSearchParams({ otp: otp, secret: secret })
             });
+
+            
 
             let text = await response.text();
 
