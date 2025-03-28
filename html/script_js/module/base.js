@@ -216,7 +216,7 @@ function setup_liker(element) {
     const button_dislike = element.querySelector('.click-dislike .like-buttons');
     const [span_like_count, span_dislike_count] = element.getElementsByTagName('span');
     
-    const button_like_img = element.querySelector('btn-like').item(0);
+    const button_like_img = element.getElementsByClassName('btn-like').item(0);
     const button_dislike_img = element.getElementsByClassName('btn-dislike').item(0);
 
     let state = button_like_img.src.endsWith('filled.svg') ? true : button_dislike_img.src.endsWith('filled.svg') ? false : null;
