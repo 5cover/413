@@ -1,5 +1,5 @@
 <?php
-require_once '../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 require_once 'util.php';
 
 use IvoPetkov\HTML5DOMDocument, IvoPetkov\HTML5DOMElement;
