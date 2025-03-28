@@ -7,7 +7,7 @@ for (const e of document.getElementsByClassName('button-signaler')) setup_button
 for (const e of document.getElementsByClassName('button-blacklist')) setup_button_blacklist(e);
 for (const e of document.getElementsByClassName('liker')) setup_liker(e);
 
-requireElementById('a-page-expire-cookies').addEventListener('click', () => document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); }));
+requireElementById('button-page-expire-cookies').addEventListener('click', () => document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); }));
 
 /**
  * @param {HTMLElement} element

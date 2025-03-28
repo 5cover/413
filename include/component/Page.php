@@ -197,7 +197,7 @@ final class Page
             <div class="footer-content">
                 <div>
                     <p title="c'est beaucoup!"><?= DB\connect()->query_no - 1 ?> requêtes SQL</p>
-                    <p><button class="bouton" type="button" id="a-page-expire-cookies">Nettoyer les cookies</button></p>
+                    <p><button class="bouton" type="button" id="button-page-expire-cookies">Nettoyer les cookies</button></p>
                 </div>
                 <div class="footer-logo">
                     <a href="/">
