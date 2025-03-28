@@ -77,6 +77,7 @@ final class InputAdresse extends Input
             $data['long'] ?? null ?: null,
         );
         error_log("Adresse envoyée à geocode: " . $addr->format());
+
         $latLong = geocode($addr->format());
         if (!$latLong || empty($latLong)) {
             error_log("⚠ Aucune donnée trouvée pour l'adresse: " . $addr->format());
@@ -87,9 +88,6 @@ final class InputAdresse extends Input
             $addr->long = $latLong['longitude'];
         }
         
-
-            // $addr->__set('long',$latLong['longitude']) ;
-        }
         
 
 
