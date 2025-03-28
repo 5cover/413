@@ -182,15 +182,6 @@ function setup_button_blacklist(element) {
 }
 
 /**
- * Formate la durée du blacklist en chaîne de caractères
- * @param {{ years: number, months: number, weeks: number, days: number, hours: number, minutes: number }} duration
- * @returns {string}
- */
-function formatDuration(duration) {
-    return `${duration.years}Y ${duration.months}M ${duration.weeks}W ${duration.days}D ${duration.hours}H ${duration.minutes}M`;
-}
-
-/**
  * Calcule la fin du blacklist
  * @param {{ years: number, months: number, weeks: number, days: number, hours: number, minutes: number }} duration
  * @returns {string} - Date au bon format (YYYY-MM-DD HH:MM:SS)
