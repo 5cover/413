@@ -217,7 +217,7 @@ final class Page
                 <p>413 &ndash; SAÉ 3.02</p>
                 <p>&copy; 2024 TripEnArvor</p>
                 <p>IUT de Lannion &ndash; BUT Informatique</p>
-                <p><em><?= DB\connect()->query_no - 1 ?> requêtes SQL</em></p>
+                <!-- <p><em><?= DB\connect()->query_no - 1 ?> requêtes SQL</em></p> -->
             </div>
         </footer>
         <?php

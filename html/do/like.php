@@ -39,7 +39,7 @@ error_log(var_export([
     3 => [$id_avis, PDO::PARAM_INT],
 ], true));
 
-$stmt = DB\connect()->prepare('update _avis set dislikes=dislikes+?,likes=likes+? where id=?');
+$stmt = DB\connect()->prepare('update _avis set dislikes=GREATEST(0, dislikes+?), likes=GREATEST(0, likes+?) where id=?');
 DB\bind_values($stmt, [
     1 => [$dislikes, PDO::PARAM_INT],
     2 => [$likes, PDO::PARAM_INT],
