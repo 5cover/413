@@ -43,7 +43,7 @@ final class ReviewList
                     <p>2 étoiles&nbsp;: <?= $avis_count_by_note[2] ?> avis.</p>
                     <p>1 étoile&nbsp;: <?= $avis_count_by_note[1] ?> avis.</p>
                 </div>
-                <?php if($this->est_connecte_pro_proprio()) { ?>
+                <?php if($this->est_connecte_pro_proprio() && $this->offre->abonnement->libelle=="premium") { ?>
                     <p>Nombre de blacklistages restants&nbsp;: <?= Blacklist::nb_blacklist_restantes(Auth\id_pro_connecte()) ?></p>
                 <?php } ?>
 
