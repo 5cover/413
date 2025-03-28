@@ -23,7 +23,7 @@ create table _commune (
         
     nom ligne not null
 );
- 
+
 create table _adresse (
     id serial
         constraint adresse_pk primary key,
