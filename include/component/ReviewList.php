@@ -97,7 +97,7 @@ final class ReviewList
                             if ($this->est_connecte_pro_proprio()) {
                                 ?>
                                 <button class="button-blacklist"
-                                avisid="<?= $a->id ?>"
+                                data-avisid="<?= $a->id ?>"
                                 type="button"
                                 <?= Blacklist::get_blacklist($a->id) !== null ? 'disabled' : '' ?>>
                                 <?= Blacklist::get_blacklist($a->id) !== null ? 'Blacklisté' : 'Blacklister' ?>
