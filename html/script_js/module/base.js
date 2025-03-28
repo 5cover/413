@@ -245,7 +245,7 @@ function setup_liker(element) {
         span.textContent = parseInt(span.textContent) + delta;
     }
 
-    window.addEventListener('beforeunload', () => fetchDo(location_like(element.dataset.commentId, state)));
+    window.addEventListener('beforeunload', async () => await fetchDo(location_like(element.dataset.commentId, state)));
 }
 
 /**
