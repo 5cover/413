@@ -91,8 +91,11 @@ final class ReviewList
                             <?php
                             if ($this->est_connecte_pro_proprio() && $this->offre->abonnement->libelle == 'premium') {
                                 ?>
-                                <button class="button-blacklist" data-avisid="<?= $a->id ?>" type="button" <?= Blacklist::get_blacklist($a->id) !== null ? 'disabled' : '' ?>>
-                                    <?= Blacklist::get_blacklist($a->id) !== null ? 'Blacklisté' : 'Blacklister' ?>
+                                <button class="button-blacklist"
+                                data-avisid="<?= $a->id ?>"
+                                type="button"
+                                <?= Blacklist::get_blacklist($a->id) !== null || Blacklist::nb_blacklist_restantes(Auth\id_pro_connecte()) == 0 ? 'disabled' : '' ?>>
+                                <?= Blacklist::get_blacklist($a->id) !== null ? 'Blacklisté' : 'Blacklister' ?>
 
                                 </button>
                                 <?php
