@@ -18,36 +18,31 @@ $args = [
 ];
 
 // Connection membre
-if (false !== $user = str_contains($args['login'], '@')
-        ? Membre::from_db_by_email($args['login'])
-        : Membre::from_db_by_pseudo($args['login'])) {
-    if (!password_verify($args['mdp'], $user->mdp_hash)) {
-        fail();
-    }
-    else {
-        if ($otp_secret && !OTP\verify( otp_secret: $user->otp_secret, otp_reponse: $otp_secret)) {
+function connection_membre($args )  {
+    if (false !== $user = str_contains($args['login'], '@')
+            ? Membre::from_db_by_email($args['login'])
+            : Membre::from_db_by_pseudo($args['login'])) {
+        if (!password_verify($args['mdp'], $user->mdp_hash)) {
             fail();
         }
+        session_regenerate_id(true);
+        Auth\se_connecter_membre($user->id);
+        succeed();
     }
-    session_regenerate_id(true);
-    Auth\se_connecter_membre($user->id);
-    succeed();
 }
-
+connection_membre(args: $args);
 // Connection professionnel
-if (false !== $user = Professionnel::from_db_by_email($args['login'])) {
-    if (!password_verify($args['mdp'], $user->mdp_hash)) {
-        fail();
-    }
-    else {
-        if ($otp_secret && !OTP\verify( otp_secret: $user->otp_secret, otp_reponse: $otp_secret)) {
+function connection_pro($args )  {
+    if (false !== $user = Professionnel::from_db_by_email($args['login'])) {
+        if (!password_verify($args['mdp'], $user->mdp_hash)) {
             fail();
         }
+        session_regenerate_id(true);
+        Auth\se_connecter_pro($user->id);
+        succeed();
     }
-    session_regenerate_id(true);
-    Auth\se_connecter_pro($user->id);
-    succeed();
 }
+connection_pro(args: $args);
 
 fail();
 
@@ -62,4 +57,15 @@ function succeed(): never
     global $args;
     redirect_to($args['return_url'] ?? Auth\location_home());
     exit;
+}
+function connection_otp()
+{
+    $compte = Compte::from_db(Auth\id_compte_connecte());
+
+    if ( $compte->otp_secret) {?>
+    window.open("/otp/otp-qr.php", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400");        <?php
+    }
+    else {
+        succeed();
+    }
 }

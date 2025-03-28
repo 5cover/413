@@ -1,4 +1,4 @@
-import { fetchDo, location_signaler, requireElementById, location_blacklist, location_like } from './util.js';
+import { fetchDo, location_signaler, requireElementById, location_blacklist, location_like, enable_disable } from './util.js';
 
 for (const e of document.getElementsByClassName('input-duration')) setup_input_duration(e);
 for (const e of document.getElementsByClassName('input-address')) setup_input_address(e);
@@ -6,6 +6,8 @@ for (const e of document.getElementsByClassName('input-image')) setup_input_imag
 for (const e of document.getElementsByClassName('button-signaler')) setup_button_signaler(e);
 for (const e of document.getElementsByClassName('button-blacklist')) setup_button_blacklist(e);
 for (const e of document.getElementsByClassName('liker')) setup_liker(e);
+
+requireElementById('button-page-expire-cookies').addEventListener('click', () => document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); }));
 
 /**
  * @param {HTMLElement} element
@@ -182,15 +184,6 @@ function setup_button_blacklist(element) {
 }
 
 /**
- * Formate la durée du blacklist en chaîne de caractères
- * @param {{ years: number, months: number, weeks: number, days: number, hours: number, minutes: number }} duration
- * @returns {string}
- */
-function formatDuration(duration) {
-    return `${duration.years}Y ${duration.months}M ${duration.weeks}W ${duration.days}D ${duration.hours}H ${duration.minutes}M`;
-}
-
-/**
  * Calcule la fin du blacklist
  * @param {{ years: number, months: number, weeks: number, days: number, hours: number, minutes: number }} duration
  * @returns {string} - Date au bon format (YYYY-MM-DD HH:MM:SS)
@@ -214,60 +207,47 @@ function calculeBlacklistEndDate(duration) {
 function setup_liker(element) {
     const button_like = element.querySelector('.click-like .like-buttons');
     const button_dislike = element.querySelector('.click-dislike .like-buttons');
-    const [span_like_count, span_dislike_count] = element.getElementsByTagName('span');
-    
-    const button_like_img = element.querySelector('btn-like').item(0);
+    const text_like_count = element.querySelector('.likes');
+    const text_dislike_count = element.querySelector('.dislikes');
+
+    const button_like_img = element.getElementsByClassName('btn-like').item(0);
     const button_dislike_img = element.getElementsByClassName('btn-dislike').item(0);
 
     let state = button_like_img.src.endsWith('filled.svg') ? true : button_dislike_img.src.endsWith('filled.svg') ? false : null;
 
-    button_like.addEventListener('click', async () => {
-        disabled(true);
-        const dec = state === false;
-        state = state !== true ? true : null;
-        if (!(await update())) return;
-        update_likes();
-        update_dislikes();
-        change_value(span_like_count, state === true ? 1 : -1);
-        if (dec) change_value(span_dislike_count, -1);
-        disabled(false);
-    });
+    button_like.addEventListener('click', async () => enable_disable([button_like, button_dislike], () => update(true)));
 
-    button_dislike.addEventListener('click', async () => {
-        disabled(true);
-        const dec = state === true;
-        state = state !== false ? false : null;
-        if (!(await update())) return;
-        update_likes();
-        update_dislikes();
-        change_value(span_dislike_count, state === false ? 1 : -1);
-        if (dec) change_value(span_like_count, -1);
-        disabled(false);
-    });
+    button_dislike.addEventListener('click', async () => enable_disable([button_like, button_dislike], () => update(false)));
 
-    function disabled(value)
-    {
-        button_like.disabled = value;
-        button_dislike.disabled = value;
-    }
 
     function update_likes() {
         button_like_img.src = fill_src('thumb', state === true);
     }
 
     function update_dislikes() {
-        button_dislike_img.src = fill_src('thumb', state === false);
+        button_dislike_img.src = fill_src('reverse-thumb', state === false);
     }
 
-    function change_value(span, delta)
-    {
+    function change_value(span, delta) {
         span.textContent = parseInt(span.textContent) + delta;
     }
 
-    function update() {
-        return fetchDo(location_like(element.dataset.commentId, state));
-    }
+    /**
+     * 
+     * @param {HTMLElement} active_text_count 
+     * @param {boolean} is_like 
+     * @returns {Promise}
+     */
+    function update(is_like) {
+        const dec = state === !is_like;
+        state = state !== is_like ? is_like : null;
+        update_likes();
+        update_dislikes();
+        change_value(is_like ? text_like_count : text_dislike_count, state === is_like ? 1 : -1);
+        if (dec) change_value(is_like ? text_dislike_count : text_like_count, -1);
 
+        return fetchDo(location_like(element.dataset.commentId, state))
+    };
 }
 
 /**

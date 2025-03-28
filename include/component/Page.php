@@ -195,6 +195,10 @@ final class Page
         ?>
         <footer>
             <div class="footer-content">
+                <div>
+                    <p title="c'est beaucoup!"><?= DB\connect()->query_no - 1 ?> requêtes SQL</p>
+                    <p><button class="bouton" type="button" id="button-page-expire-cookies">Nettoyer les cookies</button></p>
+                </div>
                 <div class="footer-logo">
                     <a href="/">
                         <img src="/images/logo_vertical_big.png" alt="Logo PACT" loading="lazy">
@@ -217,7 +221,6 @@ final class Page
                 <p>413 &ndash; SAÉ 3.02</p>
                 <p>&copy; 2024 TripEnArvor</p>
                 <p>IUT de Lannion &ndash; BUT Informatique</p>
-                <!-- <p><em><?= DB\connect()->query_no - 1 ?> requêtes SQL</em></p> -->
             </div>
         </footer>
         <?php

@@ -12,7 +12,8 @@ final class ReviewList
 {
     function __construct(
         readonly Offre $offre,
-    ) {}
+    ) {
+    }
 
     function put(): void
     {
@@ -25,12 +26,12 @@ final class ReviewList
                 <p>Moyenne&nbsp;: <?= $this->offre->note_moyenne ?? 0 ?>/5 ★</p>
                 <div class="rating-distribution">
                     <?php
-                    $avis               = iterator_to_array(Avis::from_db_all(
+                    $avis = iterator_to_array(Avis::from_db_all(
                         id_offre: $this->offre->id,
                         blackliste: $this->est_connecte_pro_proprio()
-                            && $this->offre->abonnement->libelle === 'premium'
-                                ? null
-                                : false
+                        && $this->offre->abonnement->libelle === 'premium'
+                        ? null
+                        : false
                     ));
                     $avis_count_by_note = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
                     foreach ($avis as $a) {
@@ -43,8 +44,8 @@ final class ReviewList
                     <p>2 étoiles&nbsp;: <?= $avis_count_by_note[2] ?> avis.</p>
                     <p>1 étoile&nbsp;: <?= $avis_count_by_note[1] ?> avis.</p>
                 </div>
-                <?php if($this->est_connecte_pro_proprio() && $this->offre->abonnement->libelle=="premium") { ?>
-                    <p>Nombre de blacklistages restants&nbsp;: <?= Blacklist::nb_blacklist_restantes(Auth\id_pro_connecte()) ?></p>
+                <?php if ($this->est_connecte_pro_proprio() && $this->offre->abonnement->libelle == 'premium') { ?>
+                    <p>Nombre de blacklistages restants&nbsp;: <?= Blacklist::nb_blacklist_restantes($this->offre->id) ?></p>
                 <?php } ?>
 
                 <?php
@@ -58,16 +59,16 @@ final class ReviewList
                         <div class="review">
                             <div class="liker" data-comment-id="<?= $a->id ?>">
                                 <div class="compteur click-like">
-                                    <span class="likes"><?= $a->likes ?></span>
-                                    <button type="button" <?= $likes === true ? 'checked' : '' ?> class="like-buttons">
-                                        <img class="btn-like" src="/images/thumb<?= $likes === true ? '-filled' : '' ?>.svg" alt="Like" title="Like">
-                                    </button>
+                                    <label><span class="likes"><?= $a->likes ?></span>
+                                        <button type="button" <?= $likes === true ? 'checked' : '' ?> class="like-buttons">
+                                            <img class="btn-like" src="/images/thumb<?= $likes === true ? '-filled' : '' ?>.svg" alt="Like" title="Like">
+                                        </button></label>
                                 </div>
                                 <div class="compteur click-dislike">
-                                    <span class="dislikes"><?= $a->dislikes ?></span>
-                                    <button type="button" <?= $likes === false ? 'checked' : '' ?> class="like-buttons">
-                                        <img class="btn-dislike" src="/images/reverse-thumb<?= $likes === false ? '-filled' : '' ?>.svg" alt="Dislike" title="Dislike">
-                                    </button>
+                                    <label><span class="dislikes"><?= $a->dislikes ?></span>
+                                        <button type="button" <?= $likes === false ? 'checked' : '' ?> class="like-buttons">
+                                            <img class="btn-dislike" src="/images/reverse-thumb<?= $likes === false ? '-filled' : '' ?>.svg" alt="Dislike" title="Dislike">
+                                        </button></label>
                                 </div>
                             </div>
 
@@ -81,13 +82,7 @@ final class ReviewList
                                 if (null !== $idcco = Auth\id_compte_connecte()) {
                                     $raison_signalement_actuel = Signalable::signalable_from_db($a->id)->get_signalement($idcco);
                                     ?>
-                                    <button class="button-signaler"
-                                    data-idcco="<?= $idcco ?>"
-                                    data-avis-id="<?= $a->id ?>"
-                                    type="button"><img
-                                        class="signalement-flag"
-                                        src="/images/<?= $raison_signalement_actuel === null ? 'flag' : 'flag-filled' ?>.svg"
-                                        title="<?= $raison_signalement_actuel === null ? 'Signaler' : 'Retirer le signalement (' . h14s($raison_signalement_actuel) . ')' ?>" width="24" height="29" alt="Drapeau"></button>
+                                    <button class="button-signaler" data-idcco="<?= $idcco ?>" data-avis-id="<?= $a->id ?>" type="button"><img class="signalement-flag" src="/images/<?= $raison_signalement_actuel === null ? 'flag' : 'flag-filled' ?>.svg" title="<?= $raison_signalement_actuel === null ? 'Signaler' : 'Retirer le signalement (' . h14s($raison_signalement_actuel) . ')' ?>" width="24" height="29" alt="Drapeau"></button>
                                 </p>
                             <?php } ?>
                             <p class="review-contexte">Contexte&nbsp;: <?= h14s($a->contexte) ?></p>
@@ -95,15 +90,26 @@ final class ReviewList
                             <p class="review-date"><?= h14s($a->date_experience) ?></p>
                             <?php
                             if ($this->est_connecte_pro_proprio() && $this->offre->abonnement->libelle=="premium") {
+                                if (Blacklist::get_blacklist($a->id) !== null) {
                                 ?>
                                 <button class="button-blacklist"
                                 data-avisid="<?= $a->id ?>"
                                 type="button"
-                                <?= Blacklist::get_blacklist($a->id) !== null ? 'disabled' : '' ?>>
-                                <?= Blacklist::get_blacklist($a->id) !== null ? 'Blacklisté' : 'Blacklister' ?>
+                                disabled>
+                                Blacklisté
 
                                 </button>
-                            <?php
+                                <?php } else if (Blacklist::nb_blacklist_restantes($this->offre->id) !== 0) {
+                                    ?>
+                                    <button class="button-blacklist"
+                                    data-avisid="<?= $a->id ?>"
+                                    type="button"
+                                    >
+                                    Blacklister
+
+                                </button>
+                                <?php
+                                }
                             }
                             if ($a->membre_auteur !== null and $a->membre_auteur->id === Auth\id_membre_connecte()) {
                                 ?>

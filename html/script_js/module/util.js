@@ -68,3 +68,24 @@ export function location_like(id_avis, new_state = null) {
 export function location_blacklist(avisId, duration) {
     return `/do/blacklister.php?id=${avisId}&finblacklist=${encodeURIComponent(duration)}`;
 }
+
+
+/**
+ * Formate la durée du blacklist en chaîne de caractères
+ * @param {{ years: number, months: number, weeks: number, days: number, hours: number, minutes: number }} duration
+ * @returns {string}
+ */
+export function formatDuration(duration) {
+    return `${duration.years}Y ${duration.months}M ${duration.weeks}W ${duration.days}D ${duration.hours}H ${duration.minutes}M`;
+}
+
+
+/**
+ * @param {HTMLElement[]} elements
+ * @param {Promise} promise 
+ */
+export async function enable_disable(elements, promise) {
+    for (const e of elements) e.disabled = true;
+    await promise;
+    for (const e of elements) e.disabled = false;
+}
