@@ -219,7 +219,7 @@ $page->put(function () use ($compte, $error_email, $error_mdp, $error_siren, $er
             <script>
                 function openPhpWindow() {
                     // Ouvre une nouvelle fenêtre de 600x400px
-                    window.open('../otp-qr.php', '_blank', 'width=500,height=800');
+                    window.open('../otp/otp-qr.php', '_blank', 'width=500,height=800');
                 }
             </script>
 
