@@ -27,17 +27,32 @@ $page->put(function () {
                     <label for="mdp">Mot de passe *</label>
                     <input id="mdp" name="mdp" type="password" placeholder="**********" required>
                 </div>
-                <?php    
-                if ($otp_secret) {
                 
-                ?>
-                <div class="champ">
+                <button type="button" id="button_otp_connection" >Connection sécurisée ?</button>
+                <div id="champ_otp_connection" class="champ">
                     <label for="otp_login">Code OTP</label>
-                    <input id="otp_login" name="otp_login" type="text">
+                    <input id="otp_login" name="otp_login" type="text" >
                 </div>
+                <script>
+                    const button_otp_connection = requireElementById('button-delete-api-key');
+                    const button_otp_connection = requireElementById('champ_otp_connection');
+
+                    function affiche_otp(){
+                        if(getComputedStyle(champ_otp_connection).display != "none"){
+                            champ_otp_connection.style.display = "none";
+                        } else {
+                            champ_otp_connection.style.display = "block";
+                        }
+                        
+                    }
+                    
+
+                    button_otp_connection.addEventListener("click", affiche_otp);
+
+                </script>
 
                 <?php    
-                }
+                
                 
                 ?>
                 <br>
