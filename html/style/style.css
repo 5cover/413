@@ -787,6 +787,7 @@ a:not(:hover, :focus, :focus-within) {
 
 .tag{
     width: 100%;
+    border-radius: 5px;
 }
 
 .categories,
