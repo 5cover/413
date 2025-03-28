@@ -182,15 +182,6 @@ function setup_button_blacklist(element) {
 }
 
 /**
- * Formate la durée du blacklist en chaîne de caractères
- * @param {{ years: number, months: number, weeks: number, days: number, hours: number, minutes: number }} duration
- * @returns {string}
- */
-function formatDuration(duration) {
-    return `${duration.years}Y ${duration.months}M ${duration.weeks}W ${duration.days}D ${duration.hours}H ${duration.minutes}M`;
-}
-
-/**
  * Calcule la fin du blacklist
  * @param {{ years: number, months: number, weeks: number, days: number, hours: number, minutes: number }} duration
  * @returns {string} - Date au bon format (YYYY-MM-DD HH:MM:SS)
@@ -216,40 +207,28 @@ function setup_liker(element) {
     const button_dislike = element.querySelector('.click-dislike .like-buttons');
     const [span_like_count, span_dislike_count] = element.getElementsByTagName('span');
     
-    const button_like_img = element.querySelector('btn-like').item(0);
+    const button_like_img = element.getElementsByClassName('btn-like').item(0);
     const button_dislike_img = element.getElementsByClassName('btn-dislike').item(0);
 
     let state = button_like_img.src.endsWith('filled.svg') ? true : button_dislike_img.src.endsWith('filled.svg') ? false : null;
 
     button_like.addEventListener('click', async () => {
-        disabled(true);
         const dec = state === false;
         state = state !== true ? true : null;
-        if (!(await update())) return;
         update_likes();
         update_dislikes();
         change_value(span_like_count, state === true ? 1 : -1);
         if (dec) change_value(span_dislike_count, -1);
-        disabled(false);
     });
 
     button_dislike.addEventListener('click', async () => {
-        disabled(true);
         const dec = state === true;
         state = state !== false ? false : null;
-        if (!(await update())) return;
         update_likes();
         update_dislikes();
         change_value(span_dislike_count, state === false ? 1 : -1);
         if (dec) change_value(span_like_count, -1);
-        disabled(false);
     });
-
-    function disabled(value)
-    {
-        button_like.disabled = value;
-        button_dislike.disabled = value;
-    }
 
     function update_likes() {
         button_like_img.src = fill_src('thumb', state === true);
@@ -264,10 +243,7 @@ function setup_liker(element) {
         span.textContent = parseInt(span.textContent) + delta;
     }
 
-    function update() {
-        return fetchDo(location_like(element.dataset.commentId, state));
-    }
-
+    window.addEventListener('beforeunload', () => fetchDo(location_like(element.dataset.commentId, state)));
 }
 
 /**
