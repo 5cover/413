@@ -194,11 +194,11 @@ final class Page
     {
         ?>
         <footer>
-            <div class="footer-bottom">
-                <p title="c'est beaucoup!"><?= DB\connect()->query_no - 1 ?> requêtes SQL</p>
-                <p><a id="a-page-expire-cookies">Nettoyer les cookies</a></p>
-            </div>
             <div class="footer-content">
+                <div>
+                    <p title="c'est beaucoup!"><?= DB\connect()->query_no - 1 ?> requêtes SQL</p>
+                    <p><a id="a-page-expire-cookies">Nettoyer les cookies</a></p>
+                </div>
                 <div class="footer-logo">
                     <a href="/">
                         <img src="/images/logo_vertical_big.png" alt="Logo PACT" loading="lazy">
