@@ -1,5 +1,6 @@
 <?php
 require_once 'model/Model.php';
+require_once 'model/FiniteTimestamp.php';
 require_once 'db.php';
 require_once 'redirect.php';
 
@@ -26,7 +27,7 @@ class Blacklist extends Model
         return $r === false ? null : $r;
     }
 
-    static function toggle_blacklist(int $id, date $finblacklist): bool
+    static function toggle_blacklist(int $id, FiniteTimestamp $finblacklist): bool
     {
         if (self::get_blacklist($id) === null) {
             $stmt = DB\connect()->prepare('insert into ' . self::TABLE . ' (id,fin_blacklist) values (?,?)');
