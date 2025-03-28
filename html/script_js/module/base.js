@@ -205,7 +205,8 @@ function calculeBlacklistEndDate(duration) {
 function setup_liker(element) {
     const button_like = element.querySelector('.click-like .like-buttons');
     const button_dislike = element.querySelector('.click-dislike .like-buttons');
-    const [span_like_count, span_dislike_count] = element.getElementsByTagName('span');
+    const text_like_count = element.querySelector('.likes');
+    const text_dislike_count = element.querySelector('.dislikes');
     
     const button_like_img = element.getElementsByClassName('btn-like').item(0);
     const button_dislike_img = element.getElementsByClassName('btn-dislike').item(0);
@@ -217,8 +218,8 @@ function setup_liker(element) {
         state = state !== true ? true : null;
         update_likes();
         update_dislikes();
-        change_value(span_like_count, state === true ? 1 : -1);
-        if (dec) change_value(span_dislike_count, -1);
+        change_value(text_like_count, state === true ? 1 : -1);
+        if (dec) change_value(text_dislike_count, -1);
     });
 
     button_dislike.addEventListener('click', async () => {
@@ -226,8 +227,8 @@ function setup_liker(element) {
         state = state !== false ? false : null;
         update_likes();
         update_dislikes();
-        change_value(span_dislike_count, state === false ? 1 : -1);
-        if (dec) change_value(span_like_count, -1);
+        change_value(text_dislike_count, state === false ? 1 : -1);
+        if (dec) change_value(text_dislike_count, -1);
     });
 
     function update_likes() {

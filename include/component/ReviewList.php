@@ -59,13 +59,13 @@ final class ReviewList
                         <div class="review">
                             <div class="liker" data-comment-id="<?= $a->id ?>">
                                 <div class="compteur click-like">
-                                    <label class="likes"><?= $a->likes ?>
+                                    <label><span class="likes"><?= $a->likes ?></span>
                                         <button type="button" <?= $likes === true ? 'checked' : '' ?> class="like-buttons">
                                             <img class="btn-like" src="/images/thumb<?= $likes === true ? '-filled' : '' ?>.svg" alt="Like" title="Like">
                                         </button></label>
                                 </div>
                                 <div class="compteur click-dislike">
-                                    <label class="dislikes"><?= $a->dislikes ?>
+                                    <label><span class="likes"><?= $a->dislikes ?></span>
                                         <button type="button" <?= $likes === false ? 'checked' : '' ?> class="like-buttons">
                                             <img class="btn-dislike" src="/images/reverse-thumb<?= $likes === false ? '-filled' : '' ?>.svg" alt="Dislike" title="Dislike">
                                         </button></label>
