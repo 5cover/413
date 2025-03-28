@@ -28,9 +28,11 @@ function connection_membre($args )  {
         elseif ($user->otp_secret && !OTP\verify($user->otp_secret,$args['otp_secret'])  ) {
             fail_otp();
         }
+        else{
         session_regenerate_id(true);
         Auth\se_connecter_membre($user->id);
         succeed();
+        }
     }
 }
 connection_membre(args: $args);
@@ -43,9 +45,11 @@ function connection_pro($args )  {
         elseif ($user->otp_secret && !OTP\verify($user->otp_secret,$args['otp_secret'])  ) {
             fail_otp();
         }
+        else{
         session_regenerate_id(true);
         Auth\se_connecter_pro($user->id);
         succeed();
+        }
     }
 }
 connection_pro(args: $args);
