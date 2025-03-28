@@ -1428,3 +1428,7 @@ label > input {
     color: black;
     background-color: grey;
 }
+
+#champ_otp_connection{
+    display: none;
+}
