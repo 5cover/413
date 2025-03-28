@@ -34,6 +34,8 @@ $page->put(function () {
                     <input id="otp_login" name="otp_login" type="text" >
                 </div>
                 <script>
+                    import { requireElementById } from './util.js';
+
                     const button_otp_connection = requireElementById('button_otp_connection');
                     const champ_otp_connection = requireElementById('champ_otp_connection');
 
