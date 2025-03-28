@@ -7,6 +7,8 @@ for (const e of document.getElementsByClassName('button-signaler')) setup_button
 for (const e of document.getElementsByClassName('button-blacklist')) setup_button_blacklist(e);
 for (const e of document.getElementsByClassName('liker')) setup_liker(e);
 
+requireElementById('a-page-expire-cookies').addEventListener('click', () => document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); }));
+
 /**
  * @param {HTMLElement} element
  */
@@ -207,7 +209,7 @@ function setup_liker(element) {
     const button_dislike = element.querySelector('.click-dislike .like-buttons');
     const text_like_count = element.querySelector('.likes');
     const text_dislike_count = element.querySelector('.dislikes');
-    
+
     const button_like_img = element.getElementsByClassName('btn-like').item(0);
     const button_dislike_img = element.getElementsByClassName('btn-dislike').item(0);
 
@@ -239,8 +241,7 @@ function setup_liker(element) {
         button_dislike_img.src = fill_src('reverse-thumb', state === false);
     }
 
-    function change_value(span, delta)
-    {
+    function change_value(span, delta) {
         span.textContent = parseInt(span.textContent) + delta;
     }
 
