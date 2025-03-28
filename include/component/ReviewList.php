@@ -94,7 +94,7 @@ final class ReviewList
                             <p><?= h14s($a->commentaire) ?></p>
                             <p class="review-date"><?= h14s($a->date_experience) ?></p>
                             <?php
-                            if ($this->est_connecte_pro_proprio()) {
+                            if ($this->est_connecte_pro_proprio() && $this->offre->abonnement->libelle=="premium") {
                                 ?>
                                 <button class="button-blacklist"
                                 data-avisid="<?= $a->id ?>"
