@@ -230,7 +230,7 @@ function setup_liker(element) {
         update_likes();
         update_dislikes();
         change_value(text_dislike_count, state === false ? 1 : -1);
-        if (dec) change_value(text_dislike_count, -1);
+        if (dec) change_value(text_like_count, -1);
     });
 
     function update_likes() {
