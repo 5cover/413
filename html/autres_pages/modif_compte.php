@@ -213,26 +213,13 @@ $page->put(function () use ($compte, $error_email, $error_mdp, $error_siren, $er
                 $totp = OTP\generate_totp();
                 $otp_url = OTP\get_url_otp($id_compte,$totp);
             ?>
-                <!-- <button type="button" id="button_generate_otp" class="btn-publish" >Générer votre code</button> -->
-                <!-- <div id="otpModal" class="modal">
-                <div class="modal-content">
-                    <h2>Scan ce QR Code</h2>
-                    <div id="qrcode"></div>
-                    <script>new QRCode(document.getElementById("qrcode"), '<?= $otp_url ?>')</script>
-
-                    <h2>Entrez votre OTP</h2>
-                    <input type="text" id="otp_text" placeholder="Saisir OTP">
-                    <button id="button_validate_otp" type="button" >Valider</button>
-
-                    <button id="button_abandon_otp" type="button" >Fermer</button>
-                </div>
-             </div> -->
-             <button onclick="openPhpWindow()">Générer votre code sécurisé</button>
+                
+             <button type="button" onclick="openPhpWindow()">Générer votre code sécurisé</button>
 
             <script>
                 function openPhpWindow() {
                     // Ouvre une nouvelle fenêtre de 600x400px
-                    window.open('../otp-qr.php', '_blank', 'width=600,height=400');
+                    window.open('../otp-qr.php', '_blank', 'width=500,height=800');
                 }
             </script>
 
