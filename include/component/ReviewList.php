@@ -45,7 +45,7 @@ final class ReviewList
                     <p>1 étoile&nbsp;: <?= $avis_count_by_note[1] ?> avis.</p>
                 </div>
                 <?php if ($this->est_connecte_pro_proprio() && $this->offre->abonnement->libelle == 'premium') { ?>
-                    <p>Nombre de blacklistages restants&nbsp;: <?= Blacklist::nb_blacklist_restantes(Auth\id_pro_connecte()) ?></p>
+                    <p>Nombre de blacklistages restants&nbsp;: <?= Blacklist::nb_blacklist_restantes($this->offre->id) ?></p>
                 <?php } ?>
 
                 <?php
@@ -99,7 +99,7 @@ final class ReviewList
                                 Blacklisté
 
                                 </button>
-                                <?php } else if (Blacklist::nb_blacklist_restantes(Auth\id_pro_connecte()) !== 0) {
+                                <?php } else if (Blacklist::nb_blacklist_restantes($this->offre->id) !== 0) {
                                     ?>
                                     <button class="button-blacklist"
                                     data-avisid="<?= $a->id ?>"
