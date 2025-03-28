@@ -145,6 +145,9 @@ function filterOffers() {
         }
         return true;
     });
+    filteredOffers.forEach(offre => {
+        console.log(offre.titre,offre.tags)
+    });
 
     displayOffers(filteredOffers);
     updateMapWithIconsAndColors(filteredOffers);
