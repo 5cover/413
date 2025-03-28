@@ -236,7 +236,7 @@ function setup_liker(element) {
     }
 
     function update_dislikes() {
-        button_dislike_img.src = fill_src('thumb', state === false);
+        button_dislike_img.src = fill_src('reversed-thumb', state === false);
     }
 
     function change_value(span, delta)
