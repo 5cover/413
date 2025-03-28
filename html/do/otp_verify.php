@@ -5,10 +5,10 @@ require_once 'db.php';
 
 header('Content-Type: text/plain; charset=utf-8');
 
-$id_compte = Auth\exiger_connecte();
-$otp_reponse       = getarg($_POST, 'otp');
+$id_compte      = Auth\exiger_connecte();
+$otp_reponse    = getarg($_POST, 'otp');
+$secret         = getarg($_POST, 'secret',required:false);
 
-$secret       =  getarg($_POST, 'otp',required:false);
 if(! $secret){
 // Get user secret from database
 $stmt = DB\connect()->prepare('SELECT otp_secret FROM _compte WHERE id = ?');
