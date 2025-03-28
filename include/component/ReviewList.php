@@ -90,7 +90,7 @@ final class ReviewList
                             <p class="review-date"><?= h14s($a->date_experience) ?></p>
                             <?php
                             if ($this->est_connecte_pro_proprio() && $this->offre->abonnement->libelle=="premium") {
-                                if (Blacklist::get_blacklist($a->id) !== null)
+                                if (Blacklist::get_blacklist($a->id) !== null) {
                                 ?>
                                 <button class="button-blacklist"
                                 data-avisid="<?= $a->id ?>"
@@ -99,8 +99,7 @@ final class ReviewList
                                 Blacklisté
 
                                 </button>
-                                <?php
-                                else if (Blacklist::nb_blacklist_restantes(Auth\id_pro_connecte()) !== 0) {
+                                <?php } else if (Blacklist::nb_blacklist_restantes(Auth\id_pro_connecte()) !== 0) {
                                     ?>
                                     <button class="button-blacklist"
                                     data-avisid="<?= $a->id ?>"
