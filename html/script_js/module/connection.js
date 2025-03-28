@@ -1,5 +1,5 @@
 
-import { requireElementById } from '/script_js/util.js';
+import { requireElementById } from './util.js';
 
 const button_otp_connection = requireElementById('button_otp_connection');
 const champ_otp_connection = requireElementById('champ_otp_connection');
