@@ -210,12 +210,13 @@ function calculeBlacklistEndDate(duration) {
  * @param {HTMLElement} element 
  */
 function setup_liker(element) {
-    const button_like = document.getElementById('click-like');
-    const button_dislike = document.getElementById('click-dislike');
+    const button_like = element.querySelector('.click-like');
+    const button_dislike = element.querySelector('.click-dislike');
     const [span_like_count, span_dislike_count] = element.getElementsByTagName('span');
-
-    const button_like_img = document.getElementById('btn-like');
-    const button_dislike_img = document.getElementById('btn-dislike');
+    
+    const button_like_img = element.querySelector('.btn-like');
+    const button_dislike_img = element.querySelector('.btn-dislike');
+    console.log(button_like);
 
     let state = button_like_img.src.endsWith('filled.svg') ? true : button_dislike_img.src.endsWith('filled.svg') ? false : null;
 

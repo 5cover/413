@@ -1336,7 +1336,7 @@ label > input {
 }
 
 /* Liker stuff */
-#btn-dislike{
+.btn-dislike{
     transform: rotate(180deg);
 }
 
