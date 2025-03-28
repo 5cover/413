@@ -96,7 +96,6 @@ abstract class Compte extends Signalable
             $row['adresse'],
             Uuid::parse($row['api_key'] ?? null),
             $row['otp_secret'],
-
         ];
         if ($denomination = $row['professionnel_denomination'] ?? null) {
             $secteur = $row['professionnel_secteur'];

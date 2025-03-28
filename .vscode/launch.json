@@ -10,7 +10,7 @@
         "-S",
         "localhost:8000",
         "-d",
-        "include_path=${workspaceFolder}/include",
+        "include_path=${workspaceFolder}:${workspaceFolder}/include",
         "-c",
         "${workspaceFolder}/cfg/php.ini"
       ],

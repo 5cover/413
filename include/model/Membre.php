@@ -45,7 +45,8 @@ final class Membre extends Compte
         ' . static::TABLE . '.prenom,
         ' . static::TABLE . '.telephone,
         ' . static::TABLE . '.adresse,
-        ' . static::TABLE . '.pseudo
+        ' . static::TABLE . '.pseudo,
+        ' . static::TABLE . '.otp_secret
         from membre';
     }
 
@@ -59,6 +60,8 @@ final class Membre extends Compte
             $row['prenom'],
             $row['telephone'],
             $row['adresse'],
+            Uuid::parse($row['api_key'] ?? null),
+            $row['otp_secret'],
         ], $row['pseudo']);
     }
 
