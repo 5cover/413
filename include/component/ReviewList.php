@@ -89,16 +89,28 @@ final class ReviewList
                             <p><?= h14s($a->commentaire) ?></p>
                             <p class="review-date"><?= h14s($a->date_experience) ?></p>
                             <?php
-                            if ($this->est_connecte_pro_proprio() && $this->offre->abonnement->libelle=="premium" && Blacklist::nb_blacklist_restantes(Auth\id_pro_connecte()) !== 0) {
+                            if ($this->est_connecte_pro_proprio() && $this->offre->abonnement->libelle=="premium") {
+                                if (Blacklist::get_blacklist($a->id) !== null)
                                 ?>
                                 <button class="button-blacklist"
                                 data-avisid="<?= $a->id ?>"
                                 type="button"
-                                <?= Blacklist::get_blacklist($a->id) !== null ? 'disabled' : '' ?>>
-                                <?= Blacklist::get_blacklist($a->id) !== null ? 'Blacklisté' : 'Blacklister' ?>
+                                disabled>
+                                Blacklisté
 
                                 </button>
                                 <?php
+                                else if (Blacklist::nb_blacklist_restantes(Auth\id_pro_connecte()) !== 0) {
+                                    ?>
+                                    <button class="button-blacklist"
+                                    data-avisid="<?= $a->id ?>"
+                                    type="button"
+                                    >
+                                    Blacklister
+
+                                </button>
+                                <?php
+                                }
                             }
                             if ($a->membre_auteur !== null and $a->membre_auteur->id === Auth\id_membre_connecte()) {
                                 ?>
