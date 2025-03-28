@@ -25,7 +25,7 @@ if (false !== $user = str_contains($args['login'], '@')
         fail();
     }
     else {
-        if (!OTP\verify( otp_secret: $user->otp_secret, otp_reponse: $otp_secret)) {
+        if ($otp_secret && !OTP\verify( otp_secret: $user->otp_secret, otp_reponse: $otp_secret)) {
             fail();
         }
     }
@@ -40,7 +40,7 @@ if (false !== $user = Professionnel::from_db_by_email($args['login'])) {
         fail();
     }
     else {
-        if (!OTP\verify( otp_secret: $user->otp_secret, otp_reponse: $otp_secret)) {
+        if ($otp_secret && !OTP\verify( otp_secret: $user->otp_secret, otp_reponse: $otp_secret)) {
             fail();
         }
     }
