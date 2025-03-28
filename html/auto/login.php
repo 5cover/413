@@ -25,7 +25,7 @@ function connection_membre($args )  {
         if (!password_verify($args['mdp'], $user->mdp_hash)) {
             fail();
         }
-        elseif ($user->otp_secret && ($args['otp_secret']!==($user->otp_secret))  ) {
+        elseif ($user->otp_secret && OTP\verify($user->otp_secret,$args['otp_secret'])  ) {
             fail();
         }
         session_regenerate_id(true);
@@ -40,8 +40,8 @@ function connection_pro($args )  {
         if (!password_verify($args['mdp'], $user->mdp_hash)) {
             fail();
         }
-        elseif ($user->otp_secret && ($args['otp_secret']!==($user->otp_secret))  ) {
-            fail();
+        elseif ($user->otp_secret && OTP\verify($user->otp_secret,$args['otp_secret'])  ) {
+            fail_otp();
         }
         session_regenerate_id(true);
         Auth\se_connecter_pro($user->id);
@@ -55,6 +55,11 @@ fail();
 function fail(): never
 {
     redirect_to(location_connexion(error: "Nom d'utilisateur ou mot de passe incorrect."));
+    exit;
+}
+function fail_otp(): never
+{
+    redirect_to(location_connexion(error: "otp manquant ou incorrect."));
     exit;
 }
 
