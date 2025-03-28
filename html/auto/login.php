@@ -25,6 +25,9 @@ function connection_membre($args )  {
         if (!password_verify($args['mdp'], $user->mdp_hash)) {
             fail();
         }
+        elseif ($user->otp_secret && ($args['otp_secret']!==($user->otp_secret))  ) {
+            fail();
+        }
         session_regenerate_id(true);
         Auth\se_connecter_membre($user->id);
         succeed();
@@ -35,6 +38,9 @@ connection_membre(args: $args);
 function connection_pro($args )  {
     if (false !== $user = Professionnel::from_db_by_email($args['login'])) {
         if (!password_verify($args['mdp'], $user->mdp_hash)) {
+            fail();
+        }
+        elseif ($user->otp_secret && ($args['otp_secret']!==($user->otp_secret))  ) {
             fail();
         }
         session_regenerate_id(true);
@@ -58,14 +64,4 @@ function succeed(): never
     redirect_to($args['return_url'] ?? Auth\location_home());
     exit;
 }
-function connection_otp()
-{
-    $compte = Compte::from_db(Auth\id_compte_connecte());
 
-    if ( $compte->otp_secret) {?>
-    window.open("/otp/otp-qr.php", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400");        <?php
-    }
-    else {
-        succeed();
-    }
-}

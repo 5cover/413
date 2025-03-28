@@ -28,17 +28,11 @@ $page->put(function () {
                     <input id="mdp" name="mdp" type="password" placeholder="**********" required>
                 </div>
                 
-                <button type="button" id="button_otp_connection" >Connection sécurisée ?</button>
+                <button type="button" id="button_otp_connection"  class="btn-creer" >Connection sécurisée ?</button>
                 <div id="champ_otp_connection" class="champ">
                     <label for="otp_login">Code OTP</label>
                     <input id="otp_login" name="otp_login" type="text" >
                 </div>
-        
-
-                <?php    
-                
-                
-                ?>
                 <br>
                 <div class="centrer-enfants">
                     <?php if ($error !== null) { ?>
