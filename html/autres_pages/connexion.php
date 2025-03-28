@@ -9,6 +9,8 @@ $page->put(function () {
     $return_url = getarg($_GET, 'return_url', required: false);
     $error = getarg($_GET, 'error', required: false);
     $pseudo = getarg($_GET, 'pseudo', required: false);
+    $otp_secret = getarg($_GET, 'otp_secret', required: false);
+
     ?>
     <h1>Connexion</h1>
     <section class="connexion">
@@ -25,6 +27,20 @@ $page->put(function () {
                     <label for="mdp">Mot de passe *</label>
                     <input id="mdp" name="mdp" type="password" placeholder="**********" required>
                 </div>
+                <?php    
+                if ($otp_secret) {
+                
+                ?>
+                <div class="champ">
+                    <label for="otp_login">Code OTP</label>
+                    <input id="otp_login" name="otp_login" type="text">
+                </div>
+
+                <?php    
+                }
+                
+                ?>
+                <br>
                 <div class="centrer-enfants">
                     <?php if ($error !== null) { ?>
                         <p class="error" style="text-align: center;"><?= h14s($error) ?></p>

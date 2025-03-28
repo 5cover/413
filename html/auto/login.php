@@ -5,11 +5,15 @@ require_once 'util.php';
 require_once 'redirect.php';
 require_once 'model/Professionnel.php';
 require_once 'model/Membre.php';
+require_once 'otp.php';
+
 
 // Récupérer les données du formulaire
 $args = [
     'login'      => getarg($_POST, 'login'),
     'mdp'        => getarg($_POST, 'mdp'),
+    'otp_secret' => getarg($_POST, 'otp_secret', required: false),
+
     'return_url' => getarg($_POST, 'return_url', required: false),
 ];
 
@@ -20,6 +24,11 @@ if (false !== $user = str_contains($args['login'], '@')
     if (!password_verify($args['mdp'], $user->mdp_hash)) {
         fail();
     }
+    else {
+        if (!OTP\verify( otp_secret: $user->otp_secret, otp_reponse: $otp_secret)) {
+            fail();
+        }
+    }
     session_regenerate_id(true);
     Auth\se_connecter_membre($user->id);
     succeed();
@@ -29,6 +38,11 @@ if (false !== $user = str_contains($args['login'], '@')
 if (false !== $user = Professionnel::from_db_by_email($args['login'])) {
     if (!password_verify($args['mdp'], $user->mdp_hash)) {
         fail();
+    }
+    else {
+        if (!OTP\verify( otp_secret: $user->otp_secret, otp_reponse: $otp_secret)) {
+            fail();
+        }
     }
     session_regenerate_id(true);
     Auth\se_connecter_pro($user->id);
