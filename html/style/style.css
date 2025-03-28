@@ -1336,9 +1336,7 @@ label > input {
 }
 
 /* Liker stuff */
-.btn-dislike{
-    transform: rotate(180deg);
-}
+
 
 .leaflet-marker-icon img {
     filter: invert(1);

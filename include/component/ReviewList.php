@@ -67,7 +67,7 @@ final class ReviewList
                                 <div class="compteur click-dislike">
                                     <label class="dislikes"><?= $a->dislikes ?>
                                         <button type="button" <?= $likes === false ? 'checked' : '' ?> class="like-buttons">
-                                            <img class="btn-dislike" src="/images/thumb<?= $likes === false ? '-filled' : '' ?>.svg" alt="Dislike" title="Dislike">
+                                            <img class="btn-dislike" src="/images/reverse-thumb<?= $likes === false ? '-filled' : '' ?>.svg" alt="Dislike" title="Dislike">
                                         </button></label>
                                 </div>
                             </div>
