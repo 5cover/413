@@ -34,8 +34,8 @@ $page->put(function () {
                     <input id="otp_login" name="otp_login" type="text" >
                 </div>
                 <script>
-                    const button_otp_connection = requireElementById('button-delete-api-key');
-                    const button_otp_connection = requireElementById('champ_otp_connection');
+                    const button_otp_connection = requireElementById('button_otp_connection');
+                    const champ_otp_connection = requireElementById('champ_otp_connection');
 
                     function affiche_otp(){
                         if(getComputedStyle(champ_otp_connection).display != "none"){
