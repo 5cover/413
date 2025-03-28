@@ -47,11 +47,11 @@ $otp_url = OTP\get_url_otp($id_compte,$totp);
             if (text == "1") {
                 document.getElementById("result").innerText = "Réussite : code bon";
                 // OTP\save_otp($id_compte,$secret); ❌ (Ne fonctionne pas en JS)
-                window.close();
+                // window.close();
             } else if (text == "0") {
                 document.getElementById("result").innerText = "Échec : code incorrect";
             } else {
-                document.getElementById("result").innerText = "Échec : erreur inconnue";
+                document.getElementById("result").innerText = "Échec : "+text;
             }
         });
 
