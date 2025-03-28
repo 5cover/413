@@ -1,4 +1,4 @@
-import { fetchDo, location_signaler, requireElementById, location_blacklist, location_like } from './util.js';
+import { fetchDo, location_signaler, requireElementById, location_blacklist, location_like, enable_disable } from './util.js';
 
 for (const e of document.getElementsByClassName('input-duration')) setup_input_duration(e);
 for (const e of document.getElementsByClassName('input-address')) setup_input_address(e);
@@ -215,23 +215,10 @@ function setup_liker(element) {
 
     let state = button_like_img.src.endsWith('filled.svg') ? true : button_dislike_img.src.endsWith('filled.svg') ? false : null;
 
-    button_like.addEventListener('click', async () => {
-        const dec = state === false;
-        state = state !== true ? true : null;
-        update_likes();
-        update_dislikes();
-        change_value(text_like_count, state === true ? 1 : -1);
-        if (dec) change_value(text_dislike_count, -1);
-    });
+    button_like.addEventListener('click', async () => enable_disable([button_like, button_dislike], () => update(true)));
 
-    button_dislike.addEventListener('click', async () => {
-        const dec = state === true;
-        state = state !== false ? false : null;
-        update_likes();
-        update_dislikes();
-        change_value(text_dislike_count, state === false ? 1 : -1);
-        if (dec) change_value(text_like_count, -1);
-    });
+    button_dislike.addEventListener('click', async () => enable_disable([button_like, button_dislike], () => update(false)));
+
 
     function update_likes() {
         button_like_img.src = fill_src('thumb', state === true);
@@ -245,7 +232,22 @@ function setup_liker(element) {
         span.textContent = parseInt(span.textContent) + delta;
     }
 
-    window.addEventListener('beforeunload', async () => await fetchDo(location_like(element.dataset.commentId, state)));
+    /**
+     * 
+     * @param {HTMLElement} active_text_count 
+     * @param {boolean} is_like 
+     * @returns {Promise}
+     */
+    function update(is_like) {
+        const dec = state === !is_like;
+        state = state !== is_like ? is_like : null;
+        update_likes();
+        update_dislikes();
+        change_value(is_like ? text_like_count : text_dislike_count, state === is_like ? 1 : -1);
+        if (dec) change_value(is_like ? text_dislike_count : text_like_count, -1);
+
+        return fetchDo(location_like(element.dataset.commentId, state))
+    };
 }
 
 /**

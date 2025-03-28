@@ -78,3 +78,14 @@ export function location_blacklist(avisId, duration) {
 export function formatDuration(duration) {
     return `${duration.years}Y ${duration.months}M ${duration.weeks}W ${duration.days}D ${duration.hours}H ${duration.minutes}M`;
 }
+
+
+/**
+ * @param {HTMLElement[]} elements
+ * @param {Promise} promise 
+ */
+export async function enable_disable(elements, promise) {
+    for (const e of elements) e.disabled = true;
+    await promise;
+    for (const e of elements) e.disabled = false;
+}
