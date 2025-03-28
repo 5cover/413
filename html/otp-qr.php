@@ -40,12 +40,19 @@ $otp_url = OTP\get_url_otp($id_compte,$totp);
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: new URLSearchParams({ otp: otp })
             });
-            if ((await response.text()) == "1") {
+            if ((response.text()) == 1) {
+                document.getElementById("result").innerText = "Réussite : code bon";
                 OTP\save_otp($id_compte,$secret);
                 window.close();
-
             }
-            document.getElementById("result").innerText = response.status + " " + (await response.text());
+            elseif ((response.text()) == 0){
+                document.getElementById("result").innerText = "echec : code incorrecte";
+            }
+            else{
+                document.getElementById("result").innerText = "echec : erreur inconnue";
+            }
+            
+            
         });
 
 
