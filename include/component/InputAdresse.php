@@ -79,11 +79,14 @@ final class InputAdresse extends Input
         error_log("Adresse envoyée à geocode: " . $addr->format());
         $latLong = geocode($addr->format());
         if (!$latLong || empty($latLong)) {
-            throw new Exception("Aucune donnée de géolocalisation trouvée.");
-        }else {
-            print_r($latLong);
-            $addr->lat=$latLong['latitude'];
-            $addr->long=$latLong['longitude'];
+            error_log("⚠ Aucune donnée trouvée pour l'adresse: " . $addr->format());
+            $addr->lat = null;
+            $addr->long = null;
+        } else {
+            $addr->lat = $latLong['latitude'];
+            $addr->long = $latLong['longitude'];
+        }
+        
 
             // $addr->__set('long',$latLong['longitude']) ;
         }
