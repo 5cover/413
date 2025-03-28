@@ -145,9 +145,9 @@ function filterOffers() {
         }
         return true;
     });
-    filteredOffers.forEach(offre => {
-        console.log(offre.titre,offre.tags)
-    });
+    // filteredOffers.forEach(offre => {
+    //     console.log(offre.titre,offre.tags)
+    // }); permet d'afficher ce que les filtres ont trouve (débbug)
 
     displayOffers(filteredOffers);
     updateMapWithIconsAndColors(filteredOffers);
