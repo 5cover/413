@@ -1,46 +1,68 @@
 <?php
+
+use DB\Arg;
+use DB\InListClause;
+use DB\BinOp;
+use DB\BinaryClause;
+
 require_once 'db.php';
-require_once 'Equatable.php';
 
 /**
- * @implements Equatable<Tags>
  * @implements IteratorAggregate<string, true>
  */
-final class Tags implements IteratorAggregate, Equatable
+final class Tags implements IteratorAggregate
 {
     /** @var array<string, true> */
-    private array $tags = [];
+    private array $tags;
+    /** @var array<string, true> **/
+    private array $db_tags;
 
     function __construct(
-        private readonly Offre $offre
-    ) {}
+        private readonly int $id_offre,
+    ) {
+        $stmt = DB\select(DB\Table::Tags, ['tag'], [
+            new BinaryClause('id_offre', BinOp::Eq, $this->id_offre, PDO::PARAM_INT),
+        ]);
+        notfalse($stmt->execute());
+        $this->db_tags = $this->tags = array_fill_keys($stmt->fetchAll(PDO::FETCH_COLUMN), true);
+    }
 
     function add(string $tag): void
     {
         $this->tags[$tag] = true;
-        $this->insert_tag($tag);
     }
 
     function remove(string $tag): void
     {
         unset($this->tags[$tag]);
-        if (null !== $args = $this->args($tag)) {
-            notfalse(DB\delete_from(self::TABLE, $args)->execute());
-        }
     }
 
-    function push_to_db(): void
+    function push(): void
     {
-        foreach (array_keys($this->tags) as $tag) {
-            $this->insert_tag($tag);
-        }
-    }
+        // Compute diff
+        $to_insert = array_diff_key($this->tags, $this->db_tags);     // in memory, not in DB
+        $to_delete = array_diff_key($this->db_tags, $this->tags);     // in DB, not in memory
 
-    private function insert_tag(string $tag): void
-    {
-        if (null !== $args = $this->args($tag)) {
-            notfalse(DB\insert_into(self::TABLE, $args)->execute());
+        // todo: let's just hope that this doesn't fail halfway or the caller is in a transaction block
+
+        if (!$to_insert and !$to_delete) return;
+
+        // Delete removed
+        $stmt = DB\delete(DB\Table::Galerie, [
+            new InListClause('id_offre', $to_delete, PDO::PARAM_INT),
+        ]);
+        notfalse($stmt->execute());
+
+        // Insert new
+        $values = [];
+        foreach ($to_insert as $tag => $_) {
+            $values[] = new Arg($this->id_offre, PDO::PARAM_INT);
+            $values[] = new Arg($tag, PDO::PARAM_STR);
         }
+        $stmt = DB\insert_into_multiple(DB\Table::Galerie, ['id_offre', 'id_image'], $values);
+        notfalse($stmt->execute());
+
+        $this->db_tags = $this->tags;
     }
 
     /**
@@ -50,22 +72,4 @@ final class Tags implements IteratorAggregate, Equatable
     {
         return new ArrayIterator(array_keys($this->tags));
     }
-
-    private function args(string $tag): ?array
-    {
-        return $this->offre->id === null ? null : [
-            'id_offre' => [$this->offre->id, PDO::PARAM_INT],
-            'tag'      => [$tag, PDO::PARAM_STR],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    function equals(mixed $other): bool
-    {
-        return $other->tags === $this->tags;
-    }
-
-    const TABLE = '_tags';
 }

@@ -1,59 +1,92 @@
 <?php
 
+use DB\Action;
+use DB\Arg;
+use DB\BinOp;
+use DB\BinaryClause;
+use DB\InListClause;
+
 require_once 'db.php';
-require_once 'Equatable.php';
 
 /**
- * @implements Equatable<Tarifs>
  * @implements IteratorAggregate<string, float>
  */
-final class Tarifs implements IteratorAggregate, Equatable
+final class Tarifs implements IteratorAggregate
 {
     /**
      * @var array<string, float>
      */
     private array $tarifs = [];
+    /**
+     * @var array<string, Action>
+     */
+    private array $diff = [];
 
     function __construct(
-        private readonly Offre $offre,
-    ) {}
+        private readonly int $id_offre,
+    ) {
+        $stmt = DB\select(DB\Table::Tarif, ['nom', 'montant'], [
+            new BinaryClause('id_offre', BinOp::Eq, $this->id_offre, PDO::PARAM_INT),
+        ]);
+        notfalse($stmt->execute());
+        while (false !== $row = $stmt->fetch(PDO::FETCH_OBJ)) {
+            $this->tarifs[$row->nom] = $row->horaires;
+        }
+    }
 
-    function add(string $nom, float $montant): void
+    function set(string $nom, float $montant): void
     {
+        $this->diff[$nom] ??= isset($this->tarifs[$nom]);
         $this->tarifs[$nom] = $montant;
-        $this->insert_tarif($nom, $montant);
     }
 
-    function remove(string $nom): void
+    function unset(string $nom): void
     {
+        if (isset($this->tarifs[$nom]) and isset($this->diff[$nom])) $this->diff[$nom] = Action::Delete;
         unset($this->tarifs[$nom]);
-        if (null !== $args = $this->args($nom)) {
-            notfalse(DB\delete_from(self::TABLE, $args)->execute());
+
+    }
+
+    function push(): void
+    {
+        /** @var Arg[] $to_insert */
+        $to_insert = [];
+        /** @var string[] $to_insert */
+        $to_delete = [];
+
+        foreach ($this->diff as $nom => $action) {
+            $montant = new Arg($this->tarifs[$nom], PDO::PARAM_STR);
+            switch ($action) {
+                case Action::Insert:
+                    $to_insert[] = new Arg($this->id_offre, PDO::PARAM_INT);
+                    $to_insert[] = new Arg($nom, PDO::PARAM_STR);
+                    $to_insert[] = $montant;
+                    break;
+                case Action::Update:
+                    $stmt = DB\update(DB\Table::Tarif, [
+                        'montant' => $montant,
+                    ], [
+                        new BinaryClause('id_offre', BinOp::Eq, $this->id_offre, PDO::PARAM_INT),
+                        new BinaryClause('nom', BinOp::Eq, $nom, PDO::PARAM_STR),
+                    ]);
+                    notfalse($stmt->execute());
+                    break;
+                case Action::Delete:
+                    $to_delete[] = $nom;
+                    break;
+            }
+
         }
-    }
+        $stmt = DB\insert_into_multiple(DB\Table::Tarif, ['id_offre', 'nom', 'montant'], $to_insert);
+        notfalse($stmt->execute());
 
-    private function args(string $nom): ?array
-    {
-        return $this->offre->id === null ? null : [
-            'id_offre' => [$this->offre->id, PDO::PARAM_INT],
-            'nom'      => [$nom, PDO::PARAM_STR],
-        ];
-    }
+        $stmt = DB\delete(DB\Table::Tarif, [
+            new BinaryClause('id_offre', BinOp::Eq, $this->id_offre, PDO::PARAM_INT),
+            new InListClause('nom', $to_delete, PDO::PARAM_STR),
+        ]);
+        notfalse($stmt->execute());
 
-    function push_to_db(): void
-    {
-        foreach ($this->tarifs as $nom => $montant) {
-            $this->insert_tarif($nom, $montant);
-        };
-    }
-
-    private function insert_tarif(string $nom, float $montant): void
-    {
-        if (null !== $args = $this->args($nom)) {
-            notfalse(DB\insert_into(self::TABLE, $args + [
-                'montant' => [$montant, PDO_PARAM_FLOAT],
-            ])->execute());
-        }
+        $this->diff = [];
     }
 
     /**
@@ -63,14 +96,4 @@ final class Tarifs implements IteratorAggregate, Equatable
     {
         return new ArrayIterator($this->tarifs);
     }
-
-    /**
-     * @inheritDoc
-     */
-    function equals(mixed $other): bool
-    {
-        return $other->tarifs === $this->tarifs;
-    }
-
-    const TABLE = '_tarif';
 }

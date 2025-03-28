@@ -2,10 +2,10 @@
 require_once 'util.php';
 require_once 'component/Input.php';
 require_once 'component/ImageView.php';
-require_once 'model/Image.php';
+require_once 'model/ImageFast.php';
 
 /**
- * @extends Input<Image[]>
+ * @extends Input<ImageFast[]>
  */
 final class InputImage extends Input
 {
@@ -22,10 +22,10 @@ final class InputImage extends Input
     /**
      * Récupère l'image saisie.
      * @param array $get_or_post `$_GET` ou `$_POST` (selon la méthode du formulaire)
-     * @param ?Image[] $current_id_images L'ID des images à modifier ou `null` pour une création.
-     * @return Image[]
+     * @param ?int[] $current_id_images L'ID des images à modifier ou `null` pour une création.
+     * @return ImageFast[]
      */
-    function get(array $get_or_post, ?int $current_id_images = null): array
+    function get(array $get_or_post, ?array $current_id_images = null): array
     {
         $files = getarg($_FILES, $this->name, required: false);
 
@@ -34,12 +34,13 @@ final class InputImage extends Input
         $files = array_filter($files, fn($f) => $f['error'] === UPLOAD_ERR_OK);
 
 
-        return array_map(fn($file, $current_id_image) => new Image(
+        return array_map(fn($file, $current_id_image) => new ImageFast(
             $current_id_image,
-            getarg($file, 'size', arg_int()),
-            explode('/', $file['type'], 2)[1],
-            getarg($get_or_post, "{$this->name}_legende", required: false),
-            $file['tmp_name'],
+            new ImageData(
+                getarg($file, 'size', arg_int()),
+                explode('/', $file['type'], 2)[1],
+                getarg($get_or_post, "{$this->name}_legende", required: false),
+            )
         ), $files, $current_id_images ?? []);
     }
 

@@ -31,7 +31,7 @@ with
                 2,
                 'gratuit',
                 '1:30:',
-                'Visite du phare Vauban au Cap Fréhel',
+                'OffreVisite du phare Vauban au Cap Fréhel',
                 'Découvrez la beauté sauvage de la Bretagne avec notre visite guidée du phare du Cap Fréhel. Cette excursion vous offre une vue imprenable sur la côte bretonne, une immersion dans l''histoire maritime et une expérience inoubliable au cœur de la nature.',
                 '### Introduction
 La visite du phare du Cap Fréhel est une expérience unique qui vous plonge dans l''histoire et la beauté naturelle de la Bretagne. Situé sur la côte d''Émeraude, ce phare emblématique offre des vues panoramiques à couper le souffle sur la mer et les falaises environnantes.
@@ -85,7 +85,7 @@ Ne manquez pas cette opportunité unique de découvrir l''un des joyaux de la Br
         insert into
             avis (id_offre, id_membre_auteur, note, contexte, date_experience, commentaire)
         values
-            ((table id_offre), id_membre ('Snoozy'), 5, 'amis', '2024-08-14', 'Visite incroyable, guide très passionné.')
+            ((table id_offre), id_membre ('Snoozy'), 5, 'amis', '2024-08-14', 'OffreVisite incroyable, guide très passionné.')
     ),
     s5 as (
         insert into

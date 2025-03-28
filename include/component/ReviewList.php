@@ -1,6 +1,7 @@
 <?php
 
-require_once 'model/Offre.php';
+require_once 'model/OffreFast.php';
+require_once 'model/CompteProfessionnelFast.php';
 require_once 'model/Reponse.php';
 require_once 'redirect.php';
 require_once 'util.php';
@@ -11,7 +12,7 @@ require_once 'model/Blacklist.php';
 final class ReviewList
 {
     function __construct(
-        readonly Offre $offre,
+        readonly OffreFast $offre,
     ) {}
 
     function put(): void
@@ -28,7 +29,7 @@ final class ReviewList
                     $avis               = iterator_to_array(Avis::from_db_all(
                         id_offre: $this->offre->id,
                         blackliste: $this->est_connecte_pro_proprio()
-                            && $this->offre->abonnement->libelle === 'premium'
+                            && $this->offre->libelle_abonnement === LibelleAbonnement::Premium
                                 ? null
                                 : false
                     ));
@@ -44,7 +45,7 @@ final class ReviewList
                     <p>1 étoile&nbsp;: <?= $avis_count_by_note[1] ?> avis.</p>
                 </div>
                 <?php if($this->est_connecte_pro_proprio()) { ?>
-                <p>Nombre de blacklistages restants&nbsp;: <?= Blacklist::nb_blacklist_restantes(Auth\id_pro_connecte()) ?></p>
+                <p>Nombre de blacklistages restants&nbsp;: <?= Blacklist::nb_blacklist_restantes($this->offre->id_professionnel) ?></p>
                 <?php } ?>
                 <?php
                 if (!empty($avis)) {
@@ -115,7 +116,7 @@ final class ReviewList
                                     <button type="submit" class="btn-publish">Répondre</button>
                                 </form>
                             <?php } else if ($h14s_rep_contenu !== null) { ?>
-                                    <p>Réponse de <?= h14s($this->offre->professionnel->denomination) ?>&nbsp;:</p>
+                                    <p>Réponse de <?= h14s(ProfessionnelFast::from_db($this->offre->id_professionnel)) ?>&nbsp;:</p>
                                     <p><?= $h14s_rep_contenu ?></p>
                             <?php } ?>
                         </div>
@@ -130,6 +131,6 @@ final class ReviewList
 
     private function est_connecte_pro_proprio(): bool
     {
-        return notnull($this->offre->professionnel->id) === Auth\id_pro_connecte();
+        return $this->offre->id_professionnel === Auth\id_pro_connecte();
     }
 }

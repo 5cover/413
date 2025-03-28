@@ -9,7 +9,9 @@ require_once 'model/Professionnel.php';
 require_once 'model/Adresse.php';
 require_once 'model/Commune.php';
 
-$page = new Page('Création de compte membre');
+$page = new Page('Création de compte membre', scripts: [
+    'module/creation_membre.js' => 'type="module"',
+]);
 
 function fail(string $error): never
 {
@@ -89,6 +91,11 @@ $page->put(function () {
                 </div>
                 <!-- Todo: confirmation mdp -->
                 <p class="error"><?= h14s($_GET['error'] ?? null) ?></p>
+                <div class="champ">
+                    <input type="checkbox" id="checkbox-use-otp">
+                    <button type="button" id="button-generate-otp"></button>
+                    <p id="text-otp-status">En attente</p>
+                </div>
 
                 <div class="champ centrer-enfants" >
                     <button type="submit" class="btn-connexion">Valider</button>

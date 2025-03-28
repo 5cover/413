@@ -27,7 +27,7 @@ export async function fetchDo(url) {
     const status = (await fetch(url, {
         credentials: 'include',
     })).status;
-    const ok = status == 200;
+    const ok = status === 200;
     if (!ok) console.error(`failed: fetch ${url} (${status})`);
     return ok;
 }

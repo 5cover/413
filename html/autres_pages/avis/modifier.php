@@ -55,11 +55,11 @@ $page->put(function () use ($id_avis, $avis, $id_offre, $error_message) {
 
                 <label for="rating">Note&nbsp;:</label>
                 <select name="rating" id="rating" required>
-                    <option value="5" <?= $avis->note == 5 ? 'selected' : '' ?>>5 étoiles</option>
-                    <option value="4" <?= $avis->note == 4 ? 'selected' : '' ?>>4 étoiles</option>
-                    <option value="3" <?= $avis->note == 3 ? 'selected' : '' ?>>3 étoiles</option>
-                    <option value="2" <?= $avis->note == 2 ? 'selected' : '' ?>>2 étoiles</option>
-                    <option value="1" <?= $avis->note == 1 ? 'selected' : '' ?>>1 étoile</option>
+                    <option value="5" <?= $avis->note === 5 ? 'selected' : '' ?>>5 étoiles</option>
+                    <option value="4" <?= $avis->note === 4 ? 'selected' : '' ?>>4 étoiles</option>
+                    <option value="3" <?= $avis->note === 3 ? 'selected' : '' ?>>3 étoiles</option>
+                    <option value="2" <?= $avis->note === 2 ? 'selected' : '' ?>>2 étoiles</option>
+                    <option value="1" <?= $avis->note === 1 ? 'selected' : '' ?>>1 étoile</option>
                 </select>
 
                 <label for="contexte">Contexte&nbsp;:</label>

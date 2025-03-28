@@ -6,21 +6,21 @@ require_once 'component/InputAdresse.php';
 require_once 'component/InputDuree.php';
 require_once 'component/InputImage.php';
 require_once 'const.php';
-require_once 'model/Activite.php';
-require_once 'model/FiniteTimestamp.php';
-require_once 'model/NonEmptyRange.php';
-require_once 'model/ParcAttractions.php';
-require_once 'model/ProfessionnelPrive.php';
-require_once 'model/Restaurant.php';
-require_once 'model/Spectacle.php';
-require_once 'model/Time.php';
-require_once 'model/Visite.php';
+require_once 'model/OffreActivite.php';
+require_once 'ValueObjects/FiniteTimestamp.php';
+require_once 'ValueObjects/NonEmptyRange.php';
+require_once 'model/OffreParcAttractions.php';
+require_once 'model/CompteProfessionnelFast.php';
+require_once 'model/OffreRestaurant.php';
+require_once 'model/OffreSpectacle.php';
+require_once 'ValueObjects/Time.php';
+require_once 'model/OffreVisite.php';
 require_once 'Parsedown.php';
 require_once 'redirect.php';
 require_once 'util.php';
 
 /**
- * @extends Input<Offre>
+ * @extends Input<OffreFast>
  */
 final class InputOffre extends Input
 {
@@ -33,8 +33,8 @@ final class InputOffre extends Input
     private readonly InputImage $galerie;
 
     function __construct(
-        private readonly string $categorie,
-        private readonly Professionnel $professionnel,
+        private readonly Categorie $categorie,
+        private readonly CompteProfessionnelFast $professionnel,
         string $id      = '',
         string $name    = '',
         string $form_id = ''
@@ -89,8 +89,8 @@ final class InputOffre extends Input
             },
             id: $this->id('table-tarifs'),
             name: $this->name('tarifs'),
-            initial_rows: [['nom' => 'Adulte', 'montant' => 10]],
             form_id: $form_id,
+            initial_rows: [['nom' => 'Adulte', 'montant' => 10]],
         );
         $this->periodes = new DynamicTable(
             columns: ['Début', 'Fin'],
@@ -123,26 +123,29 @@ final class InputOffre extends Input
     /**
      * Récupère l'offre saisie.
      * @param array $get_or_post `$_GET` ou `$_POST` (selon la méthode du formulaire)
-     * @param ?Offre $current_offre L'offre à modifier ou `null` pour une création. Doit exister dans la BDD.
-     * @return ?Offre
+     * @param ?OffreFast $current_offre L'offre à modifier ou `null` pour une création. Doit exister dans la BDD.
+     * @return ?OffreFast
      */
-    function get(array $get_or_post, ?Offre $current_offre = null): ?Offre
+    function get(array $get_or_post, ?OffreFast $current_offre = null): ?OffreFast
     {
-        $image_principale = $this->input_image_principale->get($get_or_post)[0] ?? $current_offre?->image_principale;
+        $image_principale = $this->input_image_principale->get($get_or_post)[0]
+            ?? notfalse(mapnull($current_offre?->refs->id_image_principale, ImageFast::from_db(...)));
 
         if ($image_principale === null) return null;
 
-        $args_offre = [
-            $current_offre?->id,
-            $this->input_adresse->get($get_or_post),
-            $image_principale,
-            $this->professionnel,
-            Abonnement::all()[getarg($get_or_post, $this->name('libelle_abonnement'), required: false) ?? 'gratuit'],
+        //$id_offre = $current_offre?->id,
+
+        $adresse = $this->input_adresse->get($get_or_post);
+
+        $libelle_abo = getarg($get_or_post, $this->name('libelle_abonnement'), LibelleAbonnement::from(...), required: false) ?? LibelleAbonnement::Gratuit;
+
+        $offre_data = new OffreData(
+            $libelle_abo,
             getarg($get_or_post, $this->name('titre')),
             getarg($get_or_post, $this->name('resume')),
             getarg($get_or_post, $this->name('description_detaillee')),
             getarg($get_or_post, $this->name('url_site_web'), required: false),
-            new MultiRange(array_map(
+            periodes_ouverture: new MultiRange(array_map(
                 fn($row) => new NonEmptyRange(
                     true,
                     FiniteTimestamp::parse($row['debut']),
@@ -150,47 +153,64 @@ final class InputOffre extends Input
                     false,
                 ),
                 $this->periodes->get($get_or_post) ?? [],
-            )),
-        ];
+            ))
+        );
+
+        $offre_refs = new OffreRefs($adresse->id, $image_principale->id, $this->professionnel->id);
 
         $offre = match ($this->categorie) {
-            Activite::CATEGORIE        => new Activite(
-                $args_offre,
-                $this->input_indication_duree->get($get_or_post),
-                getarg($get_or_post, 'age_requis', arg_int(1), required: false),
-                getarg($get_or_post, 'prestations_incluses'),
-                getarg($get_or_post, 'prestations_non_incluses', required: false),
+            Categorie::Activite => OffreActivite::insert_activite(
+                $offre_data,
+                $offre_refs,
+                new OffreActiviteData(
+                    $this->input_indication_duree->get($get_or_post),
+                    getarg($get_or_post, 'age_requis', arg_int(1), required: false),
+                    getarg($get_or_post, 'prestations_incluses'),
+                    getarg($get_or_post, 'prestations_non_incluses', required: false),
+                ),
             ),
-            ParcAttractions::CATEGORIE => new ParcAttractions(
-                $args_offre,
-                getarg($get_or_post, 'age_requis', arg_int(1), required: false),
-                getarg($get_or_post, 'nb_attractions', arg_int(0)),
-                $this->input_image_plan->get($get_or_post)[0] ?? $current_offre?->image_principale,
+            Categorie::ParcAttractions => OffreParcAttractions::insert_parc_attractions(
+                $offre_data,
+                $offre_refs,
+                new OffreParcAttractionsData(
+                    getarg($get_or_post, 'age_requis', arg_int(1), required: false),
+                    getarg($get_or_post, 'nb_attractions', arg_int(0)),
+                    $this->input_image_plan->get($get_or_post)[0] ?? $image_principale->id,
+                ),
             ),
-            Spectacle::CATEGORIE       => new Spectacle(
-                $args_offre,
-                $this->input_indication_duree->get($get_or_post),
-                getarg($get_or_post, 'capacite_accueil', arg_int(0)),
+            Categorie::Spectacle       => OffreSpectacle::insert_spectacle(
+                $offre_data,
+                $offre_refs,
+                new OffreSpectacleData(
+                    $this->input_indication_duree->get($get_or_post),
+                    getarg($get_or_post, 'capacite_accueil', arg_int(0)),
+                ),
             ),
-            Restaurant::CATEGORIE      => new Restaurant(
-                $args_offre,
-                getarg($get_or_post, 'carte'),
-                getarg($get_or_post, 'richesse'),
-                getarg($get_or_post, 'sert_petit_dejeuner', required: false) ?? false,
-                getarg($get_or_post, 'sert_brunch', required: false) ?? false,
-                getarg($get_or_post, 'sert_dejeuner', required: false) ?? false,
-                getarg($get_or_post, 'sert_diner', required: false) ?? false,
-                getarg($get_or_post, 'sert_boissons', required: false) ?? false,
+            Categorie::Restaurant      => OffreRestaurant::insert_restaurant(
+                $offre_data,
+                $offre_refs,
+                new OffreRestaurantData(
+                    getarg($get_or_post, 'carte'),
+                    getarg($get_or_post, 'richesse'),
+                    getarg($get_or_post, 'sert_petit_dejeuner', required: false) ?? false,
+                    getarg($get_or_post, 'sert_brunch', required: false) ?? false,
+                    getarg($get_or_post, 'sert_dejeuner', required: false) ?? false,
+                    getarg($get_or_post, 'sert_diner', required: false) ?? false,
+                    getarg($get_or_post, 'sert_boissons', required: false) ?? false,
+                ),
             ),
-            Visite::CATEGORIE          => new Visite(
-                $args_offre,
-                $this->input_indication_duree->get($get_or_post),
+            Categorie::Visite          => OffreVisite::insert_visite(
+                $offre_data,
+                $offre_refs,
+                new OffreVisiteData(
+                    $this->input_indication_duree->get($get_or_post),
+                ),
             ),
         };
 
         // Horaires
         foreach (getarg($get_or_post, $this->name('horaires'), required: false) ?? [] as $dow => $horaires) {
-            $offre->ouverture_hebdomadaire[$dow] = new MultiRange(array_map(
+            $offre->ouverture_hebdomadaire->set($dow, new MultiRange(array_map(
                 fn($horaire_row) => new NonEmptyRange(
                     true,
                     Time::parse($horaire_row['debut']),
@@ -198,7 +218,7 @@ final class InputOffre extends Input
                     false,
                 ),
                 soa_to_aos($horaires),
-            ));
+            )));
         }
 
         // Galerie
@@ -221,11 +241,12 @@ final class InputOffre extends Input
 
     /**
      * @inheritDoc
+     * @param ?OffreFast $current
      */
-    function put(mixed $current = null): void
+    function put($current = null): void
     {
         ?>
-        <h1><?= $current === null ? 'Créer' : 'Modifier' ?> <?= h14s(CATEGORIES_OFFRE[$this->categorie]) ?></h1>
+        <h1><?= $current === null ? 'Créer' : 'Modifier' ?> <?= h14s(CATEGORIES_OFFRE[$this->categorie->name]) ?></h1>
 
         <section id="<?= $this->id('type-abonnement') ?>">
             <h2>Abonnement</h2>
@@ -233,24 +254,24 @@ final class InputOffre extends Input
                 <ul id="<?= $this->id('liste-choix-abonnement') ?>">
                     <?php
                     $first = true;
-                    foreach (Abonnement::all() as $abo) {
+                    foreach (Abonnement::from_db_all() as $abo) {
                         // skip abo gratuit
                         if ($abo->prix_journalier == 0)
                             continue;
                         ?>
                     <li>
                         <label><input <?= $this->form_attr ?>
-                            id="<?= $this->id("libelle_abonnement_$abo->libelle") ?>"
+                            id="<?= $this->id("libelle_abonnement_{$abo->libelle->value}") ?>"
                             name="<?= $this->name('libelle_abonnement') ?>"
                             type="radio"
-                            value="<?= h14s($abo->libelle) ?>"
+                            value="<?= h14s($abo->libelle->value) ?>"
                             required
                             <?= $current === null ? '' : 'disabled' ?>
-                            <?= $current?->abonnement->libelle === 'standard' ? 'checked' : '' ?>
+                            <?= $current?->data->libelle_abonnement === LibelleAbonnement::Standard ? 'checked' : '' ?>
                             <?php
                             if ($first) { echo 'checked'; $first = false; }
                             ?>>
-                            <?= h14s(ucfirst($abo->libelle)) ?> (<?= h14s($abo->description) ?>, <?= $abo->prix_journalier ?>€&nbsp;/&nbsp;jour)</label>
+                            <?= h14s(ucfirst($abo->libelle->value)) ?> (<?= h14s($abo->description) ?>, <?= $abo->prix_journalier ?>€&nbsp;/&nbsp;jour)</label>
                     </li>
                     <?php } ?>
                 </ul>
@@ -274,7 +295,7 @@ final class InputOffre extends Input
                         name="<?= $this->name('titre') ?>"
                         type="text"
                         required
-                        value="<?= h14s($current?->titre) ?>">
+                        value="<?= h14s($current?->data->titre) ?>">
                 </p>
                 <label for="<?= $this->id('resume') ?>">Resumé*</label>
                 <p>
@@ -283,17 +304,17 @@ final class InputOffre extends Input
                         name="<?= $this->name('resume') ?>"
                         type="text"
                         required
-                        value="<?= h14s($current?->resume) ?>">
+                        value="<?= h14s($current?->data->resume) ?>">
                 </p>
                 <label for="<?= h14s($this->input_adresse->for_id()) ?>">Adresse*</label>
-                <?php $this->input_adresse->put($current?->adresse) ?>
+                <?php $this->input_adresse->put(mapnull($current?->refs->id_adresse, Adresse::from_db(...))) ?>
                 <label for="<?= $this->id('url_site_web') ?>">Site Web</label>
                 <p>
                     <input <?= $this->form_attr ?>
                         id="<?= $this->id('url_site_web') ?>"
                         name="<?= $this->name('url_site_web') ?>"
                         type="url"
-                        value="<?= h14s($current?->url_site_web) ?>">
+                        value="<?= h14s($current?->data->url_site_web) ?>">
                 </p>
             </div>
         </section>
@@ -301,7 +322,7 @@ final class InputOffre extends Input
         <section>
             <h2>Photo principale</h2>
             <?php $this->input_image_principale->put(
-                $current === null ? null : [$current->image_principale],
+                $current === null ? null : [Image::from_db($current->refs->id_image_principale)],
                 $current === null,
             ) ?>
         </section>
@@ -372,7 +393,7 @@ final class InputOffre extends Input
             <h2>Tags</h2>
             <ul id="<?= $this->id('list-tag') ?>">
                 <?php
-                foreach ($this->categorie === Restaurant::CATEGORIE ? TAGS_RESTAURANT : DEFAULT_TAGS as $tag) {
+                foreach ($this->categorie === Categorie::Restaurant ? TAGS_RESTAURANT : DEFAULT_TAGS as $tag) {
                     ?>
                     <li><label><input <?= $this->form_attr ?>
                         id="<?= $this->id("tag_$tag") ?>"
@@ -388,7 +409,7 @@ final class InputOffre extends Input
                 id="<?= $this->id('description_detaillee') ?>"
                 name="<?= $this->name('description_detaillee') ?>"
                 required
-                ><?= h14s($current?->description_detaillee) ?></textarea>
+                ><?= h14s($current?->data->description_detaillee) ?></textarea>
         </section>
 
         <section id="<?= $this->id('image-creation-offre') ?>">
@@ -403,55 +424,55 @@ final class InputOffre extends Input
             <h2>Informations détaillées</h2>
             <?php
             switch ($this->categorie) {
-                case Activite::CATEGORIE:
-                    /** @var ?Activite */
-                    $activite = $current;
+                case Categorie::Activite:
+                    assert($current === null or $current instanceof OffreActivite);
+                    $d = $current?->activite_data;
                     ?>
                     <p><label>Âge requis&nbsp;: <input <?= $this->form_attr ?>
                         id="<?= $this->id('age_requis') ?>"
                         name="<?= $this->name('age_requis') ?>"
                         type="number"
                         min="1"
-                        value="<?= $activite?->age_requis ?>"> an</label></p>
+                        value="<?= $d?->age_requis ?>"> an</label></p>
                     <p>Prestations incluses*</p>
                     <textarea <?= $this->form_attr ?>
                         id="<?= $this->id('prestations_incluses') ?>"
                         name="<?= $this->name('prestations_incluses') ?>"
                         required
-                        ><?= h14s($activite?->prestations_incluses) ?></textarea>
+                        ><?= h14s($d?->prestations_incluses) ?></textarea>
                     <p>Prestations non incluses</p>
                     <textarea <?= $this->form_attr ?>
                         id="<?= $this->id('prestations_non_incluses') ?>"
                         name="<?= $this->name('prestations_non_incluses') ?>"
-                        ><?= h14s($activite?->prestations_non_incluses) ?></textarea>
+                        ><?= h14s($d?->prestations_non_incluses) ?></textarea>
                     <?php
-                    $this->put_input_indication_duree($activite?->indication_duree);
+                    $this->put_input_indication_duree($d?->indication_duree);
                     break;
-                case ParcAttractions::CATEGORIE:
-                    /** @var ?ParcAttractions */
-                    $parc_attractions = $current;
+                case Categorie::ParcAttractions:
+                    assert ($current === null or $current instanceof OffreParcAttractions);
+                    $d = $current->parc_attractions_data;
                     ?>
                     <p><label>Nombre d'attractions&nbsp;: <input <?= $this->form_attr ?>
                         id="<?= $this->id('nb_attractions') ?>"
                         name="<?= $this->name('nb_attractions') ?>"
                         type="number"
                         min="0"
-                        value="<?= $parc_attractions?->nb_attractions ?>"></label></p>
+                        value="<?= $d?->nb_attractions ?>"></label></p>
                     <p><label>Âge requis&nbsp;: <input <?= $this->form_attr ?>
                         id="<?= $this->id('age_requis') ?>"
                         name="<?= $this->name('age_requis') ?>"
                         type="number"
                         min="1"
-                        value="<?= $parc_attractions?->age_requis ?>"> an</label></p>
+                        value="<?= $d?->age_requis ?>"> an</label></p>
                     <?php
                     $this->input_image_plan->put(
-                        $parc_attractions === null ? null : [$parc_attractions->image_plan],
-                        $parc_attractions === null,
+                        $d === null ? null : [$d->image_plan],
+                        $d === null,
                     );
                     break;
-                case Restaurant::CATEGORIE:
-                    /** @var ?Restaurant */
-                    $restaurant = $current;
+                case Categorie::Restaurant:
+                    assert ($current === null or $current instanceof  OffreRestaurant);
+                    $d = $current?->restaurant_data;
                     ?>
                     <fieldset>
                         <legend>Échelle tarifaire</legend>
@@ -459,19 +480,19 @@ final class InputOffre extends Input
                             id="<?= $this->id('richesse-1') ?>"
                             name="<?= $this->name('richesse') ?>"
                             type="radio"
-                            value="1" <?= $restaurant?->richesse === 1 ? 'checked' : '' ?>>
+                            value="1" <?= $d?->richesse === 1 ? 'checked' : '' ?>>
                             €</label></p>
                         <p><label><input <?= $this->form_attr ?>
                             id="<?= $this->id('richesse-2') ?>"
                             name="<?= $this->name('richesse') ?>"
                             type="radio"
-                            value="2" <?= $restaurant?->richesse === 2 ? 'checked' : '' ?>> 
+                            value="2" <?= $d?->richesse === 2 ? 'checked' : '' ?>>
                             €</label></p>
                         <p><label><input <?= $this->form_attr ?>
                             id="<?= $this->id('richesse-3') ?>"
                             name="<?= $this->name('richesse') ?>"
                             type="radio"
-                            value="3" <?= $restaurant?->richesse === 3 ? 'checked' : '' ?>> €
+                            value="3" <?= $d?->richesse === 3 ? 'checked' : '' ?>> €
                             €</label></p>
                     </fieldset>
                     <fieldset>
@@ -480,42 +501,42 @@ final class InputOffre extends Input
                             id="<?= $this->id('sert_petit_dejeuner') ?>"
                             type="checkbox"
                             name="<?= $this->name('sert_petit_dejeuner') ?>"
-                            <?= $restaurant?->sert_petit_dejeuner ? 'checked' : '' ?>>
+                            <?= $d?->sert_petit_dejeuner ? 'checked' : '' ?>>
                             Petit déjeuner</label></p>
                         <p><label><input <?= $this->form_attr ?>
                             id="<?= $this->id('sert_brunch') ?>"
                             type="checkbox"
                             name="<?= $this->name('sert_brunch') ?>"
-                            <?= $restaurant?->sert_brunch ? 'checked' : '' ?>>
+                            <?= $d?->sert_brunch ? 'checked' : '' ?>>
                             Brunch</label></p>
                         <p><label><input <?= $this->form_attr ?>
                             id="<?= $this->id('sert_dejeuner') ?>"
                             type="checkbox"
                             name="<?= $this->name('sert_dejeuner') ?>"
-                            <?= $restaurant?->sert_dejeuner ? 'checked' : '' ?>>
+                            <?= $d?->sert_dejeuner ? 'checked' : '' ?>>
                             Déjeuner</label></p>
                         <p><label><input <?= $this->form_attr ?>
                             id="<?= $this->id('sert_diner') ?>"
                             type="checkbox"
                             name="<?= $this->name('sert_diner') ?>"
-                            <?= $restaurant?->sert_diner ? 'checked' : '' ?>>
+                            <?= $d?->sert_diner ? 'checked' : '' ?>>
                             Dîner</label></p>
                         <p><label><input <?= $this->form_attr ?>
                             id="<?= $this->id('sert_boissons') ?>"
                             type="checkbox"
                             name="<?= $this->name('sert_boissons') ?>"
-                            <?= $restaurant?->sert_boissons ? 'checked' : '' ?>>
+                            <?= $d?->sert_boissons ? 'checked' : '' ?>>
                             Boissons</label></p>
                     </fieldset>
                     <p>Carte</p>
                     <textarea <?= $this->form_attr ?>
                         name="<?= $this->name('carte') ?>"
-                        ><?= h14s($restaurant?->carte) ?></textarea>
+                        ><?= h14s($d?->carte) ?></textarea>
                     <?php
                     break;
-                case Spectacle::CATEGORIE:
-                    /** @var ?Spectacle */
-                    $spectacle = $current;
+                case Categorie::Spectacle:
+                    assert($current === null or $current instanceof OffreSpectacle);
+                    $d = $current?->spectacle_data;
                     ?>
                     <p><label>Capacité d'accueil&nbsp;: <input <?= $this->form_attr ?>
                         id="<?= $this->id('capacite_accueil') ?>"
@@ -523,15 +544,15 @@ final class InputOffre extends Input
                         type="number"
                         min="0"
                         required
-                        value="<?= $spectacle?->capacite_accueil ?>">
+                        value="<?= $d?->capacite_accueil ?>">
                         pers.</label></p>
                     <?php
-                    $this->put_input_indication_duree($spectacle?->indication_duree);
+                    $this->put_input_indication_duree($d?->indication_duree);
                     break;
-                case Visite::CATEGORIE:
-                    /** @var ?Visite */
-                    $visite = $current;
-                    $this->put_input_indication_duree($visite?->indication_duree);
+                case Categorie::Visite:
+                    assert ($current === null or $current instanceof OffreVisite);
+                    $d = $current?->visite_data;
+                    $this->put_input_indication_duree($d?->indication_duree);
                     break;
             }
             ?>
@@ -539,7 +560,7 @@ final class InputOffre extends Input
         <?php
     }
 
-    function put_input_indication_duree(?Duree $current)
+    function put_input_indication_duree(?Duree $current): void
     {
         ?>
         <label for="<?= h14s($this->input_indication_duree->for_id()) ?>">Durée estimée&nbsp;: </label>

@@ -31,7 +31,7 @@ with
                 36,
                 2,
                 'gratuit',
-                'Visite de la galerie d''Art du Dragon Noir',
+                'OffreVisite de la galerie d''Art du Dragon Noir',
                 'Découvrez la fascinante Galerie d''Art du Dragon Noir lors de cette visite guidée exclusive. Plongez dans un univers artistique unique où chaque œuvre raconte une histoire captivante. Cette expérience immersive vous permettra d''explorer des collections variées, allant des peintures contemporaines aux sculptures traditionnelles, tout en bénéficiant des explications passionnantes de notre guide expert. Ne manquez pas cette opportunité de vous imprégner de l''art sous toutes ses formes.',
                 'La visite de la Galerie d''Art du Dragon Noir est une expérience inoubliable pour tous les amateurs d''art et de culture. Située dans un cadre enchanteur, cette galerie renommée abrite une collection éclectique d''œuvres d''art qui sauront captiver votre imagination.
 

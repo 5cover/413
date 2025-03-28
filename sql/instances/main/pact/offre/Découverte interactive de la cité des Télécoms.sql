@@ -31,7 +31,7 @@ with
                 1,
                 'standard',
                 '3:00:',
-                'Visite Interactive de la Cité des Télécoms à Pleumeur-Bodou',
+                'OffreVisite Interactive de la Cité des Télécoms à Pleumeur-Bodou',
                 'Plongez dans l''univers fascinant des télécommunications avec notre visite interactive de la Cité des Télécoms à Pleumeur-Bodou. Cette expérience immersive vous permettra de découvrir l''histoire et les innovations technologiques qui ont révolutionné notre monde. Grâce à des dispositifs interactifs, des démonstrations en direct et des ateliers pratiques, vous vivrez une aventure unique et enrichissante, idéale pour les passionnés de technologie et les curieux de tous âges.',
                 'Introduction à la Cité des Télécoms :
 La Cité des Télécoms, située à Pleumeur-Bodou en Bretagne, est un lieu incontournable pour tous ceux qui s''intéressent à l''histoire et aux avancées technologiques des télécommunications. Cette visite interactive vous offre une opportunité unique de comprendre comment les télécommunications ont transformé notre quotidien et continuent de le faire.

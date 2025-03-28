@@ -3,12 +3,14 @@ require_once 'component/Page.php';
 require_once 'redirect.php';
 require_once 'util.php';
 
-$page = new Page('Connexion');
+$page = new Page('Connexion', scripts: [
+    'module/connexion.js' => 'type="module"',
+]);
 
 $page->put(function () {
     $return_url = getarg($_GET, 'return_url', required: false);
-    $error = getarg($_GET, 'error', required: false);
-    $pseudo = getarg($_GET, 'pseudo', required: false);
+    $error      = getarg($_GET, 'error', required: false);
+    $pseudo     = getarg($_GET, 'pseudo', required: false);
     ?>
     <h1>Connexion</h1>
     <section class="connexion">

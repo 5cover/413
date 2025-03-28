@@ -3,3 +3,4 @@ bin
 *.o
 #info.php*
 .vscode
+.idea

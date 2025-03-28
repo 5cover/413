@@ -1,5 +1,7 @@
 <?php
-require_once 'model/Offre.php';
+require_once 'model/Abonnement.php';
+require_once 'model/OffreFast.php';
+require_once 'model/CompteFast.php';
 require_once 'auth.php';
 require_once 'model/Compte.php';
 require_once 'fpdf186/fpdf.php';
@@ -8,7 +10,7 @@ define('EURO', chr(128));
 
 // Récupérer ls information du compte
 
-$compte = Compte::from_db(Auth\id_pro_connecte());
+$compte = CompteFast::from_db(Auth\id_pro_connecte());
 if ($compte === false) fail_404();
 
 
@@ -179,12 +181,13 @@ $header           = ['Titre', "Type d'abonnement", 'Catégorie', 'Jours en ligne
 $data             = [];
 $resultat_global  = 0;
 $id_professionnel = Auth\exiger_connecte_pro();
-$offres           = Offre::from_db_all_ordered($id_professionnel);
+$offres           = OffreFast::from_db_all_ordered($id_professionnel);
 foreach ($offres as $offre) {
-    $resultat_offre   = round($offre->en_ligne_ce_mois_pendant->days * $offre->abonnement->prix_journalier, 2);
+    $abo = Abonnement::from_db($offre->libelle_abonnement);
+    $resultat_offre   = round($offre->en_ligne_ce_mois_pendant->days * $abo->prix_journalier, 2);
     $resultat_global += $resultat_offre;
 
-    $data[] = [$offre->titre, $offre->abonnement->libelle, $offre->categorie, $offre->en_ligne_ce_mois_pendant->days, $resultat_offre];
+    $data[] = [$offre->titre, $abo->libelle, $offre->categorie, $offre->en_ligne_ce_mois_pendant->days, $resultat_offre];
 }
 
 $pdf->Table($header, $data);

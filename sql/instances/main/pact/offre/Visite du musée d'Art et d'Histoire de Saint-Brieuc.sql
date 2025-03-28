@@ -31,7 +31,7 @@ with
                 2,
                 'gratuit',
                 '4:00:',
-                'Visite du musée d''Art et d''Histoire de Saint-Brieuc',
+                'OffreVisite du musée d''Art et d''Histoire de Saint-Brieuc',
                 'Découvrez l''histoire et la culture de la Bretagne à travers une visite guidée du musée d''Art et d''Histoire de Saint-Brieuc. Plongez dans des collections riches et variées, allant de l''archéologie à l''art contemporain, en passant par des expositions temporaires fascinantes. Une expérience immersive et enrichissante pour tous les amateurs d''art et d''histoire.',
                 '### Introduction au musée
 Le musée d''Art et d''Histoire de Saint-Brieuc est un lieu incontournable pour quiconque souhaite explorer le patrimoine culturel et historique de la Bretagne. Situé au cœur de la ville, ce musée offre une vue d''ensemble sur l''évolution artistique et historique de la région, depuis les temps préhistoriques jusqu''à nos jours.

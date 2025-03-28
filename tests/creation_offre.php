@@ -14,7 +14,7 @@ Auth\se_connecter_pro(ID_PRO);
 
 $pro = Professionnel::from_db(ID_PRO);
 
-$input_offre = new InputOffre(Activite::CATEGORIE, $pro);
+$input_offre = new InputOffre(OffreActivite::CATEGORIE, $pro);
 
 notfalse(ob_start());
 ?>

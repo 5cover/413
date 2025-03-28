@@ -1,7 +1,7 @@
 <?php
 require_once 'db.php';
 require_once 'testing.php';
-require_once 'model/Activite.php';
+require_once 'model/OffreActivite.php';
 
 DB\transaction(function () {
     echo 'creating image' . PHP_EOL;
@@ -16,9 +16,9 @@ DB\transaction(function () {
     echo 'getting pro' . PHP_EOL;
     $pro = Professionnel::from_db(1);
     echo 'getting abo' . PHP_EOL;
-    $abo = Abonnement::all()['standard'];
+    $abo = Abonnement::from_db_all()['standard'];
     echo 'creating offre' . PHP_EOL;
-    $offre = new Activite(
+    $offre = new OffreActivite(
         [
             null,
             $adresse,

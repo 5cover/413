@@ -54,7 +54,7 @@ function setup_input_duration(element) {
         if (input_next !== null) {
             // for a min to be 0 means that every larger input is 0
             // for a min to be -1 means that some larger input is > 0
-            input_next.min = input.valueAsNumber > 0 || input.min == -1 ? -1 : 0;
+            input_next.min = input.valueAsNumber > 0 || parseInt(input.min) === -1 ? '-1' : '0';
             check_input(i + 1);
         }
     }

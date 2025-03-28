@@ -16,8 +16,8 @@
         </p>
     </section>
     <section class="Le jardin">
-        <img src="imagesBenoit/jaccuzi.jpg" alt="Jaccuzi de Benoit">
-        <img src="imagesBenoit/Piscine.jpg" alt="La piscine">
+        <img src="/secret/imagesBenoit/jaccuzi.jpg" alt="Jaccuzi de Benoit">
+        <img src="/secret/imagesBenoit/Piscine.jpg" alt="La piscine">
     </section>
     <section class="Le salon">
         <img src="https://www.carpentry.sg/wp-content/uploads/2021/10/luxus-hill-drive-18-10-1.jpg" alt="le salon">

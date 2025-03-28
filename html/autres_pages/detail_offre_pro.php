@@ -6,14 +6,15 @@ require_once 'component/InputOffre.php';
 require_once 'component/Page.php';
 require_once 'component/ReviewList.php';
 require_once 'db.php';
-require_once 'model/Offre.php';
+require_once 'model/AdresseFast.php';
+require_once 'model/ImageFast.php';
+require_once 'model/OffreFast.php';
 require_once 'Parsedown.php';
 require_once 'redirect.php';
 require_once 'util.php';
 
-$offre = Offre::from_db(getarg($_GET, 'id', arg_int()));
-if ($offre === false)
-    fail_404();
+$offre = OffreFast::from_db(getarg($_GET, 'id', arg_int()));
+if ($offre === false) fail_404();
 
 Auth\exiger_connecte_pro();
 
@@ -41,7 +42,7 @@ $page->put(function () use ($offre, $review_list) {
         </form>
         <a class="bouton modifier" href="<?= h14s(location_modifier_offre($offre)) ?>">Modifier</a>
         <button id="button-delete-offer" class="bouton">Supprimer</button>
-        <?php if ($offre->abonnement->libelle !== 'gratuit') { ?>
+        <?php if ($offre->libelle_abonnement !== LibelleAbonnement::Gratuit) { ?>
             <a id="a-facturation" - class="btn-more-info bouton_principale_pro" href="<?= h14s(location_facturation($offre->id)) ?>">Facturation</a>
         <?php } ?>
     </section>
@@ -52,11 +53,11 @@ $page->put(function () use ($offre, $review_list) {
                 <div class="carousel">
                     <!-- Image principale -->
                     <div class="carousel-slide">
-                        <?php (new ImageView($offre->image_principale))->put_img() ?>
+                        <?php (new ImageView(ImageFast::from_db($offre->id_image_principale)))->put_img() ?>
                     </div>
 
                     <!-- Galerie d'images -->
-                    <?php foreach ($offre->galerie->images as $image): ?>
+                    <?php foreach (ImageFast::get_galerie($offre->id) as $image): ?>
                         <div class="carousel-slide">
                             <?php (new ImageView($image))->put_img() ?>
                         </div>
@@ -81,7 +82,7 @@ $page->put(function () use ($offre, $review_list) {
         <h3>Emplacement et coordonnées</h3>
         <!-- <div id="map" class="map"></div> -->
         <div class="contact-info">
-            <p><strong>Adresse&nbsp;:</strong> <?= h14s($offre->adresse->format()) ?></p>
+            <p><strong>Adresse&nbsp;:</strong> <?= h14s(AdresseFast::from_db($offre->id_adresse)->format()) ?></p>
             <?php if ($offre->url_site_web) { ?>
                 <p><strong>Site web&nbsp;:</strong> <a href="<?= h14s($offre->url_site_web) ?>"><?= h14s($offre->url_site_web) ?></a></p>
             <?php } ?>

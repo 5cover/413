@@ -3,23 +3,24 @@
 use function Auth\id_membre_connecte;
 
 require_once 'auth.php';
-require_once 'const.php';
-require_once 'Parsedown.php';
 require_once 'component/ImageView.php';
 require_once 'component/InputNote.php';
 require_once 'component/Page.php';
-require_once 'db.php';
-require_once 'model/Avis.php';
 require_once 'component/ReviewList.php';
-require_once 'model/AvisRestaurant.php';
-require_once 'model/Offre.php';
-require_once 'model/Restaurant.php';
-require_once 'model/Date.php';
-require_once 'util.php';
-require_once 'model/Membre.php';
+require_once 'const.php';
 require_once 'cookie.php';
+require_once 'db.php';
+require_once 'model/AdresseFast.php';
+require_once 'model/Avis.php';
+require_once 'model/AvisRestaurant.php';
+require_once 'ValueObjects/Date.php';
+require_once 'model/Membre.php';
+require_once 'model/OffreFast.php';
+require_once 'model/OffreRestaurant.php';
+require_once 'Parsedown.php';
+require_once 'util.php';
 
-$offre = Offre::from_db(getarg($_GET, 'id', arg_int()));
+$offre = OffreFast::from_db(getarg($_GET, 'id', arg_int()));
 if ($offre === false) fail_404();
 
 Cookie\RecentOffers::add($offre->id);
@@ -30,7 +31,7 @@ $page = new Page($offre->titre, scripts: [
 ]);
 
 $input_rating = new InputNote(name: 'rating');
-if ($offre instanceof Restaurant) {
+if ($offre->categorie === Categorie::Restaurant) {
     $input_note_cuisine      = new InputNote(name: 'note_cuisine');
     $input_note_service      = new InputNote(name: 'note_service');
     $input_note_ambiance     = new InputNote(name: 'note_ambiance');
@@ -50,7 +51,7 @@ if (null !== $report_message = getarg($_POST, 'report_message', required: false)
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_NOBODY, true);
     curl_exec($ch);
-    // $ok = curl_getinfo($ch, CURLINFO_HTTP_CODE) == 200;
+    // $ok = curl_getinfo($ch, CURLINFO_HTTP_CODE) === 200;
     curl_close($ch);
 }
 
@@ -70,7 +71,7 @@ if (null !== $commentaire = getarg($_POST, 'commentaire', required: false)) {
             Membre::from_db($id_membre_co),
             $offre,
         ];
-        $avis      = $offre instanceof Restaurant
+        $avis      = $offre->categorie === Categorie::Restaurant
             ? new AvisRestaurant(
                 $args_avis,
                 $input_note_cuisine->get($_POST),
@@ -92,11 +93,11 @@ $page->put(function () use ($offre, $input_rating, $input_note_cuisine, $input_n
                 <div class="carousel">
                     <!-- Image principale -->
                     <div class="carousel-slide">
-                        <?php (new ImageView($offre->image_principale))->put_img() ?>
+                        <?php (new ImageView(ImageFast::from_db($offre->id_image_principale)))->put_img() ?>
                     </div>
 
                     <!-- Galerie d'images -->
-                    <?php foreach ($offre->galerie->images as $image): ?>
+                    <?php foreach (ImageFast::get_galerie($offre->id) as $image): ?>
                         <div class="carousel-slide">
                             <?php (new ImageView($image))->put_img() ?>
                         </div>
@@ -124,7 +125,10 @@ $page->put(function () use ($offre, $input_rating, $input_note_cuisine, $input_n
             <h3>Emplacement et coordonnées</h3>
             <!-- <div id="map" class="map"></div> -->
             <div class="contact-info">
-                <p><strong>Adresse&nbsp;:</strong> <a target=”_blank” href="https://www.openstreetmap.org/directions?to=<?php echo($offre->adresse->lat.",".$offre->adresse->long) ?>"><?= h14s($offre->adresse->format()) ?></a></p>
+                <?php
+                $adresse = AdresseFast::from_db($offre->id_adresse);
+                ?>
+                <p><strong>Adresse&nbsp;:</strong> <a target=”_blank” href="https://www.openstreetmap.org/directions?to=<?= "$adresse->lat,$adresse->long" ?>"><?= h14s($adresse->format()) ?></a></p>
                 <?php if ($offre->url_site_web) { ?>
                     <p><strong>Site web&nbsp;:</strong> <a href="<?= h14s($offre->url_site_web) ?>"><?= h14s($offre->url_site_web) ?></a></p>
                 <?php } ?>
@@ -147,7 +151,7 @@ $page->put(function () use ($offre, $input_rating, $input_note_cuisine, $input_n
             <form method="post">
                 <textarea name="commentaire" placeholder="Votre avis..." required></textarea>
                 <label>Note&nbsp;: <?php $input_rating->put() ?></label>
-                <?php if ($offre instanceof Restaurant) { ?>
+                <?php if ($offre->categorie === Categorie::Restaurant) { ?>
                     <label>Note cuisine&nbsp;: <?php $input_note_cuisine->put() ?></label>
                     <label>Note service&nbsp;: <?php $input_note_service->put() ?></label>
                     <label>Note ambiance&nbsp;: <?php $input_note_ambiance->put() ?></label>

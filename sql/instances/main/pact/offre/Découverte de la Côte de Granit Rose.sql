@@ -39,7 +39,7 @@ Embarquez pour une aventure inoubliable avec notre excursion en bateau le long d
 **Départ et Itinéraire :**
 Notre excursion commence au port de Perros-Guirec, où vous serez accueilli par notre équipage chaleureux et expérimenté. Après un briefing de sécurité, nous mettrons le cap vers les sites les plus emblématiques de la Côte de Granite Rose. Vous naviguerez le long de la côte, admirant des formations rocheuses uniques telles que le Phare de Ploumanac''h, la Plage de Trestraou et les Sept-Îles.
 
-**Points Forts de la Visite :**
+**Points Forts de la OffreVisite :**
 - **Phare de Ploumanac''h :** Un des phares les plus pittoresques de la région, offrant une vue imprenable sur la côte.
 - **Plage de Trestraou :** Une plage de sable fin idéale pour se détendre et profiter du paysage.
 - **Les Sept-Îles :** Un archipel protégé abritant une riche biodiversité, notamment des colonies d''oiseaux marins.

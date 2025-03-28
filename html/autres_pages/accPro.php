@@ -5,7 +5,7 @@ require_once 'redirect.php';
 require_once 'component/CarteOffrePro.php';
 require_once 'model/Professionnel.php';
 require_once 'model/ProfessionnelPrive.php';
-require_once 'model/Offre.php';
+require_once 'model/OffreFast.php';
 require_once 'util.php';
 
 $page = new Page('Accueil Professionnel');
@@ -15,8 +15,8 @@ $page->put(function () {
 
     $pro = Professionnel::from_db($id_professionnel);
 
-    $nb_offres = Offre::count($id_professionnel);
-    $nb_offres_en_ligne = Offre::count($id_professionnel, en_ligne: true);
+    $nb_offres = OffreFast::count($id_professionnel);
+    $nb_offres_en_ligne = OffreFast::count($id_professionnel, en_ligne: true);
     ?>
 
     <h1>Accueil Professionnel</h1>
@@ -32,8 +32,7 @@ $page->put(function () {
 
         <div class="offer-list">
             <?php
-            $offres_en_ligne = Offre::from_db_all_ordered($id_professionnel, en_ligne: true);
-            foreach ($offres_en_ligne as $offre) {
+            foreach (OffreFast::from_db_all_ordered($id_professionnel, en_ligne: true) as $offre) {
                 (new CarteOffrePro($offre))->put();
             }
             ?>
@@ -46,8 +45,7 @@ $page->put(function () {
 
         <div class="offer-carousel">
             <?php
-            $offres_hors_ligne = Offre::from_db_all_ordered($id_professionnel, en_ligne: false);
-            foreach ($offres_hors_ligne as $offre) {
+            foreach (OffreFast::from_db_all_ordered($id_professionnel, en_ligne: false) as $offre) {
                 (new CarteOffrePro($offre))->put();
             }
             ?>

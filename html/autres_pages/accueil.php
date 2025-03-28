@@ -1,7 +1,7 @@
 <?php
 require_once 'component/Page.php';
 require_once 'component/CarteOffre.php';
-require_once 'model/Offre.php';
+require_once 'model/OffreFast.php';
 require_once 'cookie.php';
 
 $page = new Page('Accueil');
@@ -21,7 +21,7 @@ $page->put(function () {
         <div class="offer-list">
         <?php
         foreach (Cookie\RecentOffers::get() as $id_offre) {
-            $offre = OffreFast::get($id_offre);
+            $offre = OffreFast::from_db($id_offre);
             if ($offre !== false) (new CarteOffre($offre))->put();
         }
         ?>
@@ -36,7 +36,7 @@ $page->put(function () {
             // Préparer et exécuter la requête SQL pour récupérer toutes les offres
 
             // Boucler sur les résultats pour afficher chaque offre
-            foreach (OffreFast::get_a_la_une_ordered() as $offre) {
+            foreach (OffreFast::from_db_a_la_une_ordered() as $offre) {
                 (new CarteOffre($offre))->put();
             }
             ?>
@@ -46,7 +46,7 @@ $page->put(function () {
         <h2>Nouveautés</h2>
         <div class="offer-list">
             <?php
-            foreach (OffreFast::get_nouveautes() as $offre) {
+            foreach (OffreFast::from_db_nouveautes() as $offre) {
                 (new CarteOffre($offre))->put();
             }
             ?>
@@ -56,7 +56,7 @@ $page->put(function () {
         <h2>Offres en ligne</h2>
         <div class="offer-list">
         <?php
-        foreach (OffreFast::get_en_ligne_ordered() as $offre) {
+        foreach (OffreFast::from_db_en_ligne_ordered() as $offre) {
             (new CarteOffre($offre))->put();
         }
         ?>

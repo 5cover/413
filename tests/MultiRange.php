@@ -1,7 +1,7 @@
 <?php
 
 require_once 'testing.php';
-require_once 'model/MultiRange.php';
+require_once 'ValueObjects/MultiRange.php';
 
 test_case('{}', 0, f_never_called());
 test_case('{[1,5]}', 1, parse_int(...));

@@ -5,7 +5,7 @@ require_once 'util.php';
 require_once 'component/Page.php';
 require_once 'component/InputOffre.php';
 require_once 'model/ProfessionnelPrive.php';
-require_once 'model/Offre.php';
+require_once 'model/OffreFast.php';
 
 $page = new Page(
     'Modifier offre',
@@ -14,7 +14,7 @@ $page = new Page(
 );
 
 $categorie = getarg($_GET, 'categorie', arg_check(f_is_in(array_keys(CATEGORIES_OFFRE))));
-$offre = Offre::from_db($id_offre = getarg($_GET, 'id', arg_int()));
+$offre = OffreFast::from_db(getarg($_GET, 'id', arg_int()));
 if ($offre === false) fail_404();
 
 $input_offre = new InputOffre(

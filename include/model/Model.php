@@ -79,7 +79,7 @@ abstract class Model
         if (!$this->exists_in_db()) {
             return;
         }
-        $stmt = DB\delete_from(
+        $stmt = DB\delete(
             static::TABLE,
             $this->key_args(),
         );

@@ -3,8 +3,8 @@
 require_once 'util.php';
 require_once 'db.php';
 require_once 'model/Adresse.php';
-require_once 'model/MultiRange.php';
-require_once 'model/FiniteTimestamp.php';
+require_once 'ValueObjects/MultiRange.php';
+require_once 'ValueObjects/FiniteTimestamp.php';
 
 header('Content-Type: application/json; charset=utf-8');
 

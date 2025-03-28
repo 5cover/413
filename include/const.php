@@ -38,6 +38,15 @@ const TAGS_RESTAURANT = [
     'restauration rapide',
 ];
 
+enum Categorie: string
+{
+    case Restaurant = 'restaurant';
+    case ParcAttractions = "parc d'attractions";
+    case Activite = 'activité';
+    case Spectacle = 'spectacle';
+    case Visite = 'visite';
+}
+
 /**
  * Les catégories d'offres.
  * Les clés correspondent au type énuméré `categorie_offre` dans `types.sql`.
@@ -45,11 +54,11 @@ const TAGS_RESTAURANT = [
  * @var array<string, string>
  */
 const CATEGORIES_OFFRE = [
-    'activité' => 'une activité',
-    "parc d'attractions" => "un parc d'attractions",
-    'restaurant' => 'un restaurant',
-    'spectacle' => 'un spectacle',
-    'visite' => 'une visite'
+    Categorie::Activite->name => 'une activité',
+    Categorie::ParcAttractions->name => "un parc d'attractions",
+    Categorie::Restaurant->name => 'un restaurant',
+    Categorie::Spectacle->name => 'un spectacle',
+    Categorie::Visite->name => 'une visite'
 ];
 
 /**
@@ -95,6 +104,5 @@ const CONTEXTES_VISITE = [
     'autre',
 ];
 
-const PDO_PARAM_FLOAT = PDO::PARAM_STR;
-
 const NBSP = "\xc2\xa0";
+

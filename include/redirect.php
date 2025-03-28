@@ -1,4 +1,5 @@
 <?php
+require_once 'model/OffreFast.php';
 
 /**
  * Redirige l'utilisateur vers une URL, mettant fin au script actuel.
@@ -58,9 +59,9 @@ function location_detail_compte(): string
     return '/autres_pages/detail_compte.php';
 }
 
-function location_modifier_offre(Offre $offre): string
+function location_modifier_offre(Categorie $categorie, int $id_offre): string
 {
-    return '/autres_pages/modif_offre.php?' . http_build_query(['categorie' => $offre->categorie, 'id' => $offre->id]);
+    return '/autres_pages/modif_offre.php?' . http_build_query(['categorie' => $categorie->value, 'id' => $id_offre]);
 }
 
 function location_modifier_compte(int $id, ?string $error = null): string
@@ -88,32 +89,32 @@ function location_logout(): string
     return '/auto/logout.php';
 }
 
-function location_modifier_avis(int $id_offre, int $id_avis)
+function location_modifier_avis(int $id_offre, int $id_avis): string
 {
     return '/autres_pages/avis/modifier.php?' . http_build_query(['id_offre' => $id_offre, 'id_avis' => $id_avis]);
 }
 
-function location_repondre_avis(int $id_avis)
+function location_repondre_avis(int $id_avis): string
 {
     return '/auto/avis/repondre.php?' . http_build_query(['id_avis' => $id_avis, 'return_url' => $_SERVER['REQUEST_URI']]);
 }
 
-function location_avis_supprimer(int $id_avis, string $return_url)
+function location_avis_supprimer(int $id_avis, string $return_url): string
 {
     return '/auto/avis/supprimer.php?' . http_build_query(['id_avis' => $id_avis, 'return_url' => $return_url]);
 }
 
-function location_mentions_legales()
+function location_mentions_legales(): string
 {
     return '/autres_pages/legal/mentions-legales.php';
 }
 
-function location_cgu()
+function location_cgu(): string
 {
     return '/autres_pages/legal/cgu.php';
 }
 
-function location_cgv()
+function location_cgv(): string
 {
     return '/autres_pages/legal/cgv.php';
 }

@@ -1,14 +1,15 @@
 <?php
 
 use Vtiful\Kernel\Format;
+
 require_once 'db.php';
 require_once 'util.php';
 require_once 'component/Input.php';
-require_once 'model/Adresse.php';
+require_once 'model/AdresseFast.php';
+require_once 'model/CommuneFast.php';
 
-
-
-function geocode($address) {
+function geocode($address): ?array
+{
     // Encoder l'adresse pour l'URL
     $address = urlencode($address);
     
@@ -52,7 +53,7 @@ function geocode($address) {
 
 
 /**
- * @extends Input<Adresse>
+ * @extends Input<AdresseFast>
  */
 final class InputAdresse extends Input
 {
@@ -61,12 +62,14 @@ final class InputAdresse extends Input
      * @param array $get_or_post `$_GET` ou `$_POST` (selon la méthode du formulaire)
      * @param ?int $current_id_adresse L'ID de l'adresse à modifier ou `null` pour une création.
      */
-    function get(array $get_or_post, ?int $current_id_adresse = null): Adresse
+    function get(array $get_or_post, ?int $current_id_adresse = null): AdresseFast
     {
         $data = getarg($get_or_post, $this->name);
-        $addr = new Adresse(
+        $commune = notfalse(CommuneFast::from_db_by_nom($data['commune']));
+        $addr = new AdresseFast(
             $current_id_adresse,
-            notfalse(Commune::from_db_by_nom($data['commune'])),
+            $commune->code,
+            $commune->numero_departement,
             getarg($data, 'numero_voie', arg_int(1), required: false),
             $data['complement_numero'] ?: null,
             $data['nom_voie'] ?: null,
@@ -78,17 +81,12 @@ final class InputAdresse extends Input
         );
 
         $latLong = geocode($addr->format());
-        if (!$latLong || empty($latLong)) {
+        if (empty($latLong)) {
             throw new Exception("Aucune donnée de géolocalisation trouvée.");
-        }else {
-            print_r($latLong);
+        } else {
             $addr->lat=$latLong['latitude'];
             $addr->long=$latLong['longitude'];
-
-            // $addr->__set('long',$latLong['longitude']) ;
         }
-        
-
 
         return $addr;
     }

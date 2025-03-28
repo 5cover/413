@@ -2,8 +2,8 @@
 require_once 'const.php';
 require_once 'component/Page.php';
 require_once 'auth.php';
-require_once 'model/Duree.php';
-require_once 'model/Offre.php';
+require_once 'ValueObjects/Duree.php';
+require_once 'model/OffreFast.php';
 require_once 'util.php';
 
 $page = new Page('Facturation');
@@ -33,11 +33,11 @@ $page->put(function () {
             </thead>
             <tbody>
                 <?php
-                if ($offre = mapnull(getarg($_GET, 'id_offre', arg_int(), required: false), Offre::from_db(...))) {
+                if ($offre = mapnull(getarg($_GET, 'id_offre', arg_int(), required: false), OffreFast::from_db(...))) {
                     $offres = [$offre];
                 } else {
                     $id_professionnel = Auth\exiger_connecte_pro();
-                    $offres           = iterator_to_array(Offre::from_db_all_ordered(id_professionnel: $id_professionnel));
+                    $offres           = iterator_to_array(OffreFast::from_db_all_ordered(id_professionnel: $id_professionnel));
                 }
 
                 put_select_mois(
@@ -74,22 +74,22 @@ $page->put(function () {
     <?php
 });
 
-function facturer($offre)
+function facturer(OffreFast $offre): float
 {
     ?>
     <tr>
-        <td><?= h14s($offre->titre) ?></td>
-        <td><?= h14s($offre->categorie) ?></td>
+        <td><?= h14s($offre->data->titre) ?></td>
+        <td><?= h14s($offre->computed->categorie->value) ?></td>
 
         <!-- affiche le type de l'option -->
         <?php
-        if ($offre->option) {
+        if ($offre->computed->option !== null) {
             ?>
-            <td class="prix-ht"><?= h14s($offre->option->nom) ?></td>
-            <td class="prix-ht"><?= h14s($offre->option->nb_semaines) ?></td>
-            <td class="prix-ht"><?= h14s($offre->option->prix_hebdomadaire) ?>&nbsp;€</td>
+            <td class="prix-ht"><?= h14s($offre->computed->option->nom) ?></td>
+            <td class="prix-ht"><?= h14s($offre->computed->option->nb_semaines) ?></td>
+            <td class="prix-ht"><?= h14s($offre->computed->option->prix_hebdomadaire) ?>&nbsp;€</td>
             <?php
-            $prixOption = $offre->option->nb_semaines * $offre->option->prix_hebdomadaire;
+            $prixOption = $offre->computed->option->nb_semaines * $offre->computed->option->prix_hebdomadaire;
             ?>
             <td class="prix-ht"><?= h14s(round($prixOption, 2)) ?>&nbsp;€</td>
 
@@ -103,23 +103,25 @@ function facturer($offre)
             <td class="prix-ht">N/A</td> <!-- prix globale de l'option -->
             <?php
         }
+
+        $abo = Abonnement::from_db($offre->data->libelle_abonnement);
         ?>
 
         <!-- section de l'abonnement -->
-        <td><?= h14s($offre->abonnement->libelle) ?></td>
-        <td class="prix-ht"><?= round($offre->abonnement->prix_journalier, 2) ?>&nbsp;€</td>
+        <td><?= h14s($offre->data->libelle_abonnement->value) ?></td>
+        <td class="prix-ht"><?= round($abo->prix_journalier, 2) ?>&nbsp;€</td>
 
         <?php
-        $nb_jours_factures = ceil($offre->en_ligne_ce_mois_pendant->total_days);
+        $nb_jours_factures = ceil($offre->computed->en_ligne_ce_mois_pendant->total_days);
         // affiche le prix de l'offre ce mois ci ou NA si l'offre est gratuite
-        if ($offre->abonnement->libelle === 'gratuit' || $nb_jours_factures == 0) {
+        if ($abo->libelle === LibelleAbonnement::Gratuit || $nb_jours_factures === 0.0) {
             $resultat_offre = 0;
             ?>
             <td class="prix-ht">N/A</td><!-- nb de jours en ligne de l'offre -->
             <td class="prix-ht">N/A</td><!-- prix de l'offre -->
             <?php
         } else {
-            $resultat_offre = $nb_jours_factures * $offre->abonnement->prix_journalier;
+            $resultat_offre = $nb_jours_factures * $abo->prix_journalier;
             if ($prixOption) {
                 $resultat_offre += $prixOption;
             }
@@ -134,7 +136,7 @@ function facturer($offre)
     return $resultat_offre;
 }
 
-function put_select_mois(DateTimeInterface $debut, ?string $mois_actuel)
+function put_select_mois(DateTimeInterface $debut, ?string $mois_actuel): void
 {
     $m_debut           = (int) $debut->format('n');
     $y_debut           = (int) $debut->format('Y');

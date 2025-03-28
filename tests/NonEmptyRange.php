@@ -1,7 +1,7 @@
 <?php
 
 require_once 'testing.php';
-require_once 'model/NonEmptyRange.php';
+require_once 'ValueObjects/NonEmptyRange.php';
 
 test_case('[,]', false, null, null, false, f_never_called());
 test_case('[,1]', false, null, 1, true, parse_int(...));

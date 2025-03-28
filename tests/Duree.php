@@ -1,7 +1,7 @@
 <?php
 
 require_once 'testing.php';
-require_once 'model/Duree.php';
+require_once 'ValueObjects/Duree.php';
 
 test_case('0 years 0 mons 3 days 4:5:6.0', days: 3, hours: 4, mins: 5, secs: 6);
 test_case('0 years 0 mons 3 days 4:5:6', days: 3, hours: 4, mins: 5, secs: 6);

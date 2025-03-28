@@ -1,90 +1,78 @@
 <?php
 
-require_once 'db.php';
-require_once 'model/MultiRange.php';
-require_once 'Equatable.php';
+use DB\Action;
+use DB\Arg;
+use DB\BinaryClause, DB\BinOp;
 
-/**
- * @implements Equatable<OuvertureHebdomadaire>
- * @implements ArrayAccess<int, MultiRange<Time>>
- */
-final class OuvertureHebdomadaire implements ArrayAccess, Equatable
+require_once 'db.php';
+require_once 'ValueObjects/MultiRange.php';
+
+final class OuvertureHebdomadaire
 {
     /**
      * @var array<int, MultiRange<Time>>
      */
     private array $ouvertures_hebdomadaires = [];
+    /**
+     * @var array<int, Action>
+     */
+    private array $diff = [];
 
     function __construct(
-        private readonly Offre $offre,
-    ) {}
-
-    private function args(int $dow): ?array
+        private readonly int $id_offre,
+    )
     {
-        return $this->offre->id === null ? null : [
-            'id_offre' => [$this->offre->id, PDO::PARAM_INT],
-            'dow'      => [$dow, PDO::PARAM_INT],
-        ];
+        $stmt = DB\select(DB\Table::OuvertureHebdomadaire, ['dow', 'horaires'], [
+            new BinaryClause('id_offre', BinOp::Eq, $this->id_offre, PDO::PARAM_INT),
+        ]);
+        notfalse($stmt->execute());
+        while (false !== $row = $stmt->fetch(PDO::FETCH_OBJ)) {
+            $this->ouvertures_hebdomadaires[$row->dow] = MultiRange::parse($row->horaires, Time::parse(...));
+        }
     }
 
-    /**
-     * @inheritDoc
-     */
-    function equals(mixed $other): bool
+    function get(int $dow): MultiRange
     {
-        return $other->ouvertures_hebdomadaires === $this->ouvertures_hebdomadaires;
+        assert(0 <= $dow and $dow <= 6);
+        return $this->ouvertures_hebdomadaires[$dow] ?? MultiRange::empty();
     }
 
-    /**
-     * @inheritDoc
-     */
-    function offsetExists(mixed $dow): bool
+    function set(int $dow, MultiRange $horaires): void
     {
-        return isset($this->ouvertures_hebdomadaires[$dow]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    function offsetGet(mixed $dow): MultiRange
-    {
-        return $this->ouvertures_hebdomadaires[$dow];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    function offsetSet(mixed $dow, mixed $horaires): void
-    {
+        assert(0 <= $dow and $dow <= 6);
+        $this->diff[$dow] ??= isset($this->ouvertures_hebdomadaires) ? Action::Insert : Action::Update;
         $this->ouvertures_hebdomadaires[$dow] = $horaires;
     }
 
-    /**
-     * @inheritDoc
-     */
-    function offsetUnset(mixed $dow): void
+    function push(): void
     {
-        unset($this->ouvertures_hebdomadaires[$dow]);
-        if (null !== $args = $this->args($dow)) {
-            notfalse(DB\delete_from(self::TABLE, $args)->execute());
-        }
-    }
+        /** @var Arg[] $to_insert */
+        $to_insert = [];
 
-    function push_to_db(): void
-    {
-        foreach ($this->ouvertures_hebdomadaires as $dow => $horaires) {
-            $this->insert_ouverture_hebdomadaire($dow, $horaires);
+        foreach ($this->diff as $dow => $action) {
+            $h = new Arg($this->ouvertures_hebdomadaires[$dow], PDO::PARAM_STR);
+            switch ($action) {
+                case Action::Insert:
+                    $to_insert[] = new Arg($this->id_offre, PDO::PARAM_INT);
+                    $to_insert[] = new Arg($dow, PDO::PARAM_INT);
+                    $to_insert[] = $h;
+                    break;
+                case Action::Update:
+                    $stmt = DB\update(DB\Table::OuvertureHebdomadaire, [
+                        'horaires' => $h,
+                    ], [
+                        new BinaryClause('id_offre', BinOp::Eq, $this->id_offre, PDO::PARAM_INT),
+                        new BinaryClause('dow', BinOp::Eq, $dow, PDO::PARAM_INT),
+                    ]);
+                    notfalse($stmt->execute());
+                    break;
+                default:
+                    assert(false, "usupported action $action->name");
+            }
         }
-    }
+        $stmt = DB\insert_into_multiple(DB\Table::OuvertureHebdomadaire, ['id_offre', 'dow', 'horaires'], $to_insert);
+        notfalse($stmt->execute());
 
-    private function insert_ouverture_hebdomadaire(int $dow, MultiRange $horaires): void
-    {
-        if (null !== $args = $this->args($dow)) {
-            notfalse(DB\insert_into(self::TABLE, $args + [
-                'horaires' => [$horaires, PDO::PARAM_STR],
-            ])->execute());
-        }
+        $this->diff = [];
     }
-
-    const TABLE = '_ouverture_hebdomadaire';
 }

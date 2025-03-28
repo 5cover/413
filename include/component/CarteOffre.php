@@ -13,7 +13,7 @@ final class CarteOffre
     function __construct(
         readonly OffreFast $offre,
     ) {
-        $this->image_principale = new ImageView(ImageFast::get($offre->id_image_principale));
+        $this->image_principale = new ImageView(ImageFast::from_db($offre->refs->id_image_principale));
     }
 
     /**
@@ -25,12 +25,12 @@ final class CarteOffre
 ?>
 <div class="offer-card">
     <?php $this->image_principale->put_img() ?>
-    <h3><a class="titre" href="<?= h14s(location_detail_offre($this->offre->id)) ?>"><?= h14s($this->offre->titre) ?></a></h3>
-    <p class="location"><?= h14s(AdresseFast::get($this->offre->id_adresse)->format()) ?></p>
-    <p><?= h14s($this->offre->resume) ?></p>
-    <p class="category"><?= h14s(ucfirst($this->offre->categorie)) ?></p>
-    <?php if ($this->offre->prix_min) { ?>
-    <p>À partir de &nbsp;: <?= $this->offre->prix_min ?>&nbsp;€</p>
+    <h3><a class="titre" href="<?= h14s(location_detail_offre($this->offre->id)) ?>"><?= h14s($this->offre->data->titre) ?></a></h3>
+    <p class="location"><?= h14s(AdresseFast::from_db($this->offre->refs->id_adresse)->data->format()) ?></p>
+    <p><?= h14s($this->offre->data->resume) ?></p>
+    <p class="category"><?= h14s(ucfirst($this->offre->data->categorie->value)) ?></p>
+    <?php if ($this->offre->data->prix_min) { ?>
+    <p>À partir de &nbsp;: <?= $this->offre->data->prix_min ?>&nbsp;€</p>
     <?php } ?>
     <p>Note&nbsp;: <?= $this->offre->note_moyenne ?>&nbsp;/&nbsp;5</p>
     <p>Créée le&nbsp;: <?= $this->offre->creee_le->format_date() ?></p>

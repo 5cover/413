@@ -4,6 +4,11 @@ create view
     tarif as table _tarif;
 
 create view
+    image_from_galerie as
+select i.* from _galerie
+    join _image i on i.id = id_image;
+
+create view
     avis as
 select
     *,

@@ -4,6 +4,7 @@ require_once 'auth.php';
 require_once 'util.php';
 require_once 'component/Page.php';
 require_once 'component/InputOffre.php';
+require_once 'component/InputOffre.php';
 
 $page = new Page(
     "Création d'une offre",

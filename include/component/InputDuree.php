@@ -1,7 +1,7 @@
 <?php
 require_once 'util.php';
 require_once 'component/Input.php';
-require_once 'model/Duree.php';
+require_once 'ValueObjects/Duree.php';
 
 /**
  * Composant d'input de durée (jours, heures, minutes).

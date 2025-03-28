@@ -5,7 +5,6 @@ require_once 'model/Compte.php';
  * @inheritDoc
  * @property-read ?string $secteur `null` si ce professionnel n'existe pas dans la BDD.
  */
-
 abstract class Professionnel extends Compte
 {
     protected static function fields()
@@ -39,7 +38,7 @@ abstract class Professionnel extends Compte
     static function from_db(int $id_professionnel): self|false
     {
         $compte = parent::from_db($id_professionnel);
-        if ($compte === false or ! $compte instanceof self) return false;
+        if ($compte === false or !$compte instanceof self) return false;
         return $compte;
     }
 

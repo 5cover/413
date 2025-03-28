@@ -1,6 +1,8 @@
 <?php
 
-function http_exit(int $code) {
+use JetBrains\PhpStorm\NoReturn;
+
+#[NoReturn] function http_exit(int $code): never {
     http_response_code($code);
     exit;
 }
@@ -23,9 +25,9 @@ function apply(mixed &$arg, callable $fn): mixed
  * HTML5 `htmlspecialchars` (name shortened using numeronym)
  * This function propagates a `null` argument.
  * @param ?string $s String to encode.
- * @return string Encoded string.
+ * @return ?string Encoded string, or null if $s was null.
  */
-function h14s(?string $s)
+function h14s(?string $s): ?string
 {
     return $s === null ? null : htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5);
 }
@@ -65,7 +67,7 @@ function mapnull(mixed $value, callable $map): mixed
  *
  * @template T
  * @param ?T $valeur La valeur à comparer à `null` avec l'opérateur `===`
- * @param  $message Le message d'erreur à afficher si $valeur était `null`
+ * @param string $message Le message d'erreur à afficher si $valeur était `null`
  * @return T $valeur si elle n'était pas strictement égale à `null`.
  * @throws DomainException Si $valeur est `null`.
  */
@@ -99,7 +101,7 @@ function array_pop_key(array &$array, bool|float|int|string|null $key): mixed
  * @template T
  * @template TResult
  * @param iterable<T> $array
- * @param callable(T): TResult|false $map
+ * @param callable(T): (TResult|false) $map
  * @return TResult|false
  */
 function iterator_first_notfalse(iterable $array, callable $map): mixed
@@ -152,7 +154,7 @@ function array_some(array $arr, callable $predicate): bool
  * @template T
  * @param T[] $source Le tableau source d'où récupérer l'argument (tel que `$_GET`, `$_POST` ou `$_FILES$`).
  * @param string $nom Le nom de l'argument (clé dans le tableau) à récupérer.
- * @param ?callable(string, T): mixed $filter Un filtre optionnel à appliquer à la valeur, donné par `arg_check` ou `arg_filter`. Une erreur HTML est jetée si l'argument (la valeur de $source à la clé $nom) ne satisfait pas le filtre
+ * @param ?callable(string, T): mixed $filter Un filtre optionnel à appliquer à la valeur, tel que ceux donnés par `arg_check` ou `arg_filter`.
  * @param bool $required Si cet argument est obligatoire. Si `true` et l'argument n'est pas présent, une erreur HTML est jetée.
  * @return ?T L'argument récupéré et potentiellement transformé (si $filter est non `null`). Si l'argument n'est pas requis ($required est `false`) et manquant (il n'y a pas de clé $nom dans $source), `null` est retourné.
  */
@@ -206,7 +208,7 @@ function arg_int(?int $min_range = null, ?int $max_range = null): callable
  * @param ?float $min_range La valeur minimale du floattant ou `null` pour pas de minimum.
  * @return callable(string, mixed): ?float Un filter utilisable par la fonction `getarg`.
  */
-function arg_float(?int $min_range = null)
+function arg_float(?float $min_range = null): callable
 {
     return function (string $name, mixed $value) use ($min_range) {
         if (false === ($val = parse_float($value, $min_range))) {
@@ -264,27 +266,24 @@ function arg_filter(int $filter, array|int $options = 0, bool $error_on_false = 
 
 /**
  * Affiche un message d'erreur HTML et jette une exception.
- * @param mixed $arg La valeur à inclure avec le message d'erreur. Si c'est une instance de `Throwable`, est est aussi jetée. Sinon, elle est englobée dans une `DomainException` puis jetée.
- * @throws DomainException
+ * @param mixed $arg La valeur à inclure avec le message d'erreur.
+ * @throws DomainException Toujours, avec $arg.
  */
 function html_error(mixed $arg): never
 {
     ?>
     <p>Erreur: <?= h14s(strval($arg)) ?></p><?php
-    if ($arg instanceof Throwable) {
-        throw $arg;
-    }
     throw new DomainException($arg);
 }
 
 /**
- * if-not-null-then-append-with-separator
+ * if-truthy-append-with-separator
  * Concatène une chaîne à un suffixe ou retourne la chaîne vide.
  * @param ?string $chaine La chaîne (peut être `null`).
  * @param ?string $suffixe Le suffixe à concaténer à $chaine.
  * @return string La chaîne formatée.
  */
-function ifnntaws(?string $chaine, ?string $suffixe): string
+function itaws(?string $chaine, ?string $suffixe): string
 {
     return $chaine ? "$chaine$suffixe" : '';
 }
@@ -296,7 +295,7 @@ function ifnntaws(?string $chaine, ?string $suffixe): string
  */
 function f_is_in(array $allowed_values): callable
 {
-    return fn($value) => array_search($value, $allowed_values) !== false;
+    return fn($value) => in_array($value, $allowed_values);
 }
 
 /**
@@ -384,4 +383,37 @@ function fail_404(): never
     http_response_code(404);
     require __DIR__ . '/../html/404.html';
     exit;
+}
+
+/**
+ * Intermixes the keys and values of an array in a zero-indexed list.
+ * @template TKey
+ * @template TValue
+ * @param array<TKey, TValue> $assoc An associative array.
+ * @return (TKey|TValue)[] The result list-like array.
+ * @example
+ * ```
+ * array_intermix_keys_and_values(['a' => 5, 'b' => 10]) === ['a', 5, 'b', 10]
+ * ```
+ */
+function array_intermix_keys_and_values(array $assoc): array {
+    $result = [];
+    foreach ($assoc as $key => $value) {
+        $result[] = $key;
+        $result[] = $value;
+    }
+    return $result;
+}
+
+/**
+ * @template TKey
+ * @template TValue
+ * @param iterable<iterable<TKey, TValue>> $iterable
+ * @return iterable<TKey, TValue>
+ */
+function iterable_flatten(iterable $iterable): iterable
+{
+    foreach ($iterable as $items) {
+        yield from $items;
+    }
 }

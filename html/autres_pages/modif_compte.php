@@ -1,6 +1,6 @@
 <?php
 require_once 'const.php';
-require_once 'model/Uuid.php';
+require_once 'ValueObjects/Uuid.php';
 require_once 'util.php';
 require_once 'auth.php';
 require_once 'redirect.php';

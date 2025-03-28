@@ -1,14 +1,18 @@
 <?php
+
+use DB\Arg;
+use DB\BinOp;
+use DB\BinaryClause;
+use DB\InListClause;
+
 require_once 'db.php';
-require_once 'Equatable.php';
 
 /**
- * @implements Equatable<Galerie>
- * @property-read Image[] $images
+ * @property-read array<int, ImageFast> $images
  */
-final class Galerie implements Equatable
+final class Galerie
 {
-    function __get(string $name): mixed
+    function __get(string $name): array
     {
         return match ($name) {
             'images' => $this->images,
@@ -16,81 +20,68 @@ final class Galerie implements Equatable
     }
 
     /**
-     * @var Image[]
+     * @var array<int, ImageFast>
      */
     private array $images = [];
 
+    /**
+     * @var array<int, true>
+     */
+    private array $db_images = [];
+
     function __construct(
-        private readonly Offre $offre,
+        private readonly int $id_offre,
     ) {
-        if ($this->offre->id !== null) {
-            $stmt = notfalse(DB\connect()->prepare('select * from ' . self::TABLE . ' join _image i on i.id = id_image where id_offre = ?'));
-            DB\bind_values($stmt, [1 => [$this->offre->id, PDO::PARAM_INT]]);
-            notfalse($stmt->execute());
-            while (false !== $row = $stmt->fetch()) {
-                $this->images[] = new Image(
-                    $row['id_image'],
-                    $row['taille'],
-                    $row['mime_subtype'],
-                    $row['legende']
-                );
-            }
+        $stmt = DB\select(DB\Table::ImageFromGalerie, ['*'], [
+            new BinaryClause('id_offre', BinOp::Eq, $this->id_offre, PDO::PARAM_INT)
+        ]);
+        notfalse($stmt->execute());
+        while (false !== $row = $stmt->fetch(PDO::FETCH_OBJ)) {
+            $this->images[$row->id] = new ImageFast(
+                $row->id,
+                ImageData::parse($row),
+            );
+            $this->db_images[$row->id] = true;
         }
     }
 
-    function add(Image $image): void
+    function add(ImageFast $image): void
     {
-        $this->images[] = $image;
-        $this->insert_galerie($image);
+        $this->images[$image->id] = $image;
     }
 
-    function remove(Image $image): void
+    function remove(ImageFast $image): void
     {
-        $this->images = array_diff($this->images, [$image]);
-        if (null !== $args = $this->args($image)) {
-            notfalse(DB\delete_from(self::TABLE, $args));
+        unset($this->images[$image->id]);
+    }
+
+    function push(): void
+    {
+        // Compute diff
+        $to_insert = array_diff_key($this->images, $this->db_images);     // in memory, not in DB
+        $to_delete = array_diff_key($this->db_images, $this->images);     // in DB, not in memory
+
+        // todo: let's just hope that this doesn't fail halfway or the caller is in a transaction block
+
+        if (!$to_insert and !$to_delete) return;
+
+        // Delete removed
+        $stmt = DB\delete(DB\Table::Galerie, [
+            new BinaryClause('id_offre', BinOp::Eq, $this->id_offre, PDO::PARAM_INT),
+            new InListClause('id_image', array_keys($to_delete), PDO::PARAM_INT),
+        ]);
+        notfalse($stmt->execute());
+
+        // Insert new
+        $values = [];
+        foreach ($to_insert as $id_image => $_) {
+            $values[] = new Arg($this->id_offre, PDO::PARAM_INT);
+            $values[] = new Arg($id_image, PDO::PARAM_INT);
         }
+        $stmt = DB\insert_into_multiple(DB\Table::Galerie, ['id_offre', 'id_image'], $values);
+        notfalse($stmt->execute());
+
+        $this->db_images = array_fill_keys(array_column($this->images, 'id'), true);
     }
 
-    function push_to_db(): void
-    {
-        foreach ($this->images as $image) {
-            $this->insert_galerie($image);
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    function getIterator(): Traversable
-    {
-        return new ArrayIterator($this->images);
-    }
-
-    private function args(Image $image): ?array
-    {
-        if ($this->offre->id === null) return null;
-        $image->push_to_db();
-        return [
-            'id_offre' => [$this->offre->id, PDO::PARAM_INT],
-            'id_image' => [$image->id, PDO::PARAM_INT],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    function equals(mixed $other): bool
-    {
-        return $other->images === $this->images;
-    }
-
-    private function insert_galerie(Image $image): void
-    {
-        if (null !== $args = $this->args($image)) {
-            notfalse(DB\insert_into(self::TABLE, $args));
-        }
-    }
-
-    const TABLE = '_galerie';
 }

@@ -31,9 +31,9 @@ with
                 1,
                 'standard',
                 '3:00:',
-                'Visite du Château de La Roche Goyon, Fort La Latte à Plévenon',
+                'OffreVisite du Château de La Roche Goyon, Fort La Latte à Plévenon',
                 'Découvrez l''histoire fascinante et les paysages époustouflants du Château de La Roche Goyon, également connu sous le nom de Fort La Latte, lors de cette visite guidée inoubliable. Situé à Plévenon, en Bretagne, ce château médiéval offre une vue imprenable sur la mer et une plongée dans le passé riche de la région. Cette offre touristique inclut une visite guidée, des démonstrations de tir à l''arbalète, et une dégustation de produits locaux pour une expérience complète et immersive.',
-                '**Visite Guidée du Château :**
+                '**OffreVisite Guidée du Château :**
 Commencez votre aventure par une visite guidée du Château de La Roche Goyon. Votre guide, expert en histoire locale, vous fera découvrir les différentes parties du château, y compris les tours, les remparts, et les salles historiques. Vous apprendrez comment ce fort a joué un rôle crucial dans la défense de la côte bretonne au fil des siècles. La visite inclut des anecdotes fascinantes sur les seigneurs qui ont habité le château et les batailles qui s''y sont déroulées.
 
 **Démonstrations de Tir à l''Arbalète :**
@@ -46,7 +46,7 @@ Après votre visite et vos activités, profitez d''une dégustation de produits 
 - **Durée de la visite :** Environ 3 heures
 - **Horaires :** Départs à 10h et 14h, tous les jours sauf le lundi
 - **Tarif :** 25€ par adulte, 15€ par enfant (de 6 à 12 ans), gratuit pour les enfants de moins de 6 ans
-- **Inclus :** Visite guidée, démonstration de tir à l''arbalète, dégustation de produits locaux
+- **Inclus :** OffreVisite guidée, démonstration de tir à l''arbalète, dégustation de produits locaux
 - **Réservation :** Obligatoire, places limitées
 
 Ne manquez pas cette opportunité unique de découvrir l''un des châteaux les plus emblématiques de Bretagne. Réservez dès maintenant pour une expérience inoubliable au Château de La Roche Goyon, Fort La Latte à Plévenon.',

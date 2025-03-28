@@ -3,7 +3,7 @@ require_once 'util.php';
 require_once 'model/Adresse.php';
 require_once 'model/Commune.php';
 require_once 'model/Signalable.php';
-require_once 'model/Uuid.php';
+require_once 'ValueObjects/Uuid.php';
 
 /**
  * Un compte

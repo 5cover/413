@@ -1,11 +1,35 @@
 <?php
 namespace DB;
 
-use PDO, PDOStatement;
-
+require_once 'const.php';
 require_once 'util.php';
+require_once 'LogPDO.php';
+require_once 'Arg.php';
+require_once 'Clause.php';
+require_once 'NoOpPDOStatement.php';
 
-$_pdo = null;
+use PDO, PDOStatement;
+use Throwable;
+
+enum Table: string
+{
+    case Adresse = '_adresse';
+    case Compte = '_compte';
+    case Professionnel = 'professionnel';
+    case Offre = 'offres';
+    case Image = '_image';
+    case Activite = 'activte';
+    case ParcAttractions = 'parc_attractions';
+    case Restaurant = 'restaurant';
+    case Spectacle = 'spectacle';
+    case Visite = 'visite';
+    case OuvertureHebdomadaire = '_ouverture_hebdomadaire';
+    case Galerie = '_galerie';
+    case ImageFromGalerie = 'image_from_galerie';
+    case Tags = '_tags';
+    case Tarif = '_tarif';
+    case ChangementEtat = '_changement_etat';
+}
 
 /**
  * Se connecter à la base de données.
@@ -15,10 +39,8 @@ $_pdo = null;
  */
 function connect(): LogPDO
 {
-    global $_pdo;
-    if ($_pdo !== null) {
-        return $_pdo;
-    }
+    static $pdo;
+    if ($pdo !== null) return $pdo;
 
     // Connect to the database
     $driver = 'pgsql';
@@ -45,14 +67,14 @@ function connect(): LogPDO
         $password,
     ];
 
-    $_pdo = new LogPDO(...$args);
-    $_pdo->log = is_localhost();
+    $pdo = new LogPDO(...$args);
+    $pdo->log = is_localhost();
 
-    notfalse($_pdo->exec("set schema 'pact'"));
+    notfalse($pdo->exec("set schema 'pact'"));
 
-    $_pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
-    return $_pdo;
+    return $pdo;
 }
 
 /**
@@ -64,8 +86,9 @@ function connect(): LogPDO
  *
  * @param callable $body La fonction contenant le corps de la transaction. Elle est appelée entre le BEGIN et le COMMIT. Si cette fonction jette une exception, un ROLLBACK est effectué.
  * @param ?callable $cleanup La fonction à appeler pour effectuer un nettoyage additionnel lorsque $body jette une exception, avant le ROLLBACK. Optionnel.
+ * @throws Throwable Any exception $body has thrown.
  */
-function transaction(callable $body, ?callable $cleanup = null)
+function transaction(callable $body, ?callable $cleanup = null): void
 {
     $pdo = connect();
     notfalse($pdo->beginTransaction(), '$pdo->beginTransaction() failed');
@@ -74,7 +97,7 @@ function transaction(callable $body, ?callable $cleanup = null)
         $body();
         error_log('Transaction successful, committing...' . PHP_EOL);
         $pdo->commit();
-    } catch (\Throwable $e) {
+    } catch (Throwable $e) {
         error_log('An error occured, cleaning up and rolling back...' . PHP_EOL);
         if ($cleanup !== null)
             $cleanup();
@@ -87,24 +110,6 @@ function is_localhost(): bool
 {
     $http_host = $_SERVER['HTTP_HOST'] ?? null;
     return $http_host === null || str_starts_with($http_host, 'localhost:');
-
-    /*
-     * $server_ip = null;
-     *
-     * if (defined('INPUT_SERVER') && filter_has_var(INPUT_SERVER, 'REMOTE_ADDR')) {
-     *     $server_ip = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_VALIDATE_IP);
-     * } elseif (defined('INPUT_ENV') && filter_has_var(INPUT_ENV, 'REMOTE_ADDR')) {
-     *     $server_ip = filter_input(INPUT_ENV, 'REMOTE_ADDR', FILTER_VALIDATE_IP);
-     * } elseif (isset($_SERVER['REMOTE_ADDR'])) {
-     *     $server_ip = filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP);
-     * }
-     *
-     * if (empty($server_ip)) {
-     *     $server_ip = '127.0.0.1';
-     * }
-     *
-     * return empty(filter_var($server_ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_RES_RANGE | FILTER_FLAG_NO_PRIV_RANGE));
-     */
 }
 
 /**
@@ -117,12 +122,6 @@ function document_root(): string
 }
 
 // Query construction functions
-
-enum BoolOperator: string
-{
-    case AND = 'and';
-    case OR  = 'or';
-}
 
 function quote_identifier(string $identifier): string
 {
@@ -137,67 +136,128 @@ function quote_string(string $string): string
 /**
  * Generates a WHERE clause for a SQL query based on an array of key-value pairs.
  *
- * @param BoolOperator $operator The logical operator to use between clauses.
- * @param string[] $clauses An array containing the conditions for the WHERE clause.
+ * @param BinOp $operator The logical operator to use between clauses.
+ * @param Clause[] $clauses An array containing the conditions for the WHERE clause.
  * @return string The generated WHERE clause, or an empty string if no clauses are provided.
  */
-function where_clause(BoolOperator $operator, array $clauses, string $prefix = ''): string
+function where_clause(BinOp $operator, array $clauses): string
 {
     return $clauses
-        ? ' where ' . implode(" $operator->value ", array_map(fn($attr) => ifnntaws($prefix, '.') . "$attr = :$attr", $clauses)) . ' '
+        ? ' where ' . implode(" $operator->value ", array_map(fn($c) => $c->to_sql(), $clauses)) . ' '
         : ' ';
 }
 
 /**
+ * @param Table $table
+ * @param string[] $columns null for '*'
+ * @param Clause[] $where la clause WHERE du SELECT
+ * @param ?string $column_order_by La colonne à ORDER BY par
+ * @param bool $order_by_desc Pour order by ASC (false) ou DESC (true). Ignoré si $column_order_by est null
+ * @return PDOStatement
+ */
+function select(Table $table, array $columns, array $where = [], ?string $column_order_by = null, bool $order_by_desc = false): PDOStatement
+{
+    $attrs = implode(',', $columns);
+    $sql = "select $attrs $table->value " . where_clause(BinOp::And, $where);
+    if ($column_order_by) {
+        $sql .= " order by $column_order_by";
+        if ($order_by_desc) {
+            $sql .= " desc";
+        }
+    }
+    $stmt = notfalse(connect()->prepare($sql));
+    foreach ($where as $cond) {
+        bind_values($stmt, $cond->to_args());
+    }
+    return $stmt;
+}
+
+/**
  * Prépare un *statement* INSERT INTO pour 1 ligne retournant des colonnes.
- * @param string $table La table dans laquelle insérer
- * @param array<string, array{mixed, int}> $args Les noms de colonne => leur valeur.
- * @param string[] $returning Les colonnes a mettre dans la clause RETURNING.
+ * @param Table $table La table dans laquelle insérer
+ * @param array<string, Arg> $args Les noms de colonne => leur valeur.
+ * @param string[] $columns_returning Les colonnes a mettre dans la clause RETURNING.
  * @return PDOStatement Une *statement* prêt à l'exécution, retournant un table 1x1, la valeur de la colonne ID.
  */
-function insert_into(string $table, array $args, array $returning = []): PDOStatement
+function insert_into(Table $table, array $args, array $columns_returning = []): PDOStatement
 {
-    if (!$args) {
-        return notfalse(connect()->prepare("insert into $table default values"));
-    }
+    if (!$args) return notfalse(connect()->prepare("insert into $table->value default values"));
 
     $column_names = implode(',', array_keys($args));
-    $arg_names    = implode(',', array_map(fn($col) => ":$col", array_keys($args)));
-    $stmt         = notfalse(connect()->prepare("insert into $table ($column_names) values ($arg_names)"
-        . ($returning ? 'returning ' . implode(',', array_map(quote_identifier(...), $returning)) : '')));
+    $arg_names = implode(',', array_map(fn($c) => ":$c", array_keys($args)));
+
+    $stmt = notfalse(connect()->prepare("insert into $table->value ($column_names) values ($arg_names)"
+        . ($columns_returning ? 'returning ' . implode(',', $columns_returning) : '')));
 
     bind_values($stmt, $args);
     return $stmt;
 }
 
 /**
- * Prépare un *statement* UPDATE.
- * @param string $table La table dans la quelle mettre à jour.
- * @param array<string, array{mixed, int}> $args Les colonnes à modifier => leurs valeurs pour la clause SET du UPDATE.
- * @param array<string, array{mixed, int}> $key_args Les colonnes clés => leurs valeurs pour la clause WHERE du UPDATE.
- * @param string[] $returning Les colonnes a mettre dans la clause RETURNING.
- * @return PDOStatement Un *statement* prêt à l'exécution, ne retournant rien.
+ * @param Table $table
+ * @param string[] $columns
+ * @param array<int, Arg> $values
+ * @param string[] $columns_returning
+ * @return PDOStatement
  */
-function update(string $table, array $args, array $key_args, array $returning = []): PDOStatement
+function insert_into_multiple(Table $table, array $columns, array $values, array $columns_returning = []): PDOStatement
 {
-    if (!$args) {
-        return notfalse(connect()->prepare('select null'));
+    if (!$columns || !$values) return NoOpPDOStatement::instance();
+
+    assert(count($values) % count($columns) === 0, "value count must be a multiple of row count for insert_into_multipel");
+    assert(array_is_list($values), "for proper pdo binding, array must be list");
+
+    $n_rows = count($values) / count($columns);
+
+    $column_names = implode(',', $columns);
+    $placeholder = '(' . substr(str_repeat('?,', count($columns)), 0, -1) . ')';
+    $rows = implode(',', array_fill(0, $n_rows, $placeholder));
+    $sql = "INSERT INTO $table->value ($column_names) VALUES $rows";
+    if ($columns_returning) $sql .= 'returning ' . implode(',', $columns_returning);
+
+    $stmt = notfalse(connect()->prepare($sql));
+    foreach ($values as $num => $arg) {
+        notfalse($stmt->bindValue($num + 1, $arg->value, $arg->pdo_type));
     }
-
-    $stmt = notfalse(connect()->prepare("update $table set "
-        . implode(',', array_map(fn($col) => "$col = :$col", array_keys($args)))
-        . where_clause(BoolOperator::AND, array_keys($key_args))
-        . ($returning ? 'returning ' . implode(',', array_map(quote_identifier(...), $returning)) : '')));
-
-    bind_values($stmt, $args);
-    bind_values($stmt, $key_args);
     return $stmt;
 }
 
-function delete_from(string $table, array $key_args): PDOStatement
+
+/**
+ * Prépare un *statement* UPDATE.
+ * @param Table $table La table dans la quelle mettre à jour.
+ * @param array<string, Arg> $args Les colonnes à modifier => leurs valeurs pour la clause SET du UPDATE.
+ * @param Clause[] $where Les conditions de la clause WHERE du UPDATE
+ * @param string[] $columns_returning Les colonnes a mettre dans la clause RETURNING.
+ * @return PDOStatement Un *statement* prêt à l'exécution, ne retournant rien.
+ */
+function update(Table $table, array $args, array $where, array $columns_returning = []): PDOStatement
 {
-    $stmt = notfalse(connect()->prepare("delete from $table " . where_clause(BoolOperator::AND, array_keys($key_args))));
-    bind_values($stmt, $key_args);
+    if (!$args) return NoOpPDOStatement::instance();
+
+    $stmt = notfalse(connect()->prepare("update $table->value set "
+        . implode(',', array_map(fn($col) => "$col = :$col", array_keys($args)))
+        . where_clause(BinOp::And, $where)
+        . ($columns_returning ? 'returning ' . implode(',', $columns_returning) : '')));
+
+    bind_values($stmt, $args);
+    foreach ($where as $cond) {
+        bind_values($stmt, $cond->to_args());
+    }
+    return $stmt;
+}
+
+/**
+ * @param Table $table
+ * @param Clause[] $where
+ * @return PDOStatement
+ */
+function delete(Table $table, array $where): PDOStatement
+{
+    $stmt = notfalse(connect()->prepare("delete from $table->value " . where_clause(BinOp::And, $where)));
+    foreach ($where as $cond) {
+        bind_values($stmt, $cond->to_args());
+    }
     return $stmt;
 }
 
@@ -205,12 +265,12 @@ function delete_from(string $table, array $key_args): PDOStatement
  * Binds types values to a statement.
  *
  * @param PDOStatement $stmt The statement on which to bind values.
- * @param array<int|string,array{mixed, int}> $args An associative array mapping from the parameter name to a tuple of the parameter value and the PDO type (e.g. a PDO::PARAM_* constant value)
+ * @param iterable<string, Arg> $args
  */
-function bind_values(PDOStatement $stmt, array $args)
+function bind_values(PDOStatement $stmt, iterable $args): void
 {
-    foreach ($args as $name => [$value, $type]) {
-        notfalse($stmt->bindValue($name, $value, $type));
+    foreach ($args as $name => $arg) {
+        notfalse($stmt->bindValue($name, $arg->value, $arg->pdo_type));
     }
 }
 
@@ -222,24 +282,4 @@ function bind_values(PDOStatement $stmt, array $args)
 function filter_null_args(array $array): array
 {
     return array_filter($array, fn($e) => $e[0] !== null);
-}
-
-final class LogPDO extends PDO
-{
-    public bool $log;
-    public int $query_no       = 1;
-
-    function query(string $query, ?int $fetchMode = null, mixed ...$fetchModeArgs): PDOStatement|false
-    {
-        if ($this->log) error_log("LogPDO ({$this->query_no}) query: '$query'");
-        ++$this->query_no;
-        return parent::query($query, $fetchMode, $fetchModeArgs);
-    }
-
-    function prepare(string $query, array $options = []): PDOStatement|false
-    {
-        if ($this->log) error_log("LogPDO ({$this->query_no}) prepare: '$query'");
-        ++$this->query_no;
-        return parent::prepare($query, $options);
-    }
 }

@@ -2,7 +2,7 @@
 
 require_once 'db.php';
 require_once 'model/Offre.php';
-require_once 'model/Date.php';
+require_once 'ValueObjects/Date.php';
 require_once 'model/Membre.php';
 
 /**
@@ -86,16 +86,16 @@ class Avis extends Model
      * @param ?int $id_membre_auteur
      * @param ?int $id_offre
      * @param ?bool $blackliste
-     * @return Iterator<int, self>
+     * @return Generator<int, self>
      */
-    static function from_db_all(?int $id_membre_auteur = null, ?int $id_offre = null, ?bool $blackliste = null): Iterator
+    static function from_db_all(?int $id_membre_auteur = null, ?int $id_offre = null, ?bool $blackliste = null): Generator
     {
         $args = DB\filter_null_args([
             'id_membre_auteur' => [$id_membre_auteur, PDO::PARAM_INT],
             'id_offre'         => [$id_offre, PDO::PARAM_INT],
             'blackliste'       => [$blackliste, PDO::PARAM_BOOL]
         ]);
-        $stmt = notfalse(DB\connect()->prepare(self::make_select() . DB\where_clause(DB\BoolOperator::AND , array_keys($args), static::TABLE)));
+        $stmt = notfalse(DB\connect()->prepare(self::make_select() . DB\where_clause(DB\BinOp::And , array_keys($args), static::TABLE)));
         DB\bind_values($stmt, $args);
         notfalse($stmt->execute());
         while (false !== $row = $stmt->fetch()) {

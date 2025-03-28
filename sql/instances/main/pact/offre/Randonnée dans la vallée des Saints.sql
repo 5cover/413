@@ -36,7 +36,7 @@ with
                 '**Introduction à la Vallée des Saints :**
 La Vallée des Saints à Boudes est un lieu emblématique qui allie beauté naturelle et richesse culturelle. Située dans le département du Puy-de-Dôme, cette vallée abrite une collection unique de sculptures de saints, réalisées par des artistes locaux et internationaux. Chaque statue raconte une histoire et contribue à l''atmosphère spirituelle et sereine du site.
 
-**Visite Guidée des Sculptures :**
+**OffreVisite Guidée des Sculptures :**
 La visite commence par une introduction détaillée sur l''histoire et la signification des sculptures de la Vallée des Saints. Un guide expérimenté vous accompagnera à travers le parcours, vous offrant des explications sur chaque statue, leur symbolisme et les légendes qui les entourent. Vous aurez l''occasion de poser des questions et d''approfondir vos connaissances sur les saints et leur rôle dans la culture locale.
 
 **Randonnée Pédestre :**
