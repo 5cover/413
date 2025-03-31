@@ -147,7 +147,7 @@ function filterOffers() {
     });
     // filteredOffers.forEach(offre => {
     //     console.log(offre.titre,offre.tags)
-    // }); permet d'afficher ce que les filtres ont trouve (débbug)
+    // }); permet d'afficher ce que les filtres ont trouve (débug)
 
     displayOffers(filteredOffers);
     updateMapWithIconsAndColors(filteredOffers);

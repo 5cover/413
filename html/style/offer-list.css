@@ -87,3 +87,44 @@
         width: 100%;
     }
 }
+
+
+/* Conteneur du carrousel */
+.carousel-container {
+    width: 100%;
+    overflow: hidden; /* Cache le débordement */
+    position: relative;
+}
+
+.offer-list {
+    display: flex;
+    flex-wrap: nowrap; /* Empêche le retour à la ligne */
+    gap: 0; /* Supprime les espaces entre les cartes */
+    width: max-content; /* Empêche la compression des cartes */
+    transition: transform 0.1s linear;
+}
+
+.offer-card {
+    flex: 0 0 300px; /* Taille fixe pour éviter les sauts */
+    min-width: 300px;
+    max-width: 300px;
+    box-sizing: border-box; /* Évite les dépassements dus au padding */
+}
+
+
+/* Animation automatique */
+@keyframes scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+/* Désactiver wrap pour assurer l'effet horizontal */
+.offer-card {
+    flex: 0 0 auto;
+    min-width: 250px; /* Taille fixe pour une meilleure animation */
+    max-width: 300px;
+}

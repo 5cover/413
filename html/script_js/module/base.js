@@ -259,3 +259,39 @@ function setup_liker(element) {
 function fill_src(name, filled) {
     return '/images/' + name + (filled ? '-filled.svg' : '.svg');
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".carousel-container").forEach((carouselContainer) => {
+        const offerList = carouselContainer.querySelector(".offer-list");
+        const cards = Array.from(offerList.children);
+        const cardWidth = cards[0].offsetWidth;
+        let scrollAmount = 0;
+        let speed = 1; // Vitesse du carrousel
+
+        // Cloner les cartes pour assurer un effet infini
+        cards.forEach((card) => {
+            let clone = card.cloneNode(true);
+            offerList.appendChild(clone);
+        });
+
+        function autoScroll() {
+            scrollAmount += speed;
+            offerList.style.transform = `translateX(-${scrollAmount}px)`;
+
+            // Réajuster immédiatement sans animation
+            if (scrollAmount >= cardWidth) {
+                offerList.appendChild(offerList.firstElementChild);
+                offerList.style.transition = "none";  // Supprimer l'animation
+                scrollAmount -= cardWidth;  // Repositionner sans retour en arrière
+                offerList.style.transform = `translateX(-${scrollAmount}px)`;
+                setTimeout(() => {
+                    offerList.style.transition = "transform 0.02s linear"; // Réactiver l'animation
+                });
+            }
+
+            requestAnimationFrame(autoScroll);
+        }
+
+        autoScroll();
+    });
+});

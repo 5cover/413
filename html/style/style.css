@@ -439,13 +439,13 @@ h6 {
     }
 }
 
+
 .btn-creer {
     background-color: #3366cc;
     color: white;
-    padding: 10px 20px;
+    padding: 10px 20px !important;
     border: none;
     border-radius: 5px;
-    margin-left: 10px;
     cursor: pointer;
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
 }
@@ -1433,3 +1433,17 @@ label > input {
 #champ_otp_connection{
     display: none;
 }
+
+/* .offer-list {
+    animation: scroll 10s linear infinite;
+}
+
+
+@keyframes scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+} */
