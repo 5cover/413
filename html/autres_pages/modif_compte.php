@@ -214,14 +214,14 @@ $page->put(function () use ($compte, $error_email, $error_mdp, $error_siren, $er
                 $otp_url = OTP\get_url_otp($id_compte,$totp);
             ?>
                 
-             <button type="button" onclick="openPhpWindow()">Générer votre code sécurisé</button>
+             <button id="button_generate_otp" type="button" >Générer votre code sécurisé</button>
 
-            <script>
+            <!-- <script>
                 function openPhpWindow() {
                     // Ouvre une nouvelle fenêtre de 600x400px
                     window.open('../otp/otp-qr.php', '_blank', 'width=500,height=800');
                 }
-            </script>
+            </script> -->
 
             
             <?php
