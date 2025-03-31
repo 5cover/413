@@ -14,18 +14,19 @@ $otp_url = OTP\get_url_otp($id_compte,$totp);
 <html lang="fr">
 <head>
     <title>OTP Setup</title>
+    <link rel="stylesheet" href="/style/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
-    <p>ID compte: <?= $id_compte ?></p>
-    <h2>Scan this QR Code</h2>
+    <!-- <p>ID compte: <?= $id_compte ?></p> -->
+    <h2>Scannez ce Code QR</h2>
     <div id="qrcode"></div>
     <script>new QRCode(document.getElementById("qrcode"), '<?= $otp_url ?>')</script>
-    <h2>Enter OTP</h2>
+    <h2>Entrez l'OTP</h2>
     <form id="otpForm">
         <input type="text" id="otp" placeholder="Entrer OTP" required>
-        <button type="submit">Verify</button>
-        <button type="button" onclick="window.close()">Abandoner</button>
+        <button class="btn-publish" type="submit">Verify</button>
+        <button class="btn-publish" type="button" onclick="window.close()">Abandoner</button>
     </form>
     <p id="result"></p>
 
