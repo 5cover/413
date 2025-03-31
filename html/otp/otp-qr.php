@@ -1,15 +1,8 @@
 <?php
 require_once 'auth.php';
 require_once 'otp.php';
-require_once 'component/Page.php';
-require_once 'util.php';
 
 $id_compte = Auth\exiger_connecte();
-
-$page        = new Page('otp qr', body_id: 'otp-qr', scripts: ['https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js' => '']);
-
-$page->put(main: function () use ($id_compte) {
-
 $totp = OTP\generate_totp();
 $secret = OTP\generate_secret($totp);
 // OTP\save_otp($id_compte,$secret);
@@ -17,13 +10,14 @@ $otp_url = OTP\get_url_otp($id_compte,$totp);
 
 ?>
 
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <title>OTP Setup</title>
+    <link rel="stylesheet" href="/style/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
-<body> -->
+<body>
     <!-- <p>ID compte: <?= $id_compte ?></p> -->
     <h2>Scan this QR Code</h2>
     <div id="qrcode"></div>
@@ -31,8 +25,8 @@ $otp_url = OTP\get_url_otp($id_compte,$totp);
     <h2>Enter OTP</h2>
     <form id="otpForm">
         <input type="text" id="otp" placeholder="Entrer OTP" required>
-        <button type="submit">Verify</button>
-        <button type="button" onclick="window.close()">Abandoner</button>
+        <button class="btn-publish" type="submit">Verify</button>
+        <button class="btn-publish" type="button" onclick="window.close()">Abandoner</button>
     </form>
     <p id="result"></p>
 
@@ -75,8 +69,5 @@ $otp_url = OTP\get_url_otp($id_compte,$totp);
         });
 
     </script>
-<!-- </body>
-</html> -->
-
-<?php
-});
+</body>
+</html>
