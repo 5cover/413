@@ -4,14 +4,17 @@ require_once 'otp.php';
 require_once 'component/Page.php';
 require_once 'util.php';
 
-
 $id_compte = Auth\exiger_connecte();
+
+$page        = new Page('otp qr', body_id: 'otp-qr', scripts: ['https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js' => '']);
+
+$page->put(main: function () use ($id_compte) {
+
 $totp = OTP\generate_totp();
 $secret = OTP\generate_secret($totp);
 // OTP\save_otp($id_compte,$secret);
 $otp_url = OTP\get_url_otp($id_compte,$totp);
 
-$page        = new Page('otp qr', body_id: 'otp-qr', scripts: ['https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js' => '']);
 ?>
 
 <!-- <!DOCTYPE html>
@@ -74,3 +77,6 @@ $page        = new Page('otp qr', body_id: 'otp-qr', scripts: ['https://cdnjs.cl
     </script>
 <!-- </body>
 </html> -->
+
+<?php
+});
