@@ -36,7 +36,7 @@ class Blacklist extends Model
         return $stmt->execute();
     }
 
-    static function nb_blacklist_restantes(int $id_pro,int $id_offre): int
+    static function nb_blacklist_restantes(int $id_offre): int
     {
         $stmt = DB\connect()->prepare('select
     count(*)
