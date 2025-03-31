@@ -19,10 +19,10 @@ $otp_url = OTP\get_url_otp($id_compte,$totp);
 </head>
 <body>
     <!-- <p>ID compte: <?= $id_compte ?></p> -->
-    <h2>Scan this QR Code</h2>
+    <h2>Scannez ce Code QR</h2>
     <div id="qrcode"></div>
     <script>new QRCode(document.getElementById("qrcode"), '<?= $otp_url ?>')</script>
-    <h2>Enter OTP</h2>
+    <h2>Entrez l'OTP</h2>
     <form id="otpForm">
         <input type="text" id="otp" placeholder="Entrer OTP" required>
         <button class="btn-publish" type="submit">Verify</button>
