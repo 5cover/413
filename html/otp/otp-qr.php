@@ -8,16 +8,17 @@ $secret = OTP\generate_secret($totp);
 // OTP\save_otp($id_compte,$secret);
 $otp_url = OTP\get_url_otp($id_compte,$totp);
 
+$page        = new Page('otp qr', body_id: 'otp-qr', scripts: ['https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js' => '']);
 ?>
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="fr">
 <head>
     <title>OTP Setup</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
-<body>
-    <p>ID compte: <?= $id_compte ?></p>
+<body> -->
+    <!-- <p>ID compte: <?= $id_compte ?></p> -->
     <h2>Scan this QR Code</h2>
     <div id="qrcode"></div>
     <script>new QRCode(document.getElementById("qrcode"), '<?= $otp_url ?>')</script>
@@ -68,5 +69,5 @@ $otp_url = OTP\get_url_otp($id_compte,$totp);
         });
 
     </script>
-</body>
-</html>
+<!-- </body>
+</html> -->
