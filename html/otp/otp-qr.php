@@ -1,6 +1,9 @@
 <?php
 require_once 'auth.php';
 require_once 'otp.php';
+require_once 'component/Page.php';
+require_once 'util.php';
+
 
 $id_compte = Auth\exiger_connecte();
 $totp = OTP\generate_totp();
