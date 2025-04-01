@@ -30,8 +30,8 @@ final class CarteOffre
     <?php if ($this->offre->prix_min) { ?>
     <p class="offer-prix-min" >À partir de &nbsp;: <?= $this->offre->prix_min ?>&nbsp;€</p>
     <?php } ?>
-    <p>Note&nbsp;: <?= $this->offre->note_moyenne ?>&nbsp;/&nbsp;5</p>
-    <p>Créée le&nbsp;: <?= $this->offre->creee_le->format_date() ?></p>
+    <p class="offer-note">Note&nbsp;: <?= $this->offre->note_moyenne ?>&nbsp;/&nbsp;5</p>
+    <p class="offer-creee-le">Créée le&nbsp;: <?= $this->offre->creee_le->format_date() ?></p>
 </div>
 <?php
     }
