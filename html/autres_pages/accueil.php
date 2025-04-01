@@ -18,7 +18,7 @@ $page->put(function () {
     <?php if (Cookie\RecentOffers::get()) { ?>
     <section class="highlight-offers"> <!-- todo: rename this class to something more generic -->
         <h2>Consultations récentes</h2>
-        <div class="carousel-container">
+        <div>
             <div class="offer-list">
                 <?php
                 foreach (Cookie\RecentOffers::get() as $id_offre) {
