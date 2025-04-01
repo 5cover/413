@@ -1,4 +1,7 @@
 <?php
+
+use DB\Arg;
+
 require_once 'model/OffreFast.php';
 
 final class OffreRestaurantData
@@ -27,15 +30,18 @@ final class OffreRestaurantData
         );
     }
 
+    /**
+     * @return array<string, Arg>
+     */
     function to_args(): array {
         return [
-            'carte' => $this->carte,
-            'richesse' => $this->richesse,
-            'sert_petit_dejeuner' => $this->sert_petit_dejeuner,
-            'sert_brunch' => $this->sert_brunch,
-            'sert_dejeuner' => $this->sert_dejeuner,
-            'sert_diner' => $this->sert_diner,
-            'sert_boissons' => $this->sert_boissons,
+            'carte' => new Arg($this->carte),
+            'richesse' => new Arg($this->richesse, PDO::PARAM_INT),
+            'sert_petit_dejeuner' => new Arg($this->sert_petit_dejeuner, PDO::PARAM_BOOL),
+            'sert_brunch' => new Arg($this->sert_brunch, PDO::PARAM_BOOL),
+            'sert_dejeuner' => new Arg($this->sert_dejeuner, PDO::PARAM_BOOL),
+            'sert_diner' => new Arg($this->sert_diner, PDO::PARAM_BOOL),
+            'sert_boissons' => new Arg($this->sert_boissons, PDO::PARAM_BOOL),
         ];
     }
 }
@@ -47,14 +53,13 @@ final class OffreRestaurant extends OffreFast
 {
     function __construct(
         int $id,
-        OffreRefs $refs,
         OffreData $data,
         OffreComputed $computed,
 
         public OffreRestaurantData $restaurant_data,
 
     ) {
-        parent::__construct($id, $refs, $data, $computed);
+        parent::__construct($id, $data, $computed);
     }
 
     /**
@@ -62,7 +67,7 @@ final class OffreRestaurant extends OffreFast
      */
     private static array $cache = [];
 
-    static function insert_restaurant(OffreData $data, OffreRefs $refs, OffreRestaurantData $restaurant_data): self
+    static function insert_restaurant(OffreData $data, OffreRestaurantData $restaurant_data): self
     {
         $stmt = DB\insert_into(
             DB\Table::Restaurant,
@@ -71,7 +76,7 @@ final class OffreRestaurant extends OffreFast
         );
         notfalse($stmt->execute());
         $row = $stmt->fetch(PDO::FETCH_OBJ);
-        return self::$cache[$row->id] = new self($row->id, $refs, $data, OffreComputed::parse($row), $restaurant_data);
+        return self::$cache[$row->id] = new self($row->id, $data, OffreComputed::parse($row), $restaurant_data);
     }
 
     static function from_db(int $id): self
@@ -89,7 +94,6 @@ final class OffreRestaurant extends OffreFast
     {
         return self::$cache[$row->id] ??= new self(
             $row->id,
-            OffreRefs::parse($row),
             OffreData::parse($row),
             OffreComputed::parse($row),
             OffreRestaurantData::parse($row),

@@ -1,12 +1,18 @@
 <?php
+
+use DB\Arg;
+
 require_once 'db.php';
 require_once 'model/CommuneFast.php';
 
 final class AdresseData
 {
     function __construct(
+        // Foreign key
         public int     $code_commune,
         public string  $numero_departement,
+
+        // Regular
         public ?int    $numero_voie,
         public ?string $complement_numero,
         public ?string $nom_voie,
@@ -30,18 +36,21 @@ final class AdresseData
             . $commune->code_postaux[0];
     }
 
+    /**
+     * @return array<string, Arg>
+     */
     function to_args(): array {
         return [
-            'code_commune' => $this->code_commune,
-            'numero_departement' => $this->numero_departement,
-            'numero_voie' => $this->numero_voie,
-            'complement_numero' => $this->complement_numero,
-            'nom_voie' => $this->nom_voie,
-            'localite' => $this->localite,
-            'precision_int' => $this->precision_int,
-            'precision_ext' => $this->precision_ext,
-            'lat' => $this->lat,
-            'long' => $this->long,
+            'code_commune' => new Arg($this->code_commune, PDO::PARAM_INT),
+            'numero_departement' => new Arg($this->numero_departement),
+            'numero_voie' => new Arg($this->numero_voie, PDO::PARAM_INT),
+            'complement_numero' => new Arg($this->complement_numero),
+            'nom_voie' => new Arg($this->nom_voie),
+            'localite' => new Arg($this->localite),
+            'precision_int' => new Arg($this->precision_int),
+            'precision_ext' => new Arg($this->precision_ext),
+            'lat' => new Arg($this->lat),
+            'long' => new Arg($this->long),
         ];
     }
 }
@@ -49,8 +58,9 @@ final class AdresseData
 final class AdresseFast
 {
         private function __construct(
-        public readonly int         $id,
-        public AdresseData $data,
+            // Key
+            public readonly int         $id,
+            public AdresseData $data,
     )
     {
     }
@@ -75,8 +85,9 @@ final class AdresseFast
     {
         if (isset(self::$cache[$id])) return self::$cache[$id];
 
-        $stmt = notfalse(DB\connect()->prepare('select * from ' . DB\Table::Adresse->value . ' where id=?'));
-        DB\bind_values($stmt, [1 => [$id, PDO::PARAM_INT]]);
+        $stmt = DB\select(DB\Table::Adresse, ['*'], [
+            new DB\BinaryClause('id', DB\BinOp::Eq, $id, PDO::PARAM_INT),
+        ]);
         notfalse($stmt->execute());
 
         $row = $stmt->fetch(PDO::FETCH_OBJ);

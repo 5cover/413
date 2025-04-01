@@ -5,55 +5,39 @@ require_once 'model/Offre.php';
 require_once 'ValueObjects/Date.php';
 require_once 'model/Membre.php';
 
-/**
- * @property-read ?int $id L'ID. `null` si cet avis n'existe pas dans la BDD.
- * @property-read ?FiniteTimestamp $publie_le Calculé. `null` si cet avis n'existe pas dans la BDD.
- * @property-read ?bool $lu Calculé. `null` si cet avis n'existe pas dans la BDD.
- */
-class Avis extends Model
+final readonly class AvisData
 {
-    protected static function key_fields()
-    {
-        return [
-            'id' => [null, 'id', PDO::PARAM_INT],
-        ];
-    }
-
-    protected static function computed_fields()
-    {
-        return [
-            'publie_le' => [FiniteTimestamp::parse(...), 'publie_le', PDO::PARAM_STR],
-            'lu'        => [null, 'lu', PDO::PARAM_BOOL],
-        ];
-    }
-
-    protected static function fields()
-    {
-        return [
-            'commentaire'      => [null, 'commentaire', PDO::PARAM_STR],
-            'note'             => [null, 'note', PDO::PARAM_INT],
-            'date_experience'  => [null, 'date_experience', PDO::PARAM_STR],
-            'contexte'         => [null, 'contexte', PDO::PARAM_STR],
-            'id_membre_auteur' => [fn($x) => $x?->id, 'membre_auteur', PDO::PARAM_INT],
-            'id_offre'         => [fn($x) => $x->id, 'offre', PDO::PARAM_INT],
-            'likes'            => [null, 'likes', PDO::PARAM_INT],
-            'dislikes'         => [null, 'dislikes', PDO::PARAM_INT],
-        ];
-    }
-
     function __construct(
-        protected ?int $id,
-        public string $commentaire,
-        public int $note,
-        public Date $date_experience,
-        public string $contexte,
-        public ?Membre $membre_auteur,
-        public Offre $offre,
-        public int $likes,
-        public int $dislikes,
-        //
-        protected ?bool $lu = null,
-        protected ?FiniteTimestamp $publie_le = null,
+            public string $commentaire,
+            public string $note,
+            public Date $date_experience,
+            public ?string $contexte,
+            public int $likes,
+            public int $dislikes,
+            public bool $lu,
+    )
+    {
+    }
+}
+
+/**
+ * Un commentaire sur une offre par un membre.
+ */
+class Avis
+{
+    protected function __construct(
+        // Key
+        readonly ?int $id,
+
+        // Foreign key
+        public int $id_membre_auteur,
+        public int $id_offre,
+
+        // Regular
+        public AvisData $data,
+
+        // Computed
+        readonly ?FiniteTimestamp $publie_le,
     ) {
     }
 

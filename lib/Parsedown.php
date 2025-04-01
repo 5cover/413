@@ -1186,7 +1186,6 @@ class Parsedown
 
                 # cause the new element to 'inherit' our non nestables
 
-
                 $Inline['element']['nonNestables'] = isset($Inline['element']['nonNestables'])
                     ? array_merge($Inline['element']['nonNestables'], $nonNestables)
                     : $nonNestables

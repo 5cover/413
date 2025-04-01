@@ -4,7 +4,10 @@ require_once 'db.php';
 final class Abonnement
 {
     private function __construct(
+        // Key
         readonly LibelleAbonnement $libelle,
+
+        // Regular
         readonly float $prix_journalier,
         readonly string $description,
     ) {}

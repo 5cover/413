@@ -151,20 +151,16 @@ function where_clause(BinOp $operator, array $clauses): string
  * @param Table $table
  * @param string[] $columns null for '*'
  * @param Clause[] $where la clause WHERE du SELECT
- * @param ?string $column_order_by La colonne à ORDER BY par
- * @param bool $order_by_desc Pour order by ASC (false) ou DESC (true). Ignoré si $column_order_by est null
+ * @param ?string $order_by La section ORDER BY: un nom de coloone + [ASC | DESC]
+ * @param ?int $limit Nombre maximum de lignes à retourner
  * @return PDOStatement
  */
-function select(Table $table, array $columns, array $where = [], ?string $column_order_by = null, bool $order_by_desc = false): PDOStatement
+function select(Table $table, array $columns, array $where = [], ?string $order_by = null, ?int $limit = null): PDOStatement
 {
     $attrs = implode(',', $columns);
     $sql = "select $attrs $table->value " . where_clause(BinOp::And, $where);
-    if ($column_order_by) {
-        $sql .= " order by $column_order_by";
-        if ($order_by_desc) {
-            $sql .= " desc";
-        }
-    }
+    if ($order_by !== null) $sql .= " order by $order_by";
+    if ($limit !== null) $sql .= " limit $limit";
     $stmt = notfalse(connect()->prepare($sql));
     foreach ($where as $cond) {
         bind_values($stmt, $cond->to_args());
@@ -274,12 +270,3 @@ function bind_values(PDOStatement $stmt, iterable $args): void
     }
 }
 
-/**
- * Retire les arguments `null` avant le `bind_values` pour pouvoir utiliser la valeur par défaut de la colonne dans les INSERT.
- * @param array $array
- * @return array
- */
-function filter_null_args(array $array): array
-{
-    return array_filter($array, fn($e) => $e[0] !== null);
-}

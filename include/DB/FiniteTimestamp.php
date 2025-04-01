@@ -1,4 +1,5 @@
 <?php
+namespace DB;
 
 require_once 'util.php';
 

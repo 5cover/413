@@ -1,4 +1,7 @@
 <?php
+
+use DB\Arg;
+
 require_once 'model/OffreFast.php';
 
 final class OffreParcAttractionsData
@@ -19,11 +22,14 @@ final class OffreParcAttractionsData
         );
     }
 
+    /**
+     * @return array<string, Arg>
+     */
     function to_args(): array {
         return [
-            'age_requis' => $this->age_requis,
-            'nb_attractions' => $this->nb_attractions,
-            'id_image_plan' => $this->id_image_plan,
+            'age_requis' => new Arg($this->age_requis, PDO::PARAM_INT),
+            'nb_attractions' => new Arg($this->nb_attractions, PDO::PARAM_INT),
+            'id_image_plan' => new Arg($this->id_image_plan, PDO::PARAM_INT),
         ];
     }
 }
@@ -35,14 +41,13 @@ final class OffreParcAttractions extends OffreFast
 {
     function __construct(
         int $id,
-        OffreRefs $refs,
         OffreData $data,
         OffreComputed $computed,
 
         public OffreParcAttractionsData $parc_attractions_data,
 
     ) {
-        parent::__construct($id, $refs, $data, $computed);
+        parent::__construct($id, $data, $computed);
     }
 
     /**
@@ -50,7 +55,7 @@ final class OffreParcAttractions extends OffreFast
      */
     private static array $cache = [];
 
-    static function insert_parc_attractions(OffreData $data, OffreRefs $refs, OffreParcAttractionsData $parc_attractions_data): self
+    static function insert_parc_attractions(OffreData $data, OffreParcAttractionsData $parc_attractions_data): self
     {
         $stmt = DB\insert_into(
             DB\Table::ParcAttractions,
@@ -59,7 +64,7 @@ final class OffreParcAttractions extends OffreFast
         );
         notfalse($stmt->execute());
         $row = $stmt->fetch(PDO::FETCH_OBJ);
-        return self::$cache[$row->id] = new self($row->id, $refs, $data, OffreComputed::parse($row), $parc_attractions_data);
+        return self::$cache[$row->id] = new self($row->id, $data, OffreComputed::parse($row), $parc_attractions_data);
     }
 
     static function from_db(int $id): self
@@ -77,7 +82,6 @@ final class OffreParcAttractions extends OffreFast
     {
         return self::$cache[$row->id] ??= new self(
             $row->id,
-            OffreRefs::parse($row),
             OffreData::parse($row),
             OffreComputed::parse($row),
             OffreParcAttractionsData::parse($row),

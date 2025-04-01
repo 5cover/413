@@ -1,4 +1,7 @@
 <?php
+
+use DB\Arg;
+
 require_once 'model/OffreFast.php';
 
 final class OffreActiviteData
@@ -21,12 +24,15 @@ final class OffreActiviteData
         );
     }
 
+    /**
+     * @return array<string, Arg>
+     */
     function to_args(): array {
         return [
-            'indication_duree' => $this->indication_duree,
-            'age_requis' => $this->age_requis,
-            'prestations_incluses' => $this->prestations_incluses,
-            'prestations_non_incluses' => $this->prestations_non_incluses,
+            'indication_duree' => new Arg($this->indication_duree),
+            'age_requis' => new Arg($this->age_requis, PDO::PARAM_INT),
+            'prestations_incluses' => new Arg($this->prestations_incluses),
+            'prestations_non_incluses' => new Arg($this->prestations_non_incluses),
         ];
     }
 }
@@ -36,14 +42,13 @@ final class OffreActivite extends OffreFast
 {
     private function __construct(
         int $id,
-        OffreRefs $refs,
         OffreData $data,
         OffreComputed $computed,
 
         public OffreActiviteData $activite_data,
     )
     {
-        parent::__construct($id, $refs, $data, $computed);
+        parent::__construct($id, $data, $computed);
     }
 
     /**
@@ -51,7 +56,7 @@ final class OffreActivite extends OffreFast
      */
     private static array $cache = [];
 
-    static function insert_activite(OffreData $data, OffreRefs $refs, OffreActiviteData $activite_data): self
+    static function insert_activite(OffreData $data, OffreActiviteData $activite_data): self
     {
         $stmt = DB\insert_into(
             DB\Table::Activite,
@@ -60,7 +65,7 @@ final class OffreActivite extends OffreFast
         );
         notfalse($stmt->execute());
         $row = $stmt->fetch(PDO::FETCH_OBJ);
-        return self::$cache[$row->id] = new self($row->id, $refs, $data, OffreComputed::parse($row), $activite_data);
+        return self::$cache[$row->id] = new self($row->id, $data, OffreComputed::parse($row), $activite_data);
     }
 
     static function from_db(int $id): self
@@ -78,7 +83,6 @@ final class OffreActivite extends OffreFast
     {
         return self::$cache[$row->id] ??= new self(
             $row->id,
-            OffreRefs::parse($row),
             OffreData::parse($row),
             OffreComputed::parse($row),
             OffreActiviteData::parse($row),

@@ -1,4 +1,7 @@
 <?php
+
+use DB\Arg;
+
 require_once 'db.php';
 
 final class ImageData
@@ -35,10 +38,12 @@ final class ImageFast
     function push(): void
     {
         $stmt = DB\update(DB\Table::Image, [
-            'taille' => [$this->data->taille, PDO::PARAM_INT],
-            'mime_subtype' => [$this->data->mime_subtype, PDO::PARAM_STR],
-            'legende' => [$this->data->legende, PDO::PARAM_STR],
-        ], ['id' => [$this->id, PDO::PARAM_INT]]);
+            'taille' => new Arg($this->data->taille, PDO::PARAM_INT),
+            'mime_subtype' => new Arg($this->data->mime_subtype),
+            'legende' => new Arg($this->data->legende),
+        ], [
+            new DB\BinaryClause('id', DB\BinOp::Eq, $this->id, PDO::PARAM_INT),
+        ]);
         notfalse($stmt->execute());
     }
 

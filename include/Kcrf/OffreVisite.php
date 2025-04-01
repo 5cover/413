@@ -1,27 +1,29 @@
 <?php
+
+use DB\Arg;
+
 require_once 'model/OffreFast.php';
 
-final class OffreSpectacleData {
+final class OffreVisiteData
+{
     function __construct(
-        public Duree $indication_duree,
-        public int $capacite_accueil,
+        public Interval $indication_duree,
     )
     {
     }
 
-    static function parse(object $row): self
-    {
+    static function parse(object $row): self {
         return new self(
-            Duree::parse($row->indication_duree),
-            $row->capacite_accueil,
+            Interval::parse($row->indication_duree),
         );
     }
 
-    function to_args(): array
-    {
+    /**
+     * @return array<string, Arg>
+     */
+    function to_args(): array {
         return [
-            'indication_duree' => $this->indication_duree,
-            'capacite_accueil' => $this->capacite_accueil,
+            'indication_duree' => new Arg($this->indication_duree),
         ];
     }
 }
@@ -29,18 +31,17 @@ final class OffreSpectacleData {
 /**
  * @inheritDoc
  */
-final class OffreSpectacle extends OffreFast
+final class OffreVisite extends OffreFast
 {
     function __construct(
         int $id,
-        OffreRefs $refs,
         OffreData $data,
         OffreComputed $computed,
 
-        public OffreSpectacleData $spectacle_data,
+        public OffreVisiteData $visite_data,
 
     ) {
-        parent::__construct($id, $refs, $data, $computed);
+        parent::__construct($id, $data, $computed);
     }
 
     /**
@@ -48,23 +49,23 @@ final class OffreSpectacle extends OffreFast
      */
     private static array $cache = [];
 
-    static function insert_spectacle(OffreData $data, OffreRefs $refs, OffreSpectacleData $spectacle_data): self
+    static function insert_visite(OffreData $data, OffreVisiteData $visite_data): self
     {
         $stmt = DB\insert_into(
-            DB\Table::Spectacle,
-            $spectacle_data->to_args() + $data->to_args(),
+            DB\Table::Visite,
+            $visite_data->to_args() + $data->to_args(),
             array_merge(['id'], OffreComputed::COLUMNS),
         );
         notfalse($stmt->execute());
         $row = $stmt->fetch(PDO::FETCH_OBJ);
-        return self::$cache[$row->id] = new self($row->id, $refs, $data, OffreComputed::parse($row), $spectacle_data);
+        return self::$cache[$row->id] = new self($row->id, $data, OffreComputed::parse($row), $visite_data);
     }
 
     static function from_db(int $id): self
     {
         if (isset(self::$cache[$id])) return self::$cache[$id];
 
-        $stmt = DB\connect()->prepare('select * from ' .  DB\Table::Spectacle->value . ' where id=?');
+        $stmt = DB\connect()->prepare('select * from ' .  DB\Table::Visite->value . ' where id=?');
         notfalse($stmt->execute());
         $row = $stmt->fetch(PDO::FETCH_OBJ);
 
@@ -75,10 +76,9 @@ final class OffreSpectacle extends OffreFast
     {
         return self::$cache[$row->id] ??= new self(
             $row->id,
-            OffreRefs::parse($row),
             OffreData::parse($row),
             OffreComputed::parse($row),
-            OffreSpectacleData::parse($row),
+            OffreVisiteData::parse($row),
         );
     }
 }

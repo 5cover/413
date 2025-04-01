@@ -1,4 +1,5 @@
 <?php
+namespace DB;
 
 final class Uuid {
     private function __construct(private string $repr) {}

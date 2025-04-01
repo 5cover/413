@@ -1,9 +1,10 @@
 <?php
+namespace DB;
 
 /**
  * @property-read float $total_days
  */
-final class Duree
+final class Interval
 {
     function __construct(
         readonly int $years     = 0,
@@ -34,10 +35,10 @@ final class Duree
     /**
      * Parse une durée depuis la sortie PostgreSQL.
      * @param ?string $output La sortie PostgreSQL en format d'intervalle `postgres`.
-     * @return ?Duree Un nouvelle durée, ou `null` si `$output` était `null` (à l'instar de PostgreSQL, cette fonction propage `null`)
+     * @return ?Interval Un nouvelle durée, ou `null` si `$output` était `null` (à l'instar de PostgreSQL, cette fonction propage `null`)
      * @throws DomainException En cas de mauvaise syntaxe.
      */
-    static function parse(?string $output): ?Duree
+    static function parse(?string $output): ?Interval
     {
         if ($output === null) return null;
 
@@ -60,6 +61,6 @@ final class Duree
                     || false === ($seconds = parse_float($matches[3], 0)))) {
             throw new DomainException();
         }
-        return new Duree($years, $months, $days, $hours, $minutes, $seconds);
+        return new Interval($years, $months, $days, $hours, $minutes, $seconds);
     }
 }
