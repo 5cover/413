@@ -25,10 +25,10 @@ final class CarteOffre
     <?php $this->image_principale->put_img() ?>
     <h3><a class="titre" href="<?= h14s(location_detail_offre($this->offre->id)) ?>"><?= h14s($this->offre->titre) ?></a></h3>
     <p class="location"><?= h14s($this->offre->adresse->format()) ?></p>
-    <p><?= h14s(substr($this->offre->resume,0,100)) ?><?php if (strlen($this->offre->resume) > 100) { echo '&hellip;'; }?></p>
+    <p class="offer-resume"><?= h14s(substr($this->offre->resume,0,100)) ?><?php if (strlen($this->offre->resume) > 100) { echo '&hellip;'; }?></p>
     <p class="category"><?= h14s(ucfirst($this->offre->categorie)) ?></p>
     <?php if ($this->offre->prix_min) { ?>
-    <p>À partir de &nbsp;: <?= $this->offre->prix_min ?>&nbsp;€</p>
+    <p class="offer-prix-min" >À partir de &nbsp;: <?= $this->offre->prix_min ?>&nbsp;€</p>
     <?php } ?>
     <p>Note&nbsp;: <?= $this->offre->note_moyenne ?>&nbsp;/&nbsp;5</p>
     <p>Créée le&nbsp;: <?= $this->offre->creee_le->format_date() ?></p>
