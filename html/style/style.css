@@ -1289,7 +1289,7 @@ label > input {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    padding: 5vh;
+    padding: 3vh;
 }
 
 .mention-legales-sections {
