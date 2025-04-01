@@ -86,7 +86,7 @@ $page->put(function () {
                 </div>
             </section>
         </div>
-        <section class="highlight-offers">
+        <section class="highlight-offers resultat">
             <h2>Offres trouvées :</h2>
             <div class="offer-list">
                 
