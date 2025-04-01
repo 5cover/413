@@ -12,7 +12,7 @@ require_once 'otp.php';
 $args = [
     'login'      => getarg($_POST, 'login'),
     'mdp'        => getarg($_POST, 'mdp'),
-    'otp_secret' => getarg($_POST, 'otp_secret', required: false),
+    'otp_secret' => getarg($_POST, 'otp_login', required: false),
 
     'return_url' => getarg($_POST, 'return_url', required: false),
 ];
@@ -25,7 +25,7 @@ function connection_membre($args )  {
         if (!password_verify($args['mdp'], $user->mdp_hash)) {
             fail();
         }
-        elseif ($user->otp_secret && !OTP\verify($user->otp_secret,$args['otp_secret'] )  ) {
+        elseif ($user->otp_secret && !OTP\verify($user->otp_secret,$args['otp_secret'] ?? 'invalid')  ) {
             fail_otp();
         }
         else{
