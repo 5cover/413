@@ -6,7 +6,7 @@
 -- Ajouter "not null" aux attributs clés étrangères ne faisant pas partie de la clé primaire. La contrainte "references" n'implique pas "not null". La contrainte "primary key" implique "not null unique"
 
 -- CLASSES
-
+ 
 set schema 'pact';
 
 create table _departement (
