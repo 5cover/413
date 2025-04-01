@@ -1447,3 +1447,9 @@ label > input {
         transform: translateX(-100%);
     }
 } */
+
+.offer-resume {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 25em;
+}
