@@ -6,7 +6,7 @@
 -- Ajouter "not null" aux attributs clés étrangères ne faisant pas partie de la clé primaire. La contrainte "references" n'implique pas "not null". La contrainte "primary key" implique "not null unique"
 
 -- CLASSES
-
+ 
 set schema 'pact';
 
 create table _departement (
@@ -23,7 +23,7 @@ create table _commune (
         
     nom ligne not null
 );
-
+ 
 create table _adresse (
     id serial
         constraint adresse_pk primary key,
@@ -54,7 +54,7 @@ create table _abonnement (
     prix_journalier decimal not null,
     description ligne not null
 );
-
+ 
 create table _image (
     id serial
         constraint image_pk primary key,

@@ -34,7 +34,6 @@ $page->put(function () {
                     <label for="otp_login">Code OTP</label>
                     <input id="otp_login" name="otp_login" type="text" >
                 </div>
-                <br>
                 <div class="centrer-enfants">
                     <?php if ($error !== null) { ?>
                         <p class="error" style="text-align: center;"><?= h14s($error) ?></p>
