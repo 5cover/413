@@ -2,11 +2,12 @@
 
 use Vtiful\Kernel\Format;
 
-require_once 'db.php';
+require_once 'DB/db.php';
+
 require_once 'util.php';
 require_once 'component/Input.php';
-require_once 'model/AdresseFast.php';
-require_once 'model/CommuneFast.php';
+require_once 'Kcrf/AdresseFast.php';
+require_once 'Kcrf/CommuneFast.php';
 
 function geocode($address): ?array
 {
@@ -49,7 +50,6 @@ function geocode($address): ?array
         return null;
     }
 }
-
 
 
 /**

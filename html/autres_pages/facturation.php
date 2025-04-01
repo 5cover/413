@@ -1,9 +1,12 @@
 <?php
+
+use ValueObjects\LibelleAbonnement;
+
 require_once 'const.php';
 require_once 'component/Page.php';
 require_once 'auth.php';
-require_once 'ValueObjects/Duree.php';
-require_once 'model/OffreFast.php';
+require_once 'ValueObjects/Interval.php';
+require_once 'Kcrf/OffreFast.php';
 require_once 'util.php';
 
 $page = new Page('Facturation');

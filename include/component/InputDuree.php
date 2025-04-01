@@ -1,12 +1,12 @@
 <?php
 require_once 'util.php';
 require_once 'component/Input.php';
-require_once 'ValueObjects/Duree.php';
+require_once 'ValueObjects/Interval.php';
 
 /**
  * Composant d'input de durée (jours, heures, minutes).
  * Demander à Raphaël si besoin de d'autres unités.
- * @extends Input<Duree>
+ * @extends Input<Interval>
  */
 final class InputDuree extends Input
 {
@@ -15,10 +15,10 @@ final class InputDuree extends Input
      * @param array $get_or_post `$_GET` ou `$_POST` (selon la méthode du formulaire)
      * @param bool $required Si la durée est requise. Quand la durée est manquante, si `false` a été passé, la fonction retourne `null`. Sinon, déclenche une erreur.
      */
-    function get(array $get_or_post, bool $required = true): ?Duree
+    function get(array $get_or_post, bool $required = true): ?Interval
     {
         $data = getarg($get_or_post, $this->name, required: $required);
-        return $data === null ? null : new Duree(
+        return $data === null ? null : new Interval(
             days: parse_int($data['jours']),
             hours: parse_int($data['heures']),
             minutes: parse_int($data['minutes']),
@@ -31,7 +31,7 @@ final class InputDuree extends Input
 
     /**
      * Affiche l'HTML du composant.
-     * @param ?Duree $current La duréee à modifier ou `null` pour une création.
+     * @param ?Interval $current La duréee à modifier ou `null` pour une création.
      */
     function put(mixed $current = null): void
     {

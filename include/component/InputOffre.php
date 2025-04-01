@@ -1,20 +1,22 @@
 <?php
 
+use ValueObjects\LibelleAbonnement;
+
 require_once 'auth.php';
 require_once 'component/DynamicTable.php';
 require_once 'component/InputAdresse.php';
 require_once 'component/InputDuree.php';
 require_once 'component/InputImage.php';
 require_once 'const.php';
-require_once 'model/OffreActivite.php';
+require_once 'Kcrf/OffreActivite.php';
 require_once 'ValueObjects/FiniteTimestamp.php';
 require_once 'ValueObjects/NonEmptyRange.php';
-require_once 'model/OffreParcAttractions.php';
-require_once 'model/CompteProfessionnelFast.php';
-require_once 'model/OffreRestaurant.php';
-require_once 'model/OffreSpectacle.php';
+require_once 'Kcrf/OffreParcAttractions.php';
+require_once 'Kcrf/CompteProfessionnelFast.php';
+require_once 'Kcrf/OffreRestaurant.php';
+require_once 'Kcrf/OffreSpectacle.php';
 require_once 'ValueObjects/Time.php';
-require_once 'model/OffreVisite.php';
+require_once 'Kcrf/OffreVisite.php';
 require_once 'Parsedown.php';
 require_once 'redirect.php';
 require_once 'util.php';
@@ -129,7 +131,7 @@ final class InputOffre extends Input
     function get(array $get_or_post, ?OffreFast $current_offre = null): ?OffreFast
     {
         $image_principale = $this->input_image_principale->get($get_or_post)[0]
-            ?? notfalse(mapnull($current_offre?->refs->id_image_principale, ImageFast::from_db(...)));
+            ?? notfalse(mapnull($current_offre?->data->id_image_principale, ImageFast::from_db(...)));
 
         if ($image_principale === null) return null;
 
@@ -140,6 +142,10 @@ final class InputOffre extends Input
         $libelle_abo = getarg($get_or_post, $this->name('libelle_abonnement'), LibelleAbonnement::from(...), required: false) ?? LibelleAbonnement::Gratuit;
 
         $offre_data = new OffreData(
+            $adresse->id,
+            $image_principale->id,
+            $this->professionnel->id,
+
             $libelle_abo,
             getarg($get_or_post, $this->name('titre')),
             getarg($get_or_post, $this->name('resume')),
@@ -156,12 +162,9 @@ final class InputOffre extends Input
             ))
         );
 
-        $offre_refs = new OffreRefs($adresse->id, $image_principale->id, $this->professionnel->id);
-
         $offre = match ($this->categorie) {
             Categorie::Activite => OffreActivite::insert_activite(
                 $offre_data,
-                $offre_refs,
                 new OffreActiviteData(
                     $this->input_indication_duree->get($get_or_post),
                     getarg($get_or_post, 'age_requis', arg_int(1), required: false),
@@ -171,7 +174,6 @@ final class InputOffre extends Input
             ),
             Categorie::ParcAttractions => OffreParcAttractions::insert_parc_attractions(
                 $offre_data,
-                $offre_refs,
                 new OffreParcAttractionsData(
                     getarg($get_or_post, 'age_requis', arg_int(1), required: false),
                     getarg($get_or_post, 'nb_attractions', arg_int(0)),
@@ -180,7 +182,6 @@ final class InputOffre extends Input
             ),
             Categorie::Spectacle       => OffreSpectacle::insert_spectacle(
                 $offre_data,
-                $offre_refs,
                 new OffreSpectacleData(
                     $this->input_indication_duree->get($get_or_post),
                     getarg($get_or_post, 'capacite_accueil', arg_int(0)),
@@ -188,7 +189,6 @@ final class InputOffre extends Input
             ),
             Categorie::Restaurant      => OffreRestaurant::insert_restaurant(
                 $offre_data,
-                $offre_refs,
                 new OffreRestaurantData(
                     getarg($get_or_post, 'carte'),
                     getarg($get_or_post, 'richesse'),
@@ -201,7 +201,6 @@ final class InputOffre extends Input
             ),
             Categorie::Visite          => OffreVisite::insert_visite(
                 $offre_data,
-                $offre_refs,
                 new OffreVisiteData(
                     $this->input_indication_duree->get($get_or_post),
                 ),
@@ -307,7 +306,7 @@ final class InputOffre extends Input
                         value="<?= h14s($current?->data->resume) ?>">
                 </p>
                 <label for="<?= h14s($this->input_adresse->for_id()) ?>">Adresse*</label>
-                <?php $this->input_adresse->put(mapnull($current?->refs->id_adresse, Adresse::from_db(...))) ?>
+                <?php $this->input_adresse->put(mapnull($current?->data->id_adresse, Adresse::from_db(...))) ?>
                 <label for="<?= $this->id('url_site_web') ?>">Site Web</label>
                 <p>
                     <input <?= $this->form_attr ?>
@@ -322,7 +321,7 @@ final class InputOffre extends Input
         <section>
             <h2>Photo principale</h2>
             <?php $this->input_image_principale->put(
-                $current === null ? null : [Image::from_db($current->refs->id_image_principale)],
+                $current === null ? null : [Image::from_db($current->data->id_image_principale)],
                 $current === null,
             ) ?>
         </section>
@@ -560,7 +559,7 @@ final class InputOffre extends Input
         <?php
     }
 
-    function put_input_indication_duree(?Duree $current): void
+    function put_input_indication_duree(?Interval $current): void
     {
         ?>
         <label for="<?= h14s($this->input_indication_duree->for_id()) ?>">Durée estimée&nbsp;: </label>

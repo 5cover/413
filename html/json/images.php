@@ -1,6 +1,7 @@
 <?php
 require_once 'util.php';
-require_once 'db.php';
+require_once 'DB/db.php';
+
 header('Content-Type: application/json; charset=utf-8');
 
 $offres = [];

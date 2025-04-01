@@ -1,5 +1,5 @@
 <?php
-require_once 'model/OffreFast.php';
+require_once 'Kcrf/OffreFast.php';
 
 /**
  * Redirige l'utilisateur vers une URL, mettant fin au script actuel.

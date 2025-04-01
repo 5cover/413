@@ -1,15 +1,18 @@
 <?php
+namespace Kcrf;
 
+require_once 'DB/db.php';
+
+use Categorie;
+use DB;
 use DB\Arg;
 use DB\BinaryClause;
 use DB\BinOp;
 use DB\IdentityClause;
-
-require_once 'db.php';
-require_once 'ValueObjects/FiniteTimestamp.php';
-require_once 'ValueObjects/MultiRange.php';
-require_once 'ValueObjects/FiniteTimestamp.php';
-require_once 'ValueObjects/Interval.php';
+use Generator;
+use PDO;
+use SouscriptionOption;
+use ValueObjects\LibelleAbonnement;
 
 final class OffreData
 {
@@ -26,9 +29,9 @@ final class OffreData
         public string $description_detaillee,
         public ?string $url_site_web,
         /**
-         * @var MultiRange<FiniteTimeStamp>
+         * @var DB\MultiRange<DB\FiniteTimeStamp>
          */
-        public MultiRange $periodes_ouverture,
+        public DB\MultiRange $periodes_ouverture,
     ){}
 
     static function parse(object $row): self {
@@ -41,7 +44,7 @@ final class OffreData
             $row->resume,
             $row->description_detaillee,
             $row->url_site_web,
-            MultiRange::parse($row->periodes_ouverture, FiniteTimestamp::parse(...)),
+            DB\MultiRange::parse($row->periodes_ouverture, DB\FiniteTimestamp::parse(...)),
         );
     }
 
@@ -65,15 +68,15 @@ final class OffreData
 final readonly class OffreComputed
 {
     private function __construct(
-        public FiniteTimestamp     $modifiee_le,
+        public DB\FiniteTimestamp     $modifiee_le,
         public bool                $en_ligne,
         public float               $note_moyenne,
         public ?float              $prix_min,
         public int                 $nb_avis,
-        public FiniteTimestamp     $creee_le,
+        public DB\FiniteTimestamp     $creee_le,
         public Categorie           $categorie,
-        public Interval            $en_ligne_ce_mois_pendant,
-        public ?FiniteTimestamp    $changement_ouverture_suivant_le,
+        public DB\Interval            $en_ligne_ce_mois_pendant,
+        public ?DB\FiniteTimestamp    $changement_ouverture_suivant_le,
         public bool                $est_ouverte,
         public ?SouscriptionOption $option,
     ) { }
@@ -81,15 +84,15 @@ final readonly class OffreComputed
     static function parse(object $row): self
     {
         return new self(
-            FiniteTimestamp::parse($row->modifiee_le),
+            DB\FiniteTimestamp::parse($row->modifiee_le),
             $row->en_ligne,
             $row->note_moyenne,
             $row->prix_min,
             $row->nb_avis,
-            FiniteTimestamp::parse($row->creee_le),
+            DB\FiniteTimestamp::parse($row->creee_le),
             $row->categorie,
-            Interval::parse($row->en_ligne_ce_mois_pendant),
-            FiniteTimestamp::parse($row->changement_ouverture_suivant_le),
+            DB\Interval::parse($row->en_ligne_ce_mois_pendant),
+            DB\FiniteTimestamp::parse($row->changement_ouverture_suivant_le),
             $row->est_ouverte,
             SouscriptionOption::parse_json($row->option),
         );
@@ -116,6 +119,8 @@ final readonly class OffreComputed
  */
 class OffreFast
 {
+    private const TABLE = DB\Table::Offre;
+
     readonly OuvertureHebdomadaire $ouverture_hebdomadaire;
     readonly Galerie $galerie;
     readonly Tags $tags;
@@ -153,12 +158,12 @@ class OffreFast
     static function insert(OffreData $data): self
     {
         $stmt = DB\insert_into(
-            DB\Table::Offre,
+            static::TABLE,
             $data->to_args(),
             array_merge(['id'], OffreComputed::COLUMNS),
         );
         notfalse($stmt->execute());
-        $row = $stmt->fetch(PDO::FETCH_OBJ);
+        $row = $stmt->fetch();
         assert (!(self::$cache[$row->id] ?? false), 'new row already in cache somehow');
 
         return self::$cache[$row->id] = new self($row->id, $data, OffreComputed::parse($row));
@@ -169,7 +174,7 @@ class OffreFast
         $where = [];
         if ($id_professionnel !== null) $where[] = new BinaryClause('id_professionnel', BinOp::Eq, $id_professionnel, PDO::PARAM_INT);
         if ($en_ligne !== null) $where[] = new BinaryClause('en_ligne', BinOp::Eq, $en_ligne, PDO::PARAM_BOOL);
-        $stmt = DB\select(DB\Table::Offre, ['count(*)'], $where);
+        $stmt = DB\select(static::TABLE, ['count(*)'], $where);
         notfalse($stmt->execute());
         return notfalse($stmt->fetchColumn());
     }
@@ -178,9 +183,9 @@ class OffreFast
     {
         if (isset(self::$cache[$id])) return self::$cache[$id];
 
-        $stmt = DB\select(DB\Table::Offre, ['*'], [new BinaryClause('id', BinOp::Eq, $id, PDO::PARAM_INT)]);
+        $stmt = DB\select(static::TABLE, ['*'], [new BinaryClause('id', BinOp::Eq, $id, PDO::PARAM_INT)]);
         notfalse($stmt->execute());
-        $row = $stmt->fetch(PDO::FETCH_OBJ);
+        $row = $stmt->fetch();
 
         return self::$cache[$id] = $row === false ? false : self::from_db_row($row);
     }
@@ -191,12 +196,12 @@ class OffreFast
      */
     static function from_db_a_la_une_ordered(): Generator
     {
-        $stmt = DB\select(DB\Table::Offre, ['*'], [
+        $stmt = DB\select(static::TABLE, ['*'], [
             new BinaryClause('libelle_abonnement', BinOp::Eq, LibelleAbonnement::Premium->value, PDO::PARAM_STR),
             new IdentityClause('en_ligne'),
         ], 'id');
         notfalse($stmt->execute());
-        while (false !== $row = $stmt->fetch(PDO::FETCH_OBJ)) {
+        while (false !== $row = $stmt->fetch()) {
             yield self::from_db_row($row);
         }
     }
@@ -207,11 +212,11 @@ class OffreFast
      */
     static function from_db_nouveautes(): Generator
     {
-        $stmt = DB\select(DB\Table::Offre, ['*'], [
+        $stmt = DB\select(static::TABLE, ['*'], [
             new IdentityClause('en_ligne'),
         ], order_by: 'creee_le desc', limit: 10);
         notfalse($stmt->execute());
-        while (false !== $row = $stmt->fetch(PDO::FETCH_OBJ)) {
+        while (false !== $row = $stmt->fetch()) {
             yield self::from_db_row($row);
         }
     }
@@ -222,11 +227,11 @@ class OffreFast
      */
     static function from_db_en_ligne_ordered(): Generator
     {
-        $stmt = DB\select(DB\Table::Offre, ['*'], [
+        $stmt = DB\select(static::TABLE, ['*'], [
             new DB\IdentityClause('en_ligne'),
         ], 'id');
         notfalse($stmt->execute());
-        while (false !== $row = $stmt->fetch(PDO::FETCH_OBJ)) {
+        while (false !== $row = $stmt->fetch()) {
             yield self::from_db_row($row);
         }
     }
@@ -242,9 +247,9 @@ class OffreFast
         $where = [];
         if ($id_professionnel !== null) $where[] =new BinaryClause('id_professionnel', BinOp::Eq, $id_professionnel, PDO::PARAM_INT);
         if ($en_ligne !== null) $where[] =new IdentityClause('en_ligne');
-        $stmt = DB\select(DB\Table::Offre, ['*'], $where, 'id');
+        $stmt = DB\select(static::TABLE, ['*'], $where, 'id');
         notfalse($stmt->execute());
-        while (false !== $row = $stmt->fetch(PDO::FETCH_OBJ)) {
+        while (false !== $row = $stmt->fetch()) {
             yield self::from_db_row($row);
         }
     }

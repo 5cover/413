@@ -2,7 +2,7 @@
 
 require_once 'const.php';
 require_once 'util.php';
-require_once 'model/ImageFast.php';
+require_once 'Kcrf/ImageFast.php';
 require_once 'util.php';
 
 final class ImageView

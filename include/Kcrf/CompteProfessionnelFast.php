@@ -1,6 +1,10 @@
 <?php
-require_once 'db.php';
-require_once 'ValueObjects/Uuid.php';
+namespace Kcrf;
+
+require_once 'DB/db.php';
+
+use DB;
+use PDO;
 
 enum Secteur: string
 {
@@ -41,7 +45,7 @@ final class CompteProfessionnelFast
         DB\bind_values($stmt, [1 => [$id, PDO::PARAM_INT]]);
         notfalse($stmt->execute());
 
-        $row = $stmt->fetch(PDO::FETCH_OBJ);
+        $row = $stmt->fetch();
         return self::$cache[$id] = $row === false ? false : self::from_db_row($row);
     }
 
@@ -56,7 +60,7 @@ final class CompteProfessionnelFast
             $row->prenom,
             $row->telephone,
             $row->adresse,
-            Uuid::parse($row->api_key),
+            DB\Uuid::parse($row->api_key),
             $row->otp_secret,
             ),
             new CompteProfessionnelData(

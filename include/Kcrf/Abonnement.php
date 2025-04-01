@@ -1,5 +1,10 @@
 <?php
-require_once 'db.php';
+namespace Kcrf;
+
+require_once 'DB/db.php';
+
+use ValueObjects\LibelleAbonnement;
+use DB;
 
 final class Abonnement
 {
@@ -28,7 +33,7 @@ final class Abonnement
                 parse_float($row->prix_journalier),
                 $row->description,
             ),
-            array_column(DB\connect()->query('select * from ' . self::TABLE)->fetchAll(PDO::FETCH_OBJ), null, 'libelle'),
+            array_column(DB\connect()->query('select * from ' . self::TABLE)->fetchAll(), null, 'libelle'),
         );
     }
 

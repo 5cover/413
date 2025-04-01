@@ -1,9 +1,9 @@
 <?php
-require_once 'model/Abonnement.php';
-require_once 'model/OffreFast.php';
-require_once 'model/CompteFast.php';
+require_once 'Kcrf/Abonnement.php';
+require_once 'Kcrf/OffreFast.php';
+require_once 'Kcrf/CompteFast.php';
 require_once 'auth.php';
-require_once 'model/Compte.php';
+require_once 'Kcrf/Compte.php';
 require_once 'fpdf186/fpdf.php';
 
 define('EURO', chr(128));
@@ -12,7 +12,6 @@ define('EURO', chr(128));
 
 $compte = CompteFast::from_db(Auth\id_pro_connecte());
 if ($compte === false) fail_404();
-
 
 function convertToIso88591($string)
 {
@@ -210,8 +209,6 @@ $pdf->Cell(48, 10, $resultat_global_ttc . ' ' . EURO, 1, 1, 'C');
 // Générer et afficher le PDF
 $pdf->Output('I', "facture_Pact_$compte->denomination.pdf");  // I = afficher dans le navigateur, D = télécharger
 ?>
-
-
 
 
 

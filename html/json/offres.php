@@ -1,8 +1,9 @@
 <?php
 
 require_once 'util.php';
-require_once 'db.php';
-require_once 'model/Adresse.php';
+require_once 'DB/db.php';
+
+require_once 'Kcrf/Adresse.php';
 require_once 'ValueObjects/MultiRange.php';
 require_once 'ValueObjects/FiniteTimestamp.php';
 

@@ -5,7 +5,7 @@ require_once 'util.php';
 require_once 'auth.php';
 require_once 'redirect.php';
 require_once 'component/Page.php';
-require_once 'model/Compte.php';
+require_once 'Kcrf/Compte.php';
 
 $page        = new Page('Modification compte', body_id: 'detail_compte', scripts: ['module/modif_compte.js' => 'type="module"']);
 $error_mdp   = null;

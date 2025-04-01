@@ -1,9 +1,13 @@
 <?php
+namespace Kcrf;
+
+require_once 'DB/db.php';
 
 use DB\Arg;
+use PDO;
+use DB;
 
-require_once 'db.php';
-require_once 'model/CommuneFast.php';
+require_once 'Kcrf/CommuneFast.php';
 
 final class AdresseData
 {
@@ -90,7 +94,7 @@ final class AdresseFast
         ]);
         notfalse($stmt->execute());
 
-        $row = $stmt->fetch(PDO::FETCH_OBJ);
+        $row = $stmt->fetch();
         return self::$cache[$id] = $row === false ? false : new self(
             $row->id,
             new AdresseData(

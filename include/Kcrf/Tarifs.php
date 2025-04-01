@@ -1,12 +1,18 @@
 <?php
+namespace Kcrf;
+
+require_once 'DB/db.php';
 
 use DB\Action;
 use DB\Arg;
-use DB\BinOp;
 use DB\BinaryClause;
+use DB\BinOp;
 use DB\InListClause;
-
-require_once 'db.php';
+use IteratorAggregate;
+use DB;
+use PDO;
+use Traversable;
+use ArrayIterator;
 
 /**
  * @implements IteratorAggregate<string, float>
@@ -29,7 +35,7 @@ final class Tarifs implements IteratorAggregate
             new BinaryClause('id_offre', BinOp::Eq, $this->id_offre, PDO::PARAM_INT),
         ]);
         notfalse($stmt->execute());
-        while (false !== $row = $stmt->fetch(PDO::FETCH_OBJ)) {
+        while (false !== $row = $stmt->fetch()) {
             $this->tarifs[$row->nom] = $row->horaires;
         }
     }

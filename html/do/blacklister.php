@@ -1,6 +1,6 @@
 <?php
 require_once 'util.php';
-require_once 'model/Blacklist.php';
+require_once 'Kcrf/Blacklist.php';
 
 $id            = getarg($_GET, 'id', arg_int());
 $date_fin      = getarg($_GET, 'finblacklist', arg_int());

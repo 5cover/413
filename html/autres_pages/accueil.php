@@ -1,7 +1,7 @@
 <?php
 require_once 'component/Page.php';
 require_once 'component/CarteOffre.php';
-require_once 'model/OffreFast.php';
+require_once 'Kcrf/OffreFast.php';
 require_once 'cookie.php';
 
 $page = new Page('Accueil');

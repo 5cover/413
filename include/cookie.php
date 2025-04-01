@@ -34,7 +34,6 @@ final readonly class RecentOffers
 final readonly class CommentLikes
 {
     private const NAME              = 'comment_likes';
-    private const MAX_RECENT_OFFERS = 3;
 
     static function likes(int $comment_id): ?bool
     {

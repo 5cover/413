@@ -1,6 +1,6 @@
 <?php
 require_once 'util.php';
-require_once 'model/Avis.php';
+require_once 'Kcrf/Avis.php';
 require_once 'redirect.php';
 
 $id_avis = getarg($_GET, 'id_avis', arg_int());

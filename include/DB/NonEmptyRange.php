@@ -1,4 +1,9 @@
 <?php
+namespace DB;
+
+use DomainException;
+use RangeException;
+
 require_once 'util.php';
 
 /**
@@ -115,7 +120,7 @@ REGEX;
      * @param string $output La chaîne à parser.
      * @param ?callable(string): (TBound|false) $parse_bound La fonction parsant les bornes. Peut retourner `false` si la syntaxe est invalide. `null` implique la fonction identité.
      * @return NonEmptyRange<TBound> Un nouveau range non vide.
-     * @throws DomainException Quand $output ne correspond pas à la syntax attendue.
+     * @throws \DomainException Quand $output ne correspond pas à la syntax attendue.
      */
     static function parse(string $output, ?callable $parse_bound = null): NonEmptyRange
     {

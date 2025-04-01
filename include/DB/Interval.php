@@ -1,6 +1,8 @@
 <?php
 namespace DB;
 
+use DomainException;
+
 /**
  * @property-read float $total_days
  */
@@ -15,7 +17,7 @@ final class Interval
         readonly float $seconds = 0,
     ) {}
 
-    function __get(string $name): mixed
+    function __get(string $name): int|float
     {
         return match ($name) {
             'total_days' => $this->years * 360
@@ -36,7 +38,7 @@ final class Interval
      * Parse une durée depuis la sortie PostgreSQL.
      * @param ?string $output La sortie PostgreSQL en format d'intervalle `postgres`.
      * @return ?Interval Un nouvelle durée, ou `null` si `$output` était `null` (à l'instar de PostgreSQL, cette fonction propage `null`)
-     * @throws DomainException En cas de mauvaise syntaxe.
+     * @throws \DomainException En cas de mauvaise syntaxe.
      */
     static function parse(?string $output): ?Interval
     {

@@ -1,5 +1,6 @@
 <?php
-require_once 'db.php';
+require_once 'DB/db.php';
+
 require_once 'component/Page.php';
 
 $page = new Page('regarde dans la bdd');

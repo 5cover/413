@@ -1,8 +1,11 @@
 <?php
+namespace Kcrf;
 
 use DB\Arg;
+use PDO;
+use DB;
 
-require_once 'model/OffreFast.php';
+require_once 'Kcrf/OffreFast.php';
 
 final class OffreParcAttractionsData
 {
@@ -63,7 +66,7 @@ final class OffreParcAttractions extends OffreFast
             array_merge(['id'], OffreComputed::COLUMNS),
         );
         notfalse($stmt->execute());
-        $row = $stmt->fetch(PDO::FETCH_OBJ);
+        $row = $stmt->fetch();
         return self::$cache[$row->id] = new self($row->id, $data, OffreComputed::parse($row), $parc_attractions_data);
     }
 
@@ -73,7 +76,7 @@ final class OffreParcAttractions extends OffreFast
 
         $stmt = DB\connect()->prepare('select * from ' .  DB\Table::ParcAttractions->value . ' where id=?');
         notfalse($stmt->execute());
-        $row = $stmt->fetch(PDO::FETCH_OBJ);
+        $row = $stmt->fetch();
 
         return self::$cache[$id] = $row === false ? false : self::from_db_row($row);
     }

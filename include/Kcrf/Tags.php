@@ -1,11 +1,17 @@
 <?php
+namespace Kcrf;
+
+require_once 'DB/db.php';
 
 use DB\Arg;
-use DB\InListClause;
-use DB\BinOp;
 use DB\BinaryClause;
-
-require_once 'db.php';
+use DB\BinOp;
+use DB\InListClause;
+use DB;
+use PDO;
+use IteratorAggregate;
+use Traversable;
+use ArrayIterator;
 
 /**
  * @implements IteratorAggregate<string, true>

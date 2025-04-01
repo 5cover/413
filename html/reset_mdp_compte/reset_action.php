@@ -1,6 +1,6 @@
 <?php
 require_once 'util.php';
-require_once 'model/Compte.php';
+require_once 'Kcrf/Compte.php';
 
 if ($_POST) {
     $email = trim($_POST['login']);

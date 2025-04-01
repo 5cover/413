@@ -1,13 +1,15 @@
 <?php
 
-require_once 'model/OffreFast.php';
-require_once 'model/CompteProfessionnelFast.php';
-require_once 'model/Reponse.php';
+use ValueObjects\LibelleAbonnement;
+
+require_once 'Kcrf/OffreFast.php';
+require_once 'Kcrf/CompteProfessionnelFast.php';
+require_once 'Kcrf/Reponse.php';
 require_once 'redirect.php';
 require_once 'util.php';
-require_once 'model/Avis.php';
+require_once 'Kcrf/Avis.php';
 require_once 'cookie.php';
-require_once 'model/Blacklist.php';
+require_once 'Kcrf/Blacklist.php';
 
 final class ReviewList
 {

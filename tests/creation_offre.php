@@ -66,7 +66,6 @@ fill_input($dom, 'indication_duree_jours', 3);
 fill_input($dom, 'indication_duree_heures', 4);
 fill_input($dom, 'indication_duree_minutes', 5);
 
-
 // Tarifs
 
 // Image princpale

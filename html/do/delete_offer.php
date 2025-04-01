@@ -1,5 +1,5 @@
 <?php
-require_once 'model/Offre.php';
+require_once 'Kcrf/Offre.php';
 
 $id_offre = getarg($_GET, 'id_offre', arg_int());
 

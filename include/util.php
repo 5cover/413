@@ -39,7 +39,7 @@ function h14s(?string $s): ?string
  * @param T|false $valeur La valeur à comparer à `false` avec l'opérateur `===`
  * @param string $message Le message d'erreur à afficher si $valeur était `false`
  * @return T $valeur si elle n'était pas strictement égale à `false`.
- * @throws DomainException Si $valeur est `false`.
+ * @throws \DomainException Si $valeur est `false`.
  */
 function notfalse(mixed $valeur, string $message = 'was false'): mixed
 {
@@ -69,7 +69,7 @@ function mapnull(mixed $value, callable $map): mixed
  * @param ?T $valeur La valeur à comparer à `null` avec l'opérateur `===`
  * @param string $message Le message d'erreur à afficher si $valeur était `null`
  * @return T $valeur si elle n'était pas strictement égale à `null`.
- * @throws DomainException Si $valeur est `null`.
+ * @throws \DomainException Si $valeur est `null`.
  */
 function notnull(mixed $valeur, string $message = 'was null'): mixed
 {
@@ -84,7 +84,7 @@ function notnull(mixed $valeur, string $message = 'was null'): mixed
  * @template T
  * @param T[] $array Le tableau à modifier.
  * @param bool|float|int|string|null $key La clé à retirer. Elle doit exister dans le tableau.
- * @throws DomainException Si la clé n'existe pas dans le tableau.
+ * @throws \DomainException Si la clé n'existe pas dans le tableau.
  * @return T La valeur associée à la clé retirée.
  */
 function array_pop_key(array &$array, bool|float|int|string|null $key): mixed
@@ -191,7 +191,7 @@ function arg_check(callable $check): callable
  * @param ?int $min_range La valeur minimale de l'entier ou `null` pour pas de minimum.
  * @param ?int $max_range La valeur maximale de l'entier ou `null` pour pas de maximum.
  * @return callable(string, mixed): ?int Un filter utilisable par la fonction `getarg`.
- * @throws DomainException En cas de mauvaise syntaxe.
+ * @throws \DomainException En cas de mauvaise syntaxe.
  */
 function arg_int(?int $min_range = null, ?int $max_range = null): callable
 {
@@ -267,7 +267,7 @@ function arg_filter(int $filter, array|int $options = 0, bool $error_on_false = 
 /**
  * Affiche un message d'erreur HTML et jette une exception.
  * @param mixed $arg La valeur à inclure avec le message d'erreur.
- * @throws DomainException Toujours, avec $arg.
+ * @throws \DomainException Toujours, avec $arg.
  */
 function html_error(mixed $arg): never
 {
@@ -313,7 +313,7 @@ function f_array_has_keys(array $keys): callable
  * @template T
  * @param array<T> $array Un tableau devant contenir extactement 1 élément.
  * @return T Le seul élément de $array.
- * @throws DomainException Si $array ne contient pas exactement 1 élément.
+ * @throws \DomainException Si $array ne contient pas exactement 1 élément.
  */
 function single(array $array): mixed
 {
@@ -329,7 +329,7 @@ function single(array $array): mixed
  * @param array<T> $array Un tableau devant contenir 0 ou 1 élément.
  * @param T $default La valeur par défaut à retourner quand $array est vide.
  * @return T Le seul élément de $array, ou $default si $array est vide.
- * @throws DomainException Si le tableau contient plus d'une valeur.
+ * @throws \DomainException Si le tableau contient plus d'une valeur.
  */
 function single_or_default(array $array, mixed $default = null): mixed
 {

@@ -1,8 +1,12 @@
 <?php
+namespace Kcrf;
 
 use DB\Arg;
+use DB;
+use PDO;
+use Generator;
 
-require_once 'db.php';
+require_once 'DB/db.php';
 
 final class ImageData
 {
@@ -60,7 +64,7 @@ final class ImageFast
         $stmt = notfalse(DB\connect()->prepare('select * from ' . DB\Table::Image->value . ' where id=?'));
         DB\bind_values($stmt, [1 => [$id, PDO::PARAM_INT]]);
         notfalse($stmt->execute());
-        $row = $stmt->fetch(PDO::FETCH_OBJ);
+        $row = $stmt->fetch();
 
         return self::$cache[$id] = $row === false ? false : self::from_db_row($row);
     }
@@ -73,7 +77,7 @@ final class ImageFast
         $stmt = notfalse(DB\connect()->prepare('select _image.* from _galerie inner join _image on _image.id=_galerie.id_image where _galerie.id_offre=?'));
         DB\bind_values($stmt, [1 => [$id_offre, PDO::PARAM_INT]]);
         notfalse($stmt->execute());
-        while (false !== $row = $stmt->fetch(PDO::FETCH_OBJ)) {
+        while (false !== $row = $stmt->fetch()) {
             yield self::$cache[$row->id] = self::from_db_row($row);
         }
     }

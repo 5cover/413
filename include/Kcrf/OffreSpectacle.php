@@ -1,12 +1,15 @@
 <?php
+namespace Kcrf;
 
 use DB\Arg;
+use PDO;
+use DB;
 
-require_once 'model/OffreFast.php';
+require_once 'Kcrf/OffreFast.php';
 
 final class OffreSpectacleData {
     function __construct(
-        public Interval $indication_duree,
+        public DB\Interval $indication_duree,
         public int      $capacite_accueil,
     )
     {
@@ -15,7 +18,7 @@ final class OffreSpectacleData {
     static function parse(object $row): self
     {
         return new self(
-            Interval::parse($row->indication_duree),
+            DB\Interval::parse($row->indication_duree),
             $row->capacite_accueil,
         );
     }
@@ -61,7 +64,7 @@ final class OffreSpectacle extends OffreFast
             array_merge(['id'], OffreComputed::COLUMNS),
         );
         notfalse($stmt->execute());
-        $row = $stmt->fetch(PDO::FETCH_OBJ);
+        $row = $stmt->fetch();
         return self::$cache[$row->id] = new self($row->id, $data, OffreComputed::parse($row), $spectacle_data);
     }
 
@@ -71,7 +74,7 @@ final class OffreSpectacle extends OffreFast
 
         $stmt = DB\connect()->prepare('select * from ' .  DB\Table::Spectacle->value . ' where id=?');
         notfalse($stmt->execute());
-        $row = $stmt->fetch(PDO::FETCH_OBJ);
+        $row = $stmt->fetch();
 
         return self::$cache[$id] = $row === false ? false : self::from_db_row($row);
     }

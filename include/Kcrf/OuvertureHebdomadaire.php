@@ -1,16 +1,19 @@
 <?php
+namespace Kcrf;
 
 use DB\Action;
 use DB\Arg;
-use DB\BinaryClause, DB\BinOp;
+use DB\BinaryClause;
+use DB\BinOp;
+use PDO;
+use DB;
 
-require_once 'db.php';
-require_once 'ValueObjects/MultiRange.php';
+require_once 'DB/db.php';
 
 final class OuvertureHebdomadaire
 {
     /**
-     * @var array<int, MultiRange<Time>>
+     * @var array<int, \DB\MultiRange<\DB\Time>>
      */
     private array $ouvertures_hebdomadaires = [];
     /**
@@ -26,18 +29,18 @@ final class OuvertureHebdomadaire
             new BinaryClause('id_offre', BinOp::Eq, $this->id_offre, PDO::PARAM_INT),
         ]);
         notfalse($stmt->execute());
-        while (false !== $row = $stmt->fetch(PDO::FETCH_OBJ)) {
-            $this->ouvertures_hebdomadaires[$row->dow] = MultiRange::parse($row->horaires, Time::parse(...));
+        while (false !== $row = $stmt->fetch()) {
+            $this->ouvertures_hebdomadaires[$row->dow] = DB\MultiRange::parse($row->horaires, DB\Time::parse(...));
         }
     }
 
-    function get(int $dow): MultiRange
+    function get(int $dow): DB\MultiRange
     {
         assert(0 <= $dow and $dow <= 6);
-        return $this->ouvertures_hebdomadaires[$dow] ?? MultiRange::empty();
+        return $this->ouvertures_hebdomadaires[$dow] ?? DB\MultiRange::empty();
     }
 
-    function set(int $dow, MultiRange $horaires): void
+    function set(int $dow, DB\MultiRange $horaires): void
     {
         assert(0 <= $dow and $dow <= 6);
         $this->diff[$dow] ??= isset($this->ouvertures_hebdomadaires) ? Action::Insert : Action::Update;

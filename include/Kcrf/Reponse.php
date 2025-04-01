@@ -1,10 +1,9 @@
 <?php
+namespace Kcrf;
+//@kcrf-fix implement
+/*
+require_once 'Kcrf/Signalable.php';
 
-require_once 'model/Signalable.php';
-
-/**
- * @inheritDoc
- */
 final class Reponse extends Signalable
 {
     protected static function fields()
@@ -46,3 +45,4 @@ final class Reponse extends Signalable
 
     const TABLE = 'reponse';
 }
+*/

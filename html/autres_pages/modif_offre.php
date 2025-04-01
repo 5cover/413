@@ -4,8 +4,8 @@ require_once 'auth.php';
 require_once 'util.php';
 require_once 'component/Page.php';
 require_once 'component/InputOffre.php';
-require_once 'model/ProfessionnelPrive.php';
-require_once 'model/OffreFast.php';
+require_once 'Kcrf/ProfessionnelPrive.php';
+require_once 'Kcrf/OffreFast.php';
 
 $page = new Page(
     'Modifier offre',

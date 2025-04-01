@@ -1,54 +1,48 @@
 <?php
-require_once 'model/Model.php';
-require_once 'db.php';
+
+namespace Kcrf\Blacklist;
+
+require_once 'DB/db.php';
 require_once 'redirect.php';
 
-// not abstract so we don't have to figure out which concrete class an id belongs, we don't need to anyway.
-class Blacklist extends Model
+use DB;
+use PDO;
+
+
+function get_blacklist(int $id): ?string
 {
-    protected static function key_fields()
-    {
-        return [
-            'id' => [null, 'id', PDO::PARAM_INT],
-        ];
-    }
+    // @kcrf-fix SQL DSL
+    $stmt = DB\connect()->prepare('select fin_blacklist from ' . DB\Table::Blacklist->value . ' where id=?');
+    DB\bind_values($stmt, [1 => [$id, PDO::PARAM_INT]]);
+    notfalse($stmt->execute());
+    $r = $stmt->fetchColumn();
+    return $r === false ? null : $r;
+}
 
-    protected function __construct(
-        protected ?int $id
-    ) {}
-
-    static function get_blacklist(int $id): ?string
-    {
-        $stmt = DB\connect()->prepare('select fin_blacklist from ' . self::TABLE . ' where id=?');
-        DB\bind_values($stmt, [1 => [$id, PDO::PARAM_INT]]);
-        notfalse($stmt->execute());
-        $r = $stmt->fetchColumn();
-        return $r === false ? null : $r;
-    }
-
-    static function toggle_blacklist(int $id, date $finblacklist): bool
-    {
-        if (self::get_blacklist($id) === null) {
-            $stmt = DB\connect()->prepare('insert into ' . self::TABLE . ' (id,fin_blacklist) values (?,?)');
-            DB\bind_values($stmt, [1 => [$id, PDO::PARAM_INT], 2 => [$finblacklist, PDO::PARAM_STR]]);
-        }
+function toggle_blacklist(int $id, DB\Date $finblacklist): bool
+{
+    if (get_blacklist($id) === null) {
+        $stmt = DB\connect()->prepare('insert into ' . DB\Table::Blacklist->value . ' (id,fin_blacklist) values (?,?)');
+        DB\bind_values($stmt, [1 => [$id, PDO::PARAM_INT], 2 => [$finblacklist, PDO::PARAM_STR]]);
         return $stmt->execute();
+    } else {
+        // kcrf-fix SQL DSL
+        return false;
     }
+}
 
-    static function nb_blacklist_restantes(int $id_pro): int
-    {
-        $stmt = DB\connect()->prepare('select
+function nb_blacklist_restantes(int $id_pro): int
+{
+    // kcrf-fix SQL DSL
+    $stmt = DB\connect()->prepare('select
     count(*)
-from
+    from
     blacklists_effectives
     join _avis using (id)
     join _offre on _avis.id_offre = _offre.id
-where
+    where
     id_professionnel = ?');
-        DB\bind_values($stmt, [1 => [$id_pro, PDO::PARAM_INT]]);
-        $stmt->execute();
-        return 3 - $stmt->fetchColumn();
-    }
-
-    const TABLE = '_blacklist';
+    DB\bind_values($stmt, [1 => [$id_pro, PDO::PARAM_INT]]);
+    $stmt->execute();
+    return 3 - $stmt->fetchColumn();
 }

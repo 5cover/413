@@ -1,6 +1,6 @@
 <?php
 require_once 'util.php';
-require_once 'db.php';
+require_once 'DB/db.php';
 
 $stmt = notfalse(DB\connect()->query(<<<SQL
 select

@@ -1,7 +1,8 @@
 <?php
-require_once 'db.php';
+require_once 'DB/db.php';
+
 require_once 'testing.php';
-require_once 'model/OffreActivite.php';
+require_once 'Kcrf/OffreActivite.php';
 
 DB\transaction(function () {
     echo 'creating image' . PHP_EOL;
@@ -42,7 +43,7 @@ L’IUT en quelques chiffres :
             'https://iut-lannion.univ-rennes.fr',
             MultiRange::parse('{[2024-12-02 22:07:28,2024-12-17 12:04:14),(2024-12-18 12:04:14,2024-12-24 00:00:00]}', FiniteTimestamp::parse(...)),
         ],
-        Duree::parse('3 year'),
+        Interval::parse('3 year'),
         17,
         'Éducation',
         'Non-éducation',

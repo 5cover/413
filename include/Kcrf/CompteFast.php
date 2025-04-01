@@ -1,5 +1,10 @@
 <?php
-require_once 'db.php';
+namespace Kcrf;
+
+require_once 'DB/db.php';
+
+use DB;
+use PDO;
 
 final class CompteData
 {
@@ -10,17 +15,30 @@ final class CompteData
         public string  $prenom,
         public string  $telephone,
         public ?string $adresse,
-        public ?Uuid   $api_key,
+        public ?DB\Uuid   $api_key,
         public ?string $otp_secret,
     )
     {
     }
+
+    static function parse(object $row): self {
+        return new self(
+            $row->email,
+            $row->mdp_hash,
+            $row->nom,
+            $row->prenom,
+            $row->telephone,
+            $row->adresse,
+            $row->api_key,
+            $row->otp_secret,
+        );
+    }
 }
 
-final class CompteFast
+class CompteFast
 {
-    private function __construct(
-        public readonly ?int       $id,
+    protected function __construct(
+        public readonly int       $id,
         public CompteData $data,
     )
     {
@@ -38,22 +56,13 @@ final class CompteFast
         $stmt = notfalse(DB\connect()->prepare('select * from ' . DB\Table::Compte->value . ' where id=?'));
         DB\bind_values($stmt, [1 => [$id, PDO::PARAM_INT]]);
         notfalse($stmt->execute());
-        $row = $stmt->fetch(PDO::FETCH_OBJ);
+        $row = $stmt->fetch();
 
         return self::$cache[$id] = $row === false ? false : self::from_db_row($row);
     }
 
     private static function from_db_row(object $row): self
     {
-        return new self($row->id, new CompteData(
-            $row->email,
-            $row->mdp_hash,
-            $row->nom,
-            $row->prenom,
-            $row->telephone,
-            $row->adresse,
-            $row->api_key,
-            $row->otp_secret,
-        ));
+        return new self($row->id, CompteData::parse($row));
     }
 }

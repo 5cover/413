@@ -8,28 +8,9 @@ require_once 'Arg.php';
 require_once 'Clause.php';
 require_once 'NoOpPDOStatement.php';
 
-use PDO, PDOStatement;
+use PDO;
+use PDOStatement;
 use Throwable;
-
-enum Table: string
-{
-    case Adresse = '_adresse';
-    case Compte = '_compte';
-    case Professionnel = 'professionnel';
-    case Offre = 'offres';
-    case Image = '_image';
-    case Activite = 'activte';
-    case ParcAttractions = 'parc_attractions';
-    case Restaurant = 'restaurant';
-    case Spectacle = 'spectacle';
-    case Visite = 'visite';
-    case OuvertureHebdomadaire = '_ouverture_hebdomadaire';
-    case Galerie = '_galerie';
-    case ImageFromGalerie = 'image_from_galerie';
-    case Tags = '_tags';
-    case Tarif = '_tarif';
-    case ChangementEtat = '_changement_etat';
-}
 
 /**
  * Se connecter à la base de données.
@@ -72,7 +53,7 @@ function connect(): LogPDO
 
     notfalse($pdo->exec("set schema 'pact'"));
 
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 
     return $pdo;
 }
@@ -217,7 +198,6 @@ function insert_into_multiple(Table $table, array $columns, array $values, array
     }
     return $stmt;
 }
-
 
 /**
  * Prépare un *statement* UPDATE.

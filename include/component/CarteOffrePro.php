@@ -1,9 +1,9 @@
 <?php
 require_once 'component/ImageView.php';
 require_once 'const.php';
-require_once 'model/OffreFast.php';
-require_once 'model/ImageFast.php';
-require_once 'model/AdresseFast.php';
+require_once 'Kcrf/OffreFast.php';
+require_once 'Kcrf/ImageFast.php';
+require_once 'Kcrf/AdresseFast.php';
 require_once 'redirect.php';
 require_once 'util.php';
 

@@ -6,7 +6,6 @@ $page = new Page('Mentions légales', main_class: 'text');
 
 // 1 - 1.5 page
 
-
 $page->put( function(){
     $pd = new Parsedown();
     ?>

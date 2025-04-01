@@ -3,6 +3,7 @@
     "ivopetkov/html5-dom-document-php": "2.*",
     "spomky-labs/otphp": "^11.3",
     "ext-pdo": "*",
-    "ext-xlswriter": "*"
+    "ext-xlswriter": "*",
+    "ext-ctype": "*"
   }
 }

@@ -1,4 +1,6 @@
 <?php
+namespace DB;
+use DateTimeImmutable;
 
 require_once 'util.php';
 
@@ -17,7 +19,7 @@ final class Date
      * Parse une date depuis la sortie PostgreSQL.
      * @param ?string $output La sortie PostgreSQL.
      * @return ?Date Un nouvelle date, ou `null` si `$output` était `null` (à l'instar de PostgreSQL, cette fonction propage `null`)
-     * @throws DomainException En cas de mauvaise syntaxe.
+     * @throws \DomainException En cas de mauvaise syntaxe.
      */
     static function parse(?string $output): ?Date
     {

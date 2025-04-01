@@ -1,7 +1,7 @@
 <?php
 
 require_once 'testing.php';
-require_once 'ValueObjects/Duree.php';
+require_once 'ValueObjects/Interval.php';
 
 test_case('0 years 0 mons 3 days 4:5:6.0', days: 3, hours: 4, mins: 5, secs: 6);
 test_case('0 years 0 mons 3 days 4:5:6', days: 3, hours: 4, mins: 5, secs: 6);
@@ -22,7 +22,7 @@ function test_case(
     int $mins = 0,
     float $secs = 0,
 ): void {
-    $d = Duree::parse($output);
+    $d = Interval::parse($output);
     assert_strictly_equal($d->years, $years);
     assert_strictly_equal($d->months, $mons);
     assert_strictly_equal($d->days, $days);
@@ -30,7 +30,7 @@ function test_case(
     assert_strictly_equal($d->minutes, $mins);
     assert_strictly_equal($d->seconds, $secs);
 
-    $roundtripped = Duree::parse($d);
+    $roundtripped = Interval::parse($d);
     assert_equal($d, $roundtripped);
 }
 

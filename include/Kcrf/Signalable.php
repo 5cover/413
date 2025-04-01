@@ -1,6 +1,10 @@
 <?php
-require_once 'model/Model.php';
-require_once 'db.php';
+namespace Kcrf;
+//@kcrf-fix implement
+/*
+require_once 'Kcrf/Model.php';
+require_once 'DB/db.php';
+
 require_once 'redirect.php';
 
 // not abstract so we don't have to figure out which concrete class an id belongs, we don't need to anyway.
@@ -46,3 +50,4 @@ class Signalable extends Model
 
     const TABLE = '_signalement';
 }
+*/

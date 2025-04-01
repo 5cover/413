@@ -1,23 +1,26 @@
 <?php
+namespace DB;
+
+use DateTimeImmutable;
 
 require_once 'util.php';
 
 /**
  * Abstraction du type TIME PostgreSQL
  */
-final class Time
+final readonly class Time
 {
     private const FORMAT = 'H:i:s';
 
     private function __construct(
-        private readonly DateTimeImmutable $datetime
+        private DateTimeImmutable $datetime
     ) {}
 
     /**
      * Parse une heure depuis la sortie PostgreSQL.
      * @param ?string $output La sortie PostgreSQL.
      * @return ?self Un nouvelle heure, ou `null` si `$output` était `null` (à l'instar de PostgreSQL, cette fonction propage `null`)
-     * @throws DomainException En cas de mauvaise syntaxe.
+     * @throws \DomainException En cas de mauvaise syntaxe.
      */
     static function parse(?string $output): ?self
     {

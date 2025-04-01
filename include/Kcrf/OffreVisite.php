@@ -1,20 +1,22 @@
 <?php
+namespace Kcrf;
 
 use DB\Arg;
+use DB;
 
-require_once 'model/OffreFast.php';
+require_once 'Kcrf/OffreFast.php';
 
 final class OffreVisiteData
 {
     function __construct(
-        public Interval $indication_duree,
+        public DB\Interval $indication_duree,
     )
     {
     }
 
     static function parse(object $row): self {
         return new self(
-            Interval::parse($row->indication_duree),
+            Db\Interval::parse($row->indication_duree),
         );
     }
 
@@ -57,7 +59,7 @@ final class OffreVisite extends OffreFast
             array_merge(['id'], OffreComputed::COLUMNS),
         );
         notfalse($stmt->execute());
-        $row = $stmt->fetch(PDO::FETCH_OBJ);
+        $row = $stmt->fetch();
         return self::$cache[$row->id] = new self($row->id, $data, OffreComputed::parse($row), $visite_data);
     }
 
@@ -67,7 +69,7 @@ final class OffreVisite extends OffreFast
 
         $stmt = DB\connect()->prepare('select * from ' .  DB\Table::Visite->value . ' where id=?');
         notfalse($stmt->execute());
-        $row = $stmt->fetch(PDO::FETCH_OBJ);
+        $row = $stmt->fetch();
 
         return self::$cache[$id] = $row === false ? false : self::from_db_row($row);
     }

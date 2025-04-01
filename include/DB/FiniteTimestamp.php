@@ -1,6 +1,9 @@
 <?php
 namespace DB;
 
+use DateTimeImmutable;
+use JsonSerializable;
+
 require_once 'util.php';
 
 /**
@@ -8,7 +11,6 @@ require_once 'util.php';
  */
 final class FiniteTimestamp implements JsonSerializable
 {
-    private const FORMAT_DATE = 'Y-m-d';
     private const FORMAT = '!Y-m-d H:i:s.u';
 
     private function __construct(
@@ -19,7 +21,7 @@ final class FiniteTimestamp implements JsonSerializable
      * Parse un timestamp fini.
      * @param ?string $output Le timestamp (sortie PostgreSQL ou autre).
      * @return ?FiniteTimestamp Un nouveau timestamp fini, ou `null` si `$output` était `null` (à l'instar de PostgreSQL, cette fonction propage `null`)
-     * @throws DateMalformedStringException En cas de mauvaise syntaxe.
+     * @throws \DateMalformedStringException En cas de mauvaise syntaxe.
      */
     static function parse(?string $output): ?FiniteTimestamp
     {   
@@ -40,7 +42,7 @@ final class FiniteTimestamp implements JsonSerializable
     /**
      * @inheritDoc
      */
-    function jsonSerialize(): mixed {
+    function jsonSerialize(): string {
         return $this->datetime->format(DATE_ATOM);
     }
 }

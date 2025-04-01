@@ -1,22 +1,47 @@
 <?php
+namespace Kcrf;
 
-require_once 'db.php';
-require_once 'model/Offre.php';
-require_once 'ValueObjects/Date.php';
-require_once 'model/Membre.php';
+require_once 'DB/db.php';
+require_once 'DB/Date.php';
+require_once 'Kcrf/OffreFast.php';
+require_once 'Kcrf/Membre.php';
 
-final readonly class AvisData
+use DB;
+use DB\Arg;
+use DB\BinaryClause;
+use DB\BinOp;
+use DB\FiniteTimestamp;
+use PDO;
+use Generator;
+
+final class AvisData
 {
     function __construct(
+            // Foreign
+            ?int $id_membre_auteur,
+            // Regular
             public string $commentaire,
             public string $note,
-            public Date $date_experience,
+            public DB\Date $date_experience,
             public ?string $contexte,
             public int $likes,
             public int $dislikes,
             public bool $lu,
     )
     {
+    }
+
+    static function parse(object $row): self {
+        return new self(
+            $row->id_membre_auteur,
+            $row->commentaire,
+            $row->note,
+            DB\Date::parse($row->date_experience),
+            $row->contexte,
+            $row->likes,
+            $row->dislikes,
+            $row->lu,
+        );
     }
 }
 
@@ -25,29 +50,30 @@ final readonly class AvisData
  */
 class Avis
 {
+    const TABLE = DB\Table::Avis;
+
     protected function __construct(
         // Key
-        readonly ?int $id,
-
-        // Foreign key
-        public int $id_membre_auteur,
-        public int $id_offre,
-
-        // Regular
-        public AvisData $data,
-
+        readonly int $id,
         // Computed
-        readonly ?FiniteTimestamp $publie_le,
+        readonly FiniteTimestamp $publie_le,
+        public AvisData $data,
     ) {
     }
 
-    static function from_db(int $id_avis): self|false
+    /**
+     * @var array<int, self|false>
+     */
+    private static array $cache = [];
+
+    static function from_db(int $id): self|false
     {
-        $stmt = notfalse(DB\connect()->prepare(self::make_select() . ' where ' . static::TABLE . '.id = ?'));
-        DB\bind_values($stmt, [1 => [$id_avis, PDO::PARAM_INT]]);
+        if (isset(self::$cache[$id])) return self::$cache[$id];
+
+        $stmt = DB\select(self::TABLE, ['*'], [new BinaryClause('id', BinOp::Eq, $id, PDO::PARAM_INT)]);
         notfalse($stmt->execute());
         $row = $stmt->fetch();
-        return $row === false ? false : self::from_db_row($row);
+        return self::$cache[$id] = $row === false ? false : self::from_db_row($row);
     }
 
     /**
@@ -58,11 +84,13 @@ class Avis
      */
     static function from_db_one(int $id_membre_auteur, int $id_offre): self|false
     {
-        $stmt = notfalse(DB\connect()->prepare(self::make_select() . ' where ' . static::TABLE . '.id_membre_auteur = ? and ' . static::TABLE . '.id_offre = ?'));
-        DB\bind_values($stmt, [1 => [$id_membre_auteur, PDO::PARAM_INT], 2 => [$id_offre, PDO::PARAM_INT]]);
+        $stmt = DB\select(self::TABLE, ['*'], [
+            new BinaryClause('id_membre_auteur', BinOp::Eq, $id_membre_auteur, PDO::PARAM_INT),
+            new BinaryClause('id_offre', BinOp::Eq, $id_offre, PDO::PARAM_INT),
+        ]);
         notfalse($stmt->execute());
         $row = $stmt->fetch();
-        return $row === false ? false : self::from_db_row($row);
+        return $row === false ? false :  self::$cache[$row->id] = self::from_db_row($row);
     }
 
     /**
@@ -70,103 +98,55 @@ class Avis
      * @param ?int $id_membre_auteur
      * @param ?int $id_offre
      * @param ?bool $blackliste
-     * @return Generator<int, self>
+     * @return \Generator<int, self>
      */
     static function from_db_all(?int $id_membre_auteur = null, ?int $id_offre = null, ?bool $blackliste = null): Generator
     {
-        $args = DB\filter_null_args([
-            'id_membre_auteur' => [$id_membre_auteur, PDO::PARAM_INT],
-            'id_offre'         => [$id_offre, PDO::PARAM_INT],
-            'blackliste'       => [$blackliste, PDO::PARAM_BOOL]
-        ]);
-        $stmt = notfalse(DB\connect()->prepare(self::make_select() . DB\where_clause(DB\BinOp::And , array_keys($args), static::TABLE)));
-        DB\bind_values($stmt, $args);
+        $where = [];
+        if (null !== $id_membre_auteur) $where[] = new BinaryClause('id_membre_auteur', BinOp::Eq, $id_membre_auteur, PDO::PARAM_INT);
+        if (null !== $id_offre) $where[] = new BinaryClause('id_offre', BinOp::Eq, $id_offre, PDO::PARAM_INT);
+        if (null !== $blackliste) $where[] = new BinaryClause('blackliste', BinOp::Eq, $blackliste, PDO::PARAM_BOOL);
+
+        $stmt = DB\select(self::TABLE, ['*'], $where);
         notfalse($stmt->execute());
         while (false !== $row = $stmt->fetch()) {
-            yield $row['id'] => self::from_db_row($row);
+            yield $row->id => self::$cache[$row->id] = self::from_db_row($row);
         }
     }
 
-    private static function from_db_row(array $row): self
+    private static function from_db_row(object $row): self
     {
-        self::require_subclasses();
-        $args_avis = [
-            $row['id'],
-            $row['commentaire'],
-            $row['note'],
-            Date::parse($row['date_experience']),
-            $row['contexte'],
-            mapnull($row['id_membre_auteur'], Membre::from_db(...)),
-            Offre::from_db($row['id_offre']),
-            $row['likes'],
-            $row['dislikes'],
-            $row['lu'],
-            FiniteTimestamp::parse($row['publie_le']),
-        ];
-
-        $id_restaurant = $row['id_restaurant'] ?? null;
-        return $id_restaurant
-            ? new AvisRestaurant(
-                $args_avis,
-                $row['note_cuisine'],
-                $row['note_service'],
-                $row['note_ambiance'],
-                $row['note_qualite_prix'],
-            )
-            : new self(...$args_avis);
-    }
-
-    private static function make_select(): string
-    {
-        self::require_subclasses();
-        return 'select
-            ' . static::TABLE . '.id,
-            ' . static::TABLE . '.commentaire,
-            ' . static::TABLE . '.note,
-            ' . static::TABLE . '.date_experience,
-            ' . static::TABLE . '.contexte,
-            ' . static::TABLE . '.id_membre_auteur,
-            ' . static::TABLE . '.id_offre,
-            ' . static::TABLE . '.lu,
-            ' . static::TABLE . '.publie_le,
-            ' . static::TABLE . '.likes,
-            ' . static::TABLE . '.dislikes,
-
-            v.id_restaurant,
-            v.note_cuisine,
-            v.note_service,
-            v.note_ambiance,
-            v.note_qualite_prix
-         from ' . self::TABLE . '
-            left join ' . AvisRestaurant::TABLE . ' v using (id)';
-    }
-
-    private static function require_subclasses(): void
-    {
-        require_once 'model/AvisRestaurant.php';
+        return new self(
+            $row->id,
+            $row->publie_le,
+            AvisData::parse($row),
+        );
     }
 
     function blacklist(FiniteTimestamp $duree_ban): void
     {
-        $stmt = notfalse(DB\insert_into("blacklist", ["id" => $this->id, "fin_blacklist" => $duree_ban]));
+        $stmt = DB\insert_into(DB\Table::Blacklist, [
+            'id' => new Arg($this->id, PDO::PARAM_INT),
+            'fin_blacklist' => new Arg($duree_ban),
+        ]);
         notfalse($stmt->execute());
     }
 
-    const TABLE = 'avis';
-
     function marquerCommeLu(): void
     {
-    if ($this->id === null) {
-        throw new RuntimeException("Impossible de marquer un avis non enregistré comme lu.");
+        $stmt = DB\update(self::TABLE, [
+            'lu' => new Arg(true, PDO::PARAM_BOOL),
+        ], [
+            new BinaryClause('id', BinOp::Eq, $this->id, PDO::PARAM_INT),
+        ]);
+
+        DB\bind_values($stmt, [1 => [$this->id, PDO::PARAM_INT]]);
+        notfalse($stmt->execute());
+
+        $this->data->lu = true;
     }
 
-    $stmt = notfalse(DB\connect()->prepare("UPDATE " . static::TABLE . " SET lu = TRUE WHERE id = ?"));
-    DB\bind_values($stmt, [1 => [$this->id, PDO::PARAM_INT]]);
-    notfalse($stmt->execute());
-
-    $this->lu = true; 
-    }
-
+    // todo: KCRF this
     static function getAvisNonLus(int $id_pro): array
     {
     $stmt = DB\connect()->prepare("
@@ -182,6 +162,5 @@ class Avis
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
 
 }

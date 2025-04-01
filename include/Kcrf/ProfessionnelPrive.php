@@ -1,6 +1,10 @@
 <?php
-require_once 'db.php';
-require_once 'model/Professionnel.php';
+namespace Kcrf;
+//@kcrf-fix implement
+/*
+require_once 'DB/db.php';
+
+require_once 'Kcrf/Professionnel.php';
 
 final class ProfessionnelPrive extends Professionnel
 {
@@ -21,3 +25,4 @@ final class ProfessionnelPrive extends Professionnel
 
     const TABLE = 'pro_prive';
 }
+*/

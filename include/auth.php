@@ -63,7 +63,6 @@ function exiger_connecte_pro(): int
         return $id;
     }
     redirect_to(location_connexion(return_url: $_SERVER['REQUEST_URI'] ?? null));
-    exit;
 }
 
 /**
@@ -97,7 +96,7 @@ function est_connecte_pro(): bool
 
 /**
  * Marque la session comme connectée à une compte membre.
- * @param int $id_pro L'ID du membre qui sera désormais connecté sur la session actuelLe.
+ * @param int $id_membre L'ID du membre qui sera désormais connecté sur la session actuelLe.
  * @return void
  */
 function se_connecter_membre(int $id_membre): void
@@ -116,7 +115,6 @@ function exiger_connecte_membre(): int
         return $id;
     }
     redirect_to(location_connexion(return_url: $_SERVER['REQUEST_URI']));
-    exit;
 }
 
 function exiger_connecte(): int
@@ -125,7 +123,6 @@ function exiger_connecte(): int
         return $id;
     }
     redirect_to(location_connexion(return_url: $_SERVER['REQUEST_URI']));
-    exit;
 }
 
 /**

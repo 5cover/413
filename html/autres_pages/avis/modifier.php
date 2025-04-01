@@ -1,5 +1,5 @@
 <?php
-require_once 'model/Avis.php';
+require_once 'Kcrf/Avis.php';
 require_once 'auth.php';
 require_once 'const.php';
 require_once 'redirect.php';
@@ -36,7 +36,6 @@ if (null !== $date_experience = getarg($_POST, 'date', required: false)) {
         redirect_to(location_detail_offre($id_offre));
     }
 }
-
 
 $page->put(function () use ($id_avis, $avis, $id_offre, $error_message) {
     ?>

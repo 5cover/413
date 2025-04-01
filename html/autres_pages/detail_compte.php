@@ -2,7 +2,7 @@
 require_once 'util.php';
 require_once 'redirect.php';
 require_once 'component/Page.php';
-require_once 'model/Compte.php';
+require_once 'Kcrf/Compte.php';
 
 $compte = Compte::from_db(id_compte: Auth\id_compte_connecte());
 if ($compte === false) fail_404();

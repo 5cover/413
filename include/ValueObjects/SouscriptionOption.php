@@ -1,6 +1,5 @@
 <?php
-namespace Kcrf;
-use DB;
+
 final readonly class SouscriptionOption
 {
     private function __construct(

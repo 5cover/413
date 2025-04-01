@@ -1,11 +1,14 @@
 <?php
+namespace Kcrf;
 
 use DB\Arg;
-use DB\BinOp;
 use DB\BinaryClause;
+use DB\BinOp;
 use DB\InListClause;
+use DB;
+use PDO;
 
-require_once 'db.php';
+require_once 'DB/db.php';
 
 /**
  * @property-read array<int, ImageFast> $images
@@ -36,7 +39,7 @@ final class Galerie
             new BinaryClause('id_offre', BinOp::Eq, $this->id_offre, PDO::PARAM_INT)
         ]);
         notfalse($stmt->execute());
-        while (false !== $row = $stmt->fetch(PDO::FETCH_OBJ)) {
+        while (false !== $row = $stmt->fetch()) {
             $this->images[$row->id] = new ImageFast(
                 $row->id,
                 ImageData::parse($row),

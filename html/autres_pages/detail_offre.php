@@ -9,14 +9,15 @@ require_once 'component/Page.php';
 require_once 'component/ReviewList.php';
 require_once 'const.php';
 require_once 'cookie.php';
-require_once 'db.php';
-require_once 'model/AdresseFast.php';
-require_once 'model/Avis.php';
-require_once 'model/AvisRestaurant.php';
+require_once 'DB/db.php';
+
+require_once 'Kcrf/AdresseFast.php';
+require_once 'Kcrf/Avis.php';
+require_once 'Kcrf/AvisRestaurant.php';
 require_once 'ValueObjects/Date.php';
-require_once 'model/Membre.php';
-require_once 'model/OffreFast.php';
-require_once 'model/OffreRestaurant.php';
+require_once 'Kcrf/Membre.php';
+require_once 'Kcrf/OffreFast.php';
+require_once 'Kcrf/OffreRestaurant.php';
 require_once 'Parsedown.php';
 require_once 'util.php';
 

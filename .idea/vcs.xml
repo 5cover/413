@@ -2,6 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/tchatator/tct413/lib/bcrypt" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/tchatator" vcs="Git" />
   </component>
 </project>

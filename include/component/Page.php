@@ -5,7 +5,7 @@ error_reporting(E_ALL & ~E_NOTICE);  // Notamment confiurer PHP pour afficher + 
 
 require_once 'auth.php';
 require_once 'redirect.php';
-require_once 'model/Avis.php';
+require_once 'Kcrf/Avis.php';
 
 final class Page
 {

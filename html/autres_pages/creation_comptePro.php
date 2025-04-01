@@ -1,14 +1,15 @@
 <?php
 require_once 'const.php';
-require_once 'db.php';
+require_once 'DB/db.php';
+
 require_once 'util.php';
 require_once 'redirect.php';
 require_once 'component/Page.php';
-require_once 'model/Compte.php';
-require_once 'model/Adresse.php';
-require_once 'model/ProfessionnelPrive.php';
-require_once 'model/ProfessionnelPublic.php';
-require_once 'model/Commune.php';
+require_once 'Kcrf/Compte.php';
+require_once 'Kcrf/Adresse.php';
+require_once 'Kcrf/ProfessionnelPrive.php';
+require_once 'Kcrf/ProfessionnelPublic.php';
+require_once 'Kcrf/Commune.php';
 
 $page = new Page('Créer un compte professionnel', scripts: ['module/creation_compte_pro.js' => 'type="module"']);
 

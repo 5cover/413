@@ -3,8 +3,8 @@
 require_once 'auth.php';
 require_once 'util.php';
 require_once 'redirect.php';
-require_once 'model/Professionnel.php';
-require_once 'model/Membre.php';
+require_once 'Kcrf/Professionnel.php';
+require_once 'Kcrf/Membre.php';
 
 // Récupérer les données du formulaire
 $args = [

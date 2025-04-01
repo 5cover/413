@@ -3,9 +3,9 @@ require_once 'component/Page.php';
 require_once 'auth.php';
 require_once 'redirect.php';
 require_once 'component/CarteOffrePro.php';
-require_once 'model/Professionnel.php';
-require_once 'model/ProfessionnelPrive.php';
-require_once 'model/OffreFast.php';
+require_once 'Kcrf/Professionnel.php';
+require_once 'Kcrf/ProfessionnelPrive.php';
+require_once 'Kcrf/OffreFast.php';
 require_once 'util.php';
 
 $page = new Page('Accueil Professionnel');

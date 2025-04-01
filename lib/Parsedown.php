@@ -583,7 +583,7 @@ class Parsedown
             {
                 $contentIndent -= 1;
                 $matches[1] = substr($matches[1], 0, -$contentIndent);
-                $matches[3] = str_repeat(' ', $contentIndent) . $matches[3];
+                $matches[3] = Parsedown . phpstr_repeat(' ', $contentIndent) . $matches[3];
             }
             elseif ($contentIndent === 0)
             {

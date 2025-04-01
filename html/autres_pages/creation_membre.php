@@ -3,11 +3,11 @@ require_once 'const.php';
 require_once 'util.php';
 require_once 'redirect.php';
 require_once 'component/Page.php';
-require_once 'model/Compte.php';
-require_once 'model/Membre.php';
-require_once 'model/Professionnel.php';
-require_once 'model/Adresse.php';
-require_once 'model/Commune.php';
+require_once 'Kcrf/Compte.php';
+require_once 'Kcrf/Membre.php';
+require_once 'Kcrf/Professionnel.php';
+require_once 'Kcrf/Adresse.php';
+require_once 'Kcrf/Commune.php';
 
 $page = new Page('Création de compte membre', scripts: [
     'module/creation_membre.js' => 'type="module"',
@@ -26,7 +26,6 @@ if (isset($_POST['motdepasse'])) {
 
     $email = $_POST['email'];
     if (false !== Compte::from_db_by_email($email)) fail('Cette adresse e-mail est déjà utilisée.');
-
 
     $mdp_hash = notfalse(password_hash($_POST['motdepasse'], PASSWORD_ALGO));
 

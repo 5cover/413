@@ -1,5 +1,10 @@
 <?php
-require_once 'db.php';
+namespace Kcrf;
+
+require_once 'DB/db.php';
+
+use DB;
+use PDO;
 
 /**
  * @property-read string[] $code_postaux
@@ -38,9 +43,9 @@ final class CommuneFast
             2 => [$numero_departement, PDO::PARAM_STR],
         ]);
         notfalse($stmt->execute());
-        $row = $stmt->fetch(PDO::FETCH_OBJ);
+        $row = $stmt->fetch();
 
-        return $cache[$key] = $row === false ? false : new self(
+        return self::$cache[$key] = $row === false ? false : new self(
             $row->code,
             $row->numero_departement,
             $row->nom,
@@ -52,10 +57,10 @@ final class CommuneFast
         $stmt = notfalse(DB\connect()->prepare('select code, numero_departement from ' . self::TABLE . ' where nom = ?'));
         DB\bind_values($stmt, [1 => [$nom, PDO::PARAM_STR]]);
         notfalse($stmt->execute());
-        $row = $stmt->fetch(PDO::FETCH_OBJ);
+        $row = $stmt->fetch();
         if ($row === false) return false;
         $nodept = ltrim($row->numero_departement);
-        return $cache[self::get_key($row->code, $nodept)] = new self($row->code, $nodept, $nom);
+        return self::$cache[self::get_key($row->code, $nodept)] = new self($row->code, $nodept, $nom);
     }
 
     private ?array $code_postaux = null;
