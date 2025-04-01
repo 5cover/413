@@ -189,7 +189,9 @@ $$ language plpgsql;
 
 create function _compte_delete() returns trigger as $$
 begin
-    -- fixme do nothing
+    delete from _compte
+    where
+        id = old.id;
     return old;
 end
 $$ language plpgsql;
