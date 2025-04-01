@@ -25,7 +25,7 @@ function connection_membre($args )  {
         if (!password_verify($args['mdp'], $user->mdp_hash)) {
             fail();
         }
-        elseif ($user->otp_secret && !OTP\verify($user->otp_secret,$args['otp_secret'] ?? 'invalid')  ) {
+        elseif ($user->otp_secret && !OTP\verify($user->otp_secret,$args['otp_secret'] )  ) {
             fail_otp();
         }
         else{
