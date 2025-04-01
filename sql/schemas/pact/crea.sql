@@ -54,7 +54,7 @@ create table _abonnement (
     prix_journalier decimal not null,
     description ligne not null
 );
-
+ 
 create table _image (
     id serial
         constraint image_pk primary key,
