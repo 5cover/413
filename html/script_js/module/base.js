@@ -5,6 +5,7 @@ for (const e of document.getElementsByClassName('input-address')) setup_input_ad
 for (const e of document.getElementsByClassName('input-image')) setup_input_image(e);
 for (const e of document.getElementsByClassName('button-signaler')) setup_button_signaler(e);
 for (const e of document.getElementsByClassName('button-blacklist')) setup_button_blacklist(e);
+
 for (const e of document.getElementsByClassName('liker')) setup_liker(e);
 
 requireElementById('button-page-expire-cookies').addEventListener('click', () => document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); }));
@@ -246,7 +247,7 @@ function setup_liker(element) {
         change_value(is_like ? text_like_count : text_dislike_count, state === is_like ? 1 : -1);
         if (dec) change_value(is_like ? text_dislike_count : text_like_count, -1);
 
-        return fetchDo(location_like(element.dataset.commentId, state))
+        return fetchDo(location_like(element.dataset.commentId, state));
     };
 }
 
@@ -260,38 +261,38 @@ function fill_src(name, filled) {
     return '/images/' + name + (filled ? '-filled.svg' : '.svg');
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".carousel-container").forEach((carouselContainer) => {
-        const offerList = carouselContainer.querySelector(".offer-list");
-        const cards = Array.from(offerList.children);
-        const cardWidth = cards[0].offsetWidth;
-        let scrollAmount = 0;
-        let speed = 1; // Vitesse du carrousel
+document.querySelectorAll(".carousel-container").forEach((carouselContainer) => {
+    const offerList = carouselContainer.querySelector(".offer-list");
+    if (!offerList) return;
 
-        // Cloner les cartes pour assurer un effet infini
-        cards.forEach((card) => {
-            let clone = card.cloneNode(true);
-            offerList.appendChild(clone);
-        });
+    const cards = Array.from(offerList.children);
+    const cardWidth = cards[0].offsetWidth;
+    let scrollAmount = 0;
+    let speed = 1; // Vitesse du carrousel
 
-        function autoScroll() {
-            scrollAmount += speed;
+    // Cloner les cartes pour assurer un effet infini
+    cards.forEach((card) => {
+        let clone = card.cloneNode(true);
+        offerList.appendChild(clone);
+    });
+
+    function autoScroll() {
+        scrollAmount += speed;
+        offerList.style.transform = `translateX(-${scrollAmount}px)`;
+
+        // Réajuster immédiatement sans animation
+        if (scrollAmount >= cardWidth) {
+            offerList.appendChild(offerList.firstElementChild);
+            offerList.style.transition = "none";  // Supprimer l'animation
+            scrollAmount -= cardWidth;  // Repositionner sans retour en arrière
             offerList.style.transform = `translateX(-${scrollAmount}px)`;
-
-            // Réajuster immédiatement sans animation
-            if (scrollAmount >= cardWidth) {
-                offerList.appendChild(offerList.firstElementChild);
-                offerList.style.transition = "none";  // Supprimer l'animation
-                scrollAmount -= cardWidth;  // Repositionner sans retour en arrière
-                offerList.style.transform = `translateX(-${scrollAmount}px)`;
-                setTimeout(() => {
-                    offerList.style.transition = "transform 0.02s linear"; // Réactiver l'animation
-                });
-            }
-
-            requestAnimationFrame(autoScroll);
+            setTimeout(() => {
+                offerList.style.transition = "transform 0.02s linear"; // Réactiver l'animation
+            });
         }
 
-        autoScroll();
-    });
+        requestAnimationFrame(autoScroll);
+    }
+
+    autoScroll();
 });

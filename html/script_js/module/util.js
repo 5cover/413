@@ -82,10 +82,10 @@ export function formatDuration(duration) {
 
 /**
  * @param {HTMLElement[]} elements
- * @param {Promise} promise 
+ * @param {() => Promise} promise 
  */
 export async function enable_disable(elements, promise) {
     for (const e of elements) e.disabled = true;
-    await promise;
+    await promise();
     for (const e of elements) e.disabled = false;
 }
