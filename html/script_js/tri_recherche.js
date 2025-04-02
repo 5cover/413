@@ -4,7 +4,7 @@ document.getElementById('mapToggle').addEventListener('click', toggleMap);
 
 const inputKwSearch = document.getElementById('keyword-search');
 
-inputKwSearch.addEventListener('input', filterOffers);
+inputKwSearch.addEventListener('change', filterOffers);
 
 document.getElementById('main-category').addEventListener('click', showSubcategories);
 
