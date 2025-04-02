@@ -196,7 +196,7 @@ final class Page
         <footer>
             <div class="footer-content">
                 <div>
-                    <?php if (rand() % 5 == 0) { ?>
+                    <?php if (rand() % 500 == 0) { ?>
                     <p title="c'est beaucoup!"><?= DB\connect()->query_no - 1 ?> requêtes SQL</p>
                     <?php } ?>
                     <p><button class="bouton" type="button" id="button-page-expire-cookies">Nettoyer les cookies</
