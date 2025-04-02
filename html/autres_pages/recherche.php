@@ -36,7 +36,7 @@ $page->put(function () {
         <br>
         <div class="search-bar">
             <!-- <input id="barre-recherche" type="text" placeholder="Rechercher des activités, restaurants, spectacles..."> -->
-            <input type="text" id="keyword-search" value="<?= $search ?>" placeholder="Rechercher par mot-clé" oninput="filterOffers()">
+            <input type="text" id="keyword-search" value="<?= $search ?>" placeholder="Rechercher par mot-clé">
 
         </div>
     </section>
@@ -46,7 +46,7 @@ $page->put(function () {
                 <div class="categories">
                     <h3>Catégories</h3>
                     <div class="category-dropdown">
-                        <select id="main-category" onchange="showSubcategories()">
+                        <select id="main-category">
                             <option value="">-- Toutes les catégories --</option>
                             <option value="restaurant">Restauration</option>
                             <option value="activité">Activité</option>

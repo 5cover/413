@@ -2,6 +2,12 @@
 
 document.getElementById('mapToggle').addEventListener('click', toggleMap);
 
+const inputKwSearch = document.getElementById('keyword-search');
+
+inputKwSearch.addEventListener('input', filterOffers);
+
+document.getElementById('main-category').addEventListener('click', showSubcategories);
+
 async function getDataJson(url) {
     return await (await fetch(url)).json();
 }
@@ -121,6 +127,10 @@ function filterOffers() {
     const filteredOffers = offers.filter(offer => {
         // Vérifie la catégorie principale
         if (mainCategory && offer.categorie.toLowerCase() !== mainCategory.toLowerCase()) {
+            return false;
+        }
+
+        if (!offer.titre.toLowerCase().includes(inputKwSearch.value.toLowerCase())) {
             return false;
         }
 
