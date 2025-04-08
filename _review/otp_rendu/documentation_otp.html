@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>documentation_otp.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="documentation-otp-%C3%A9quipe-413">Documentation otp équipe 413</h1>
+<h3 id="sommaire">Sommaire</h3>
+<ul>
+<li><a href="#Role_des_fichiers">Rôle des fichiers</a></li>
+<li><a href="#Description_des_fichiers">Description des fichiers</a></li>
+<li><a href="#Graphe_des_intractions">Graphe des intractions</a></li>
+<li><a href="#Video">Vidéo</a></li>
+</ul>
+<h2 id="r%C3%B4le-des-fichiers-a-id%22roledesfichiers%22a">Rôle des fichiers <a id="Role_des_fichiers"></a></h2>
+<p><a href="#otp.php">otp.php</a></p>
+<ul>
+<li>Fichier au se trouve les fonctions de bases de l'otp : sauvegarde, génération du code qr, vérification du secret ...</li>
+</ul>
+<p><a href="#otp-qr.php">otp-qr.php</a></p>
+<ul>
+<li>Page qui affiche le qr code, qui s'assure que l'utilisateur est en possession du secret et qui déclenche la sauvegarde du secret dans la base de données.</li>
+</ul>
+<p><a href="#otp_verify.php">otp_verify.php</a></p>
+<ul>
+<li>Fichier qui permet l'appel en frontend de la fonction &quot;verify()&quot; du fichier otp.php dans otp-qr.php et login.php</li>
+</ul>
+<p><a href="#otp_save.php">otp_save.php</a></p>
+<ul>
+<li>Fichier qui permet l'appel en frontend de la fonction &quot;save_otp()&quot; du fichier otp.php dans otp-qr.php</li>
+</ul>
+<p><a href="#connexion.php">connexion.php</a></p>
+<ul>
+<li>Page de connection, sur cette page se trouve le champ &quot;Code sécurisé&quot;.</li>
+</ul>
+<p><a href="#login.php">login.php</a></p>
+<ul>
+<li>Fichier qui assure la validité des informations de la connexion et qui connecte l'utilisateur.</li>
+</ul>
+<p><a href="#modif_compte.php">modif_compte.php</a></p>
+<ul>
+<li>Page qui affiche les détails d'un compte le bouton pour générer un code qr est sur cette page.</li>
+</ul>
+<p><a href="#modif_compte.js">modif_compte.js</a></p>
+<ul>
+<li>Fichier qui supervise les actions de modif_compte.php s'occupe de faire apparaître la page otp-qr.php</li>
+</ul>
+<h2 id="description-des-fichiers-a-id%22descriptiondesfichiers%22a">Description des fichiers <a id="Description_des_fichiers"></a></h2>
+<h3 id="otpphp-a-id%22otpphp%22a">otp.php <a id="otp.php"></a></h3>
+<h4 id="r%C3%B4le-principal">Rôle principal :</h4>
+<p>Bibliothèque centrale de gestion OTP (One-Time Password) basée sur TOTP.</p>
+<h4 id="fonctions">Fonctions :</h4>
+<ul>
+<li><strong>verify()</strong> : vérifie un code OTP contre un secret avec une fenêtre de validité de 30 s.</li>
+<li><strong>save_otp()</strong> : persiste le secret OTP en base de données pour un utilisateur.</li>
+<li><strong>generate_totp()</strong> : crée un nouveau générateur TOTP avec paramètres par défaut.</li>
+<li><strong>generate_secret()</strong> : Extrait le secret (base32) d'un objet TOTP</li>
+<li><strong>get_url_otp()</strong> : génère l'URI standard pour les applications d'authentification.</li>
+</ul>
+<h3 id="otp-qrphp-a-id%22otp-qrphp%22a">otp-qr.php <a id="otp-qr.php"></a></h3>
+<h4 id="r%C3%B4le-principal">Rôle principal :</h4>
+<p>Interface visuelle d'activation OTP avec génération de QR Code.</p>
+<h4 id="fonctions">Fonctions :</h4>
+<ul>
+<li>Génère et affiche un QR Code scannable</li>
+<li>Fournis un formulaire de validation du premier code</li>
+<li>Communique avec <code>otp_verify.php</code> et <code>otp_save.php</code> en AJAX</li>
+<li>Ferme automatiquement la fenêtre après activation réussie ou après un abandon</li>
+</ul>
+<h3 id="otpverifyphp-a-id%22otpverifyphp%22a">otp_verify.php <a id="otp_verify.php"></a></h3>
+<h4 id="r%C3%B4le-principal">Rôle principal :</h4>
+<p>Endpoint API pour la vérification des codes OTP.</p>
+<h4 id="fonctions">Fonctions :</h4>
+<ul>
+<li>Reçois le code et le secret en POST.</li>
+<li>Utilise <code>OTP\verify()</code> pour la validation.</li>
+<li>Retourne une réponse binaire (1/0) au format texte.</li>
+<li>Gère le cas où le secret est déjà en base de données.</li>
+</ul>
+<h3 id="otpsavephp-a-id%22otpsavephp%22a">otp_save.php <a id="otp_save.php"></a></h3>
+<h4 id="r%C3%B4le-principal">Rôle principal :</h4>
+<p>Endpoint API pour la persistance du secret OTP.</p>
+<h4 id="fonctions">Fonctions :</h4>
+<ul>
+<li>Utilise <code>OTP\save_otp()</code> pour la sauvegarde.</li>
+</ul>
+<h3 id="connexionphp-a-id%22connexionphp%22a">connexion.php <a id="connexion.php"></a></h3>
+<h4 id="r%C3%B4le-principal">Rôle principal :</h4>
+<p>Page de connexion principale avec intégration OTP.</p>
+<h4 id="fonctions">Fonctions :</h4>
+<ul>
+<li>Affiche le champ OTP conditionnellement.</li>
+<li>Gère les erreurs spécifiques OTP.</li>
+<li>Préserve l'URL de retour après authentification.</li>
+<li>Intègre le JavaScript pour la gestion dynamique du champ OTP.</li>
+</ul>
+<h3 id="loginphp-a-id%22loginphp%22a">login.php <a id="login.php"></a></h3>
+<h4 id="r%C3%B4le-principal">Rôle principal :</h4>
+<p>Traitement central de l'authentification.</p>
+<h4 id="fonctions">Fonctions :</h4>
+<ul>
+<li>Applique la vérification OTP si le secret existe.</li>
+</ul>
+<h3 id="modifcomptephp-a-id%22modifcomptephp%22a">modif_compte.php <a id="modif_compte.php"></a></h3>
+<h4 id="r%C3%B4le-principal">Rôle principal :</h4>
+<p>Interface de gestion des paramètres du compte.</p>
+<h4 id="fonctions">Fonctions :</h4>
+<ul>
+<li>Affiche le bouton d'activation OTP conditionnel.</li>
+<li>Intègre la popup d'activation via le JavaScript</li>
+<li>Bloque la modification si l'OTP est déjà activé.</li>
+</ul>
+<h3 id="modifcomptejs-a-id%22modifcomptejs%22a">modif_compte.js <a id="modif_compte.js"></a></h3>
+<h4 id="r%C3%B4le-principal">Rôle principal :</h4>
+<p>Gestion cotée client de l'activation OTP.</p>
+<h4 id="fonctions">Fonctions :</h4>
+<ul>
+<li>
+<p>Ouvre la popup <code>otp-qr.php</code> dans une nouvelle fenêtre</p>
+</li>
+<li>
+<p>Communique avec les endpoints OTP via fetch API.</p>
+</li>
+</ul>
+<h2 id="graphe-des-interactions-a-id%22graphedesintractions%22a">Graphe des interactions <a id="Graphe_des_intractions"></a></h2>
+<p><img src="mermaid_doc.png" alt="graphe_otp" title="graphe otp"></p>
+<h2 id="vid%C3%A9o-a-id%22video%22a">Vidéo <a id="Video"></a></h2>
+<p><a href="https://youtu.be/RT3qcZEA3Dw">Vidéo : OTP équipe 413.</a></p>
+
+</body>
+</html>
