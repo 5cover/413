@@ -8,7 +8,6 @@ for (const e of document.getElementsByClassName('button-blacklist')) setup_butto
 
 for (const e of document.getElementsByClassName('liker')) setup_liker(e);
 
-requireElementById('button-page-expire-cookies').addEventListener('click', () => document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); }));
 
 /**
  * @param {HTMLElement} element
