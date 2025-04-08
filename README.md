@@ -23,3 +23,11 @@ Marius Chartier--Le Goff
 Maël Gogdet
 
 Benjamin Dumont-Girard
+
+## Trucs qu'on fera jamais mais qui seraient bien
+
+- Séparer le super-utilisateur Postgres de l'utilisateur principal afin de réduire les risques en cas de leak
+- ORM KCRF
+- Passer au SCSS
+- Faire un truc potable
+- Intégrer le tchatator
