@@ -9,9 +9,9 @@ apt install libjson-c-dev
 ## Connexion au serveur (PC perso)
 
 ```bash
-ssh -i .ssh/sae_rsa.pub debian@dbadmin-413.ventsdouest.dev
+ssh -i ~/.ssh/sae.rsa.pub debian@dbadmin-413.ventsdouest.dev
 # ou
-ssh -i .ssh/sae_rsa.pub debian@413.ventsdouest.dev
+ssh -i ~/.ssh/sae.rsa.pub debian@413.ventsdouest.dev
 ```
 
 ## Clonage du dépôt sur le serveur
