@@ -72,6 +72,7 @@ readonly failure_jokes=(
     "> j'aurais tendance à penser que si la seule chose qui t'empêche de te jeter d'une falaise c'est le fait que ça ferait du mal à ta famille, c'est que tu as des problèmes de santé mentale"
     '> :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee:'
     'https://tenor.com/view/city-lights-lights-off-gif-14713523'
+    "> Quel ange de la miséricorde viendra de l'avant pour aspirer le poison de mes fesses souffrantes !"
 )
 
 readonly success_cheers=(
