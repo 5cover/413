@@ -8,6 +8,7 @@ cd /docker/413.ventsdouest.dev/sae/data
 . .env
 set +a
 
+git config --global --add safe.directory /docker/413.ventsdouest.dev/sae/data
 sudo git fetch --all
 sudo git reset --hard origin/main
 sudo git submodule init
