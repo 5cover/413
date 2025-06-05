@@ -31,7 +31,7 @@ jobs:
         env:
           ARTIFACT_SSH_KEY: '${{secrets.ARTIFACT_SSH_KEY}}'
           ARTIFACT_HOST: '${{secrets.ARTIFACT_HOST}}'
-        run: 'cd "$GITHUB_WORKSPACE"/scripts && ./server-cp.bash "$GITHUB_WORKSPACE"/.env /docker/sae/data/.env && ./server-run-script.bash ./server/restart.bash'
+        run: 'cd "$GITHUB_WORKSPACE"/scripts && ./server-cp.bash "$GITHUB_WORKSPACE"/.env /docker/413.ventsdouest.dev/sae/data/.env && ./server-run-script.bash ./server/restart.bash'
 
       - name: Send discord message after
         env:

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -eua
-cd /docker/sae/data
+cd /docker/413.ventsdouest.dev/sae/data
 #shellcheck source=/dev/null
 . .env
 set +a
